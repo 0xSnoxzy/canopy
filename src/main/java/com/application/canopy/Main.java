@@ -1,4 +1,4 @@
-package com.example.canopy;
+package com.application.canopy;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
