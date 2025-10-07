@@ -1,4 +1,4 @@
 package com.application.canopy;
 
-public class Main {
+public class Page {
 }
