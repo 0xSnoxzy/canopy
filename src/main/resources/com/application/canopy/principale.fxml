@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.control.Button?>
+
+<?import javafx.scene.layout.BorderPane?>
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.application.canopy.controller.MainController">
+
+    <left>
+        <VBox prefWidth="220">
+            <padding><Insets top="16" left="16" right="16" bottom="16"/></padding>
+
+            <!-- Arriba: Perfil -->
+            <Button text="👤 Perfil"  maxWidth="Infinity"/>
+
+            <!-- Añadimos espacio antes del bloque central con un margin en el primer botón -->
+            <Button text="Dashboard"  maxWidth="Infinity">
+                <VBox.margin>
+                    <Insets top="12"/>  <!-- 12 px encima del primer botón del grupo -->
+                </VBox.margin>
+            </Button>
+
+            <Button text="Clientes"    maxWidth="Infinity"/>
+            <Button text="Pedidos"    maxWidth="Infinity"/>
+            <Button text="Reportes"  maxWidth="Infinity"/>
+
+            <!-- Espacio antes del botón Salir -->
+            <Button text="⏻ Salir"  maxWidth="Infinity">
+                <VBox.margin>
+                    <Insets top="16"/>  <!-- separa del grupo central -->
+                </VBox.margin>
+            </Button>
+        </VBox>
+
+    </left>
+
+</BorderPane>
