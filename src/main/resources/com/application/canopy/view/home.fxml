@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding = "UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.application.canopy.controller.HomeController">
+
+    <!-- Menu navigazione -->
+    <left>
+        <fx:include source="components/nav.fxml"/>
+    </left>
+
+    <center>
+
+    </center>
+
+</BorderPane>
