@@ -1,0 +1,234 @@
+/* ==========================================
+   Canopy - base.css (Tema Piante / Forest)
+   ========================================== */
+
+/* Token (looked-up) — sovrascrivili in eventuali temi futuri */
+.root {
+  /* Palette vegetale */
+  -canopy-bg:           linear-gradient(to bottom, #0b1a12, #0a1410); /* selva scura */
+  -canopy-surface:      #11231a;  /* foglie in ombra */
+  -canopy-surface-2:    #142a20;  /* foglie medio scure */
+  -canopy-card:         #183226;  /* lamina foglia */
+  -canopy-text:         #e7f6ef;  /* chiarore */
+  -canopy-muted:        #a6c8b8;  /* licheni */
+  -canopy-accent:       #4cc38a;  /* linfa viva */
+  -canopy-accent-2:     #7ad9a9;  /* muschio chiaro */
+  -canopy-bark:         #5a3f2e;  /* corteccia */
+  -canopy-soil:         #2b1f19;  /* terreno */
+
+  /* Focus / stati */
+  -canopy-focus:        rgba(122, 217, 169, 0.7);
+  -canopy-focus-soft:   rgba(122, 217, 169, 0.18);
+  -canopy-danger:       #ff6b6b;
+
+  -fx-font-size: 14px;
+  -fx-text-fill: -canopy-text;
+  -fx-base: -canopy-surface;
+}
+
+/* ---------- Elementi generali ---------- */
+
+.label { -fx-text-fill: -canopy-text; }
+.subtle { -fx-text-fill: -canopy-muted; }
+
+.app-title {
+  -fx-font-size: 18px;
+  -fx-font-weight: 800;
+  -fx-text-fill: -canopy-accent-2;
+  -fx-effect: dropshadow(gaussian, rgba(122,217,169,0.25), 8, 0.2, 0, 2);
+}
+
+/* Separatore “rametto” */
+.separator *.line {
+  -fx-background-color: rgba(122,217,169,0.35);
+  -fx-opacity: 0.9;
+}
+
+/* ---------- Sidebar / Nav ---------- */
+
+.sidebar {
+  -fx-background-color: -canopy-surface;
+  -fx-padding: 16 12;
+  -fx-spacing: 12;
+  -fx-border-color: rgba(122,217,169,0.18);
+  -fx-border-width: 0 1 0 0;
+  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 12, 0.2, 0, 2);
+}
+
+.points-label {
+  -fx-background-color: linear-gradient(to bottom, -canopy-card, -canopy-surface-2);
+  -fx-text-fill: -canopy-accent-2;
+  -fx-padding: 6 10;
+  -fx-background-radius: 999; /* “seme” tondo */
+  -fx-font-weight: 700;
+  -fx-border-color: rgba(122,217,169,0.35);
+  -fx-border-radius: 999;
+}
+
+/* Contenitori di sezione (menu/footer) */
+.menu-section  { -fx-spacing: 10; }
+.logout-section{ -fx-spacing: 10; }
+
+/* Bottoni nav: icona + testo, stile “foglia” */
+.nav-button, .logout-button, .button, .toggle-button {
+  -fx-alignment: CENTER_LEFT;
+  -fx-graphic-text-gap: 10;
+  -fx-padding: 9 14;
+  -fx-background-radius: 14;   /* sagoma foglia */
+  -fx-background-insets: 0;
+  -fx-text-fill: -canopy-text;
+  -fx-cursor: hand;
+  -fx-border-color: transparent;
+  -fx-border-radius: 14;
+}
+
+/* Stato base nav */
+.nav-button, .toggle-button {
+  -fx-background-color: transparent;
+}
+
+/* Hover: velatura “muschio” */
+.nav-button:hover, .toggle-button:hover {
+  -fx-background-color: rgba(122,217,169,0.10);
+}
+
+/* Attivo (pagina selezionata): lamina con venature */
+.toggle-button:selected {
+  -fx-background-color:
+      linear-gradient(to bottom, rgba(122,217,169,0.25), rgba(122,217,169,0.18)),
+      linear-gradient(to bottom, -canopy-card, -canopy-surface-2);
+  -fx-text-fill: -canopy-text;
+  -fx-font-weight: 800;
+  -fx-border-color: rgba(122,217,169,0.55);
+}
+
+/* Focus visibile: alone di “linfa” */
+.nav-button:focused, .toggle-button:focused, .logout-button:focused, .button:focused {
+  -fx-effect: dropshadow(gaussian, -canopy-focus, 12, 0.35, 0, 0);
+}
+
+/* Logout: bacca rossa */
+.logout-button {
+  -fx-background-color: transparent;
+  -fx-text-fill: -canopy-danger;
+}
+.logout-button:hover {
+  -fx-background-color: rgba(255,107,107,0.10);
+}
+
+/* ---------- Aree contenuto ---------- */
+
+.center-area {
+  -fx-background-color: -canopy-bg;
+  -fx-background-radius: 18;
+  -fx-padding: 8;
+}
+
+.side-panel {
+  -fx-background-color: linear-gradient(to bottom, -canopy-surface, -canopy-soil);
+  -fx-padding: 12;
+  -fx-spacing: 10;
+  -fx-border-color: rgba(122,217,169,0.18);
+  -fx-border-width: 0 0 0 1;
+}
+
+.panel-title {
+  -fx-font-size: 14px;
+  -fx-font-weight: 800;
+  -fx-text-fill: -canopy-accent-2;
+  -fx-effect: dropshadow(gaussian, rgba(122,217,169,0.25), 8, 0.2, 0, 1);
+}
+
+/* Palco della pianta: bordo “corteccia” leggero */
+.plant-stage {
+  -fx-background-color: transparent;
+  -fx-border-color: rgba(90,63,46,0.35);
+  -fx-border-width: 2;
+  -fx-border-radius: 18;
+}
+
+/* Timer grande con “goccia” */
+.timer-large {
+  -fx-font-size: 44px;
+  -fx-font-weight: 900;
+  -fx-text-fill: -canopy-accent-2;
+  -fx-effect: dropshadow(gaussian, rgba(122,217,169,0.25), 14, 0.3, 0, 3);
+}
+
+/* ---------- Controlli generici ---------- */
+
+/* Bottoni primari (es. Start) */
+.button.start, .button:default {
+  -fx-background-color: linear-gradient(to bottom, -canopy-accent-2, -canopy-accent);
+  -fx-text-fill: #08140f;
+  -fx-font-weight: 800;
+}
+.button.start:hover, .button:default:hover {
+  -fx-background-color: linear-gradient(to bottom, -canopy-accent, #39b97f);
+}
+
+/* Bottoni secondari (Pausa/Reset) */
+.button {
+  -fx-background-color: rgba(255,255,255,0.06);
+}
+.button:hover {
+  -fx-background-color: rgba(255,255,255,0.10);
+}
+
+/* TextField / ChoiceBox in stile “vaso” */
+.text-field, .choice-box, .combo-box-base {
+  -fx-background-color: -canopy-surface-2;
+  -fx-text-fill: -canopy-text;
+  -fx-background-radius: 12;
+  -fx-border-radius: 12;
+  -fx-border-color: rgba(122,217,169,0.20);
+  -fx-padding: 8 10;
+}
+.text-field:focused, .choice-box:focused, .combo-box-base:focused {
+  -fx-border-color: rgba(122,217,169,0.45);
+  -fx-effect: dropshadow(gaussian, -canopy-focus-soft, 10, 0.3, 0, 0);
+}
+
+/* ListView “foglia” */
+.list-view {
+  -fx-background-color: transparent;
+  -fx-control-inner-background: transparent;
+  -fx-background-insets: 0;
+  -fx-padding: 4;
+}
+.list-cell {
+  -fx-background-color: transparent;
+  -fx-text-fill: -canopy-text;
+  -fx-padding: 8 10;
+  -fx-background-radius: 12;
+}
+.list-cell:hover {
+  -fx-background-color: rgba(122,217,169,0.08);
+}
+.list-cell:selected {
+  -fx-background-color: linear-gradient(to bottom, rgba(122,217,169,0.22), rgba(122,217,169,0.16));
+  -fx-text-fill: -canopy-text;
+}
+
+/* ProgressBar “linfa” */
+.progress-bar > .bar {
+  -fx-background-color: linear-gradient(to right, -canopy-accent, -canopy-accent-2);
+  -fx-background-insets: 0;
+  -fx-background-radius: 999;
+}
+.progress-bar > .track {
+  -fx-background-color: rgba(255,255,255,0.10);
+  -fx-background-radius: 999;
+}
+
+/* ScrollBar tono muschio */
+.scroll-bar:vertical, .scroll-bar:horizontal {
+  -fx-background-color: transparent;
+}
+.scroll-bar .thumb {
+  -fx-background-color: rgba(122,217,169,0.35);
+  -fx-background-radius: 999;
+}
+.scroll-bar .thumb:hover {
+  -fx-background-color: rgba(122,217,169,0.50);
+}
