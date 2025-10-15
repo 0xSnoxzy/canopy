@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.input.*?>
+
+<?import javafx.geometry.Insets?>
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.application.canopy.controller.CalendarController">
+
+    <!-- Integrazione nav.fxml-->
+    <left>
+        <fx:include source="components/nav.fxml"/>
+    </left>
+
+    <!-- CENTRO: toolbar + griglia calendario -->
+    <center>
+        <VBox spacing="10">
+            <padding>
+                <Insets top="12" right="12" bottom="12" left="12"/>
+            </padding>
+
+            <!-- Toolbar calendario -->
+            <HBox spacing="8" styleClass="calendar-toolbar">
+                <ToggleButton fx:id="monthBtn" text="Mese" selected="true"/>
+                <ToggleButton fx:id="weekBtn"  text="Settimana"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button fx:id="prevBtn" text="⟨" minWidth="36"/>
+                <Label  fx:id="periodLabel" styleClass="h2"/>
+                <Button fx:id="nextBtn" text="⟩" minWidth="36"/>
+            </HBox>
+
+            <!-- Nomi giorni -->
+            <GridPane fx:id="weekdayHeader" hgap="6" styleClass="weekday-header">
+                <Label text="Lun" HBox.hgrow="ALWAYS" styleClass="weekday" />
+                <Label text="Mar" HBox.hgrow="ALWAYS" styleClass="weekday" />
+                <Label text="Mer" HBox.hgrow="ALWAYS" styleClass="weekday" />
+                <Label text="Gio" HBox.hgrow="ALWAYS" styleClass="weekday" />
+                <Label text="Ven" HBox.hgrow="ALWAYS" styleClass="weekday" />
+                <Label text="Sab" HBox.hgrow="ALWAYS" styleClass="weekday" />
+                <Label text="Dom" HBox.hgrow="ALWAYS" styleClass="weekday" />
+            </GridPane>
+
+            <!-- Griglia giorni -->
+            <GridPane fx:id="calendarGrid" hgap="6" vgap="6" VBox.vgrow="ALWAYS"
+                      styleClass="calendar-grid"/>
+        </VBox>
+    </center>
+
+    <!-- DESTRA: elenco piante del mese -->
+    <right>
+        <VBox spacing="10" prefWidth="320" styleClass="side-panel" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets top="12" right="12" bottom="12" left="12"/>
+            </padding>
+
+            <!-- Titolo + freccia back minimal -->
+            <HBox spacing="8" alignment="CENTER_LEFT">
+                <Button fx:id="backToMonthBtn"
+                        text="←"
+                        visible="false" managed="false"
+                        minWidth="34" prefWidth="34" maxWidth="34"
+                        styleClass="ghost-icon-button"
+                        accessibleText="Torna al mese"/>
+                <Label fx:id="rightTitle" text="Ottobre 2025" styleClass="panel-title"/>
+                <Region HBox.hgrow="ALWAYS"/>
+            </HBox>
+
+            <!-- Totale minuti (minimal) -->
+            <Label fx:id="summaryLabel" text="Tot: 0 min" styleClass="summary-label"/>
+
+            <!-- Lista piante del MESE -->
+            <ListView fx:id="listMonth" VBox.vgrow="ALWAYS"/>
+
+            <!-- Lista piante del GIORNO (inizialmente nascosta) -->
+            <ListView fx:id="listDay" VBox.vgrow="ALWAYS" visible="false" managed="false">
+                <placeholder>
+                    <Label text="Nessuna pianta registrata per questo giorno"/>
+                </placeholder>
+            </ListView>
+        </VBox>
+    </right>
+
+</BorderPane>

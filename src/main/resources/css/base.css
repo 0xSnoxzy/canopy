@@ -232,3 +232,94 @@
 .scroll-bar .thumb:hover {
   -fx-background-color: rgba(122,217,169,0.50);
 }
+
+/* ===== Calendario ===== */
+.calendar-toolbar {
+  -fx-background-color: transparent;
+  -fx-padding: 4 0 4 0;
+}
+
+.weekday-header .weekday {
+  -fx-text-fill: -canopy-muted;
+  -fx-alignment: CENTER_LEFT;
+  -fx-pref-width: Infinity;
+}
+
+.calendar-grid {
+  -fx-background-color: transparent;
+  -fx-padding: 4 0 0 0;
+}
+
+.day-cell {
+  -fx-background-color: linear-gradient(to bottom, -canopy-surface-2, -canopy-surface);
+  -fx-background-radius: 12;
+  -fx-border-radius: 12;
+  -fx-border-color: rgba(122,217,169,0.18);
+  -fx-padding: 4;
+}
+.day-cell:hover {
+  -fx-background-color: linear-gradient(to bottom, rgba(122,217,169,0.18), -canopy-surface);
+}
+.day-cell-out {
+  -fx-opacity: 0.55;
+}
+.day-cell-today {
+  -fx-border-color: rgba(122,217,169,0.55);
+  -fx-effect: dropshadow(gaussian, rgba(122,217,169,0.25), 10, 0.3, 0, 0);
+}
+.day-number {
+  -fx-text-fill: -canopy-text;
+  -fx-font-weight: 800;
+}
+
+/* Header dei giorni */
+.weekday-header {
+  -fx-padding: 0 0 0 2;
+}
+.weekday {
+  -fx-text-fill: -canopy-muted;
+  -fx-font-weight: 700;
+}
+
+/* Dialog “piante del giorno” */
+.dialog-pane {
+  -fx-background-color: -canopy-surface;
+}
+.dialog-pane > .content.label {
+  -fx-text-fill: -canopy-text;
+}
+.dialog-pane:header .header-panel .label {
+  -fx-text-fill: -canopy-accent-2;
+  -fx-font-weight: 800;
+}
+
+/* Celle lista piante (mese/giorno) */
+.list-view .list-cell {
+  -fx-background-color: transparent;
+  -fx-padding: 8 10;
+  -fx-background-radius: 10;
+}
+.list-view .list-cell:hover {
+  -fx-background-color: rgba(122,217,169,0.08);
+}
+.list-view .list-cell:selected {
+  -fx-background-color: linear-gradient(to bottom, rgba(122,217,169,0.22), rgba(122,217,169,0.16));
+}
+
+/* Pulsante freccia compatto (ghost) */
+.ghost-icon-button {
+  -fx-background-color: transparent;
+  -fx-text-fill: -canopy-text;
+  -fx-font-weight: 800;
+  -fx-background-radius: 10;
+  -fx-padding: 4 0 4 0;
+}
+.ghost-icon-button:hover {
+  -fx-background-color: rgba(122,217,169,0.10);
+}
+
+/* Totale minimal */
+.summary-label {
+  -fx-text-fill: -canopy-muted;
+  -fx-font-weight: 700;
+}

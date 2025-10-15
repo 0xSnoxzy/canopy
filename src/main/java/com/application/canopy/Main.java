@@ -14,7 +14,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/application/canopy/view/home.fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/application/canopy/view/calendar.fxml")));
         Scene scene = new Scene(root, 320, 240);
 
         URL css = getClass().getResource("/css/base.css");
@@ -23,7 +23,7 @@ public class Main extends Application {
         scene.getStylesheets().add(css.toExternalForm());
 
         stage.setScene(scene);
-        stage.setTitle("Cannopy");
+        stage.setTitle("Canopy");
         stage.show();
     }
 
