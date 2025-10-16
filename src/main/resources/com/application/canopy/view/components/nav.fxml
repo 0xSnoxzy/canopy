@@ -1,49 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.image.Image?>
 
-<!-- Component: Navigation Sidebar -->
-<?import javafx.scene.effect.Blend?>
-<?import javafx.scene.effect.ColorInput?>
 <VBox fx:id="navBar"
       xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.application.canopy.controller.NavController"
       spacing="16"
       alignment="TOP_CENTER"
       styleClass="sidebar"
       prefWidth="180">
 
-    <!-- Definizione ToggleGroup per selezione esclusiva -->
     <fx:define>
         <ToggleGroup fx:id="pagesGroup"/>
     </fx:define>
 
-    <!-- Sezione profilo / punti -->
     <VBox alignment="CENTER" spacing="8" styleClass="profile-section">
         <Label text="Canopy" styleClass="app-title" />
         <HBox alignment="CENTER" spacing="6">
+            <!-- icona punti rimossa perché assente -->
+            <Label fx:id="userPoints" text="300" styleClass="points-label" />
+        </HBox>
+    </VBox>
 
+    <Separator prefWidth="150"/>
 
-        <!-- IMMAGINE CORROTTA, CAMBIARE
-
-        <ImageView fitWidth="16" fitHeight="16" preserveRatio="true"
-                   styleClass="coin-icon"
-                   image="@images/coins.png"/>
-
-         -->
-
-
-
-        <Label fx:id="userPoints" text="300" styleClass="points-label" />
-    </HBox>
-</VBox>
-
-<Separator prefWidth="150"/>
-
-<!-- Menu -->
     <VBox spacing="8" alignment="TOP_LEFT" styleClass="menu-section" fillWidth="true">
 
         <!-- Home -->
@@ -54,13 +37,11 @@
                       graphicTextGap="10"
                       maxWidth="Infinity"
                       styleClass="nav-button"
-                      accessibleText="Vai alla Home">
-            <!-- Icona -->
+                      accessibleText="Vai alla Home"
+                      onAction="#goHome">
             <graphic>
                 <ImageView fitWidth="30" fitHeight="30" preserveRatio="true">
-                    <image>
-                        <Image url="@images/home-dark.png"/>
-                    </image>
+                    <image><Image url="@images/home-dark.png"/></image>
                 </ImageView>
             </graphic>
         </ToggleButton>
@@ -73,49 +54,51 @@
                       graphicTextGap="10"
                       maxWidth="Infinity"
                       styleClass="nav-button"
-                      accessibleText="Apri la pagina degli obiettivi">
+                      accessibleText="Apri la pagina degli obiettivi"
+                      onAction="#goAchievements">
             <graphic>
                 <ImageView fitWidth="30" fitHeight="30" preserveRatio="true">
-                    <Image url="@images/achievements-dark.png"/>
+                    <image><Image url="@images/achievements-dark.png"/></image>
                 </ImageView>
             </graphic>
         </ToggleButton>
 
         <!-- Erbario -->
-        <ToggleButton fx:id="btnErbario"
+        <ToggleButton fx:id="btnHerbarium"
                       text="Erbario"
                       toggleGroup="$pagesGroup"
                       contentDisplay="LEFT"
                       graphicTextGap="10"
                       maxWidth="Infinity"
                       styleClass="nav-button"
-                      accessibleText="Apri l'erbario">
+                      accessibleText="Apri l'erbario"
+                      onAction="#goHerbarium">
             <graphic>
                 <ImageView fitWidth="30" fitHeight="30" preserveRatio="true">
-                    <Image url="@images/herbarium-dark.png"/>
+                    <image><Image url="@images/herbarium-dark.png"/></image>
                 </ImageView>
             </graphic>
         </ToggleButton>
 
         <!-- Calendario -->
-        <ToggleButton fx:id="btnCalendario"
+        <ToggleButton fx:id="btnCalendar"
                       text="Calendario"
                       toggleGroup="$pagesGroup"
                       contentDisplay="LEFT"
                       graphicTextGap="10"
                       maxWidth="Infinity"
                       styleClass="nav-button"
-                      accessibleText="Apri il calendario">
+                      accessibleText="Apri il calendario"
+                      onAction="#goCalendar">
             <graphic>
                 <ImageView fitWidth="30" fitHeight="30" preserveRatio="true">
-                    <Image url="@images/calendar-dark.png"/>
+                    <image><Image url="@images/calendar-dark.png"/></image>
                 </ImageView>
             </graphic>
         </ToggleButton>
 
     </VBox>
 
-    <!-- Footer: logout -->
     <VBox alignment="BOTTOM_CENTER" spacing="8" styleClass="logout-section" VBox.vgrow="ALWAYS">
         <Separator prefWidth="150"/>
         <Button fx:id="btnLogout"
@@ -124,13 +107,6 @@
                 graphicTextGap="10"
                 maxWidth="Infinity"
                 styleClass="logout-button"
-                accessibleText="Esegui il logout">
-            <!--
-            <graphic>
-                <ImageView fitWidth="18" fitHeight="18" preserveRatio="true"
-                           image="@/assets/icons/logout.png"/>
-            </graphic>
-            -->
-        </Button>
+                accessibleText="Esegui il logout"/>
     </VBox>
 </VBox>

@@ -18,7 +18,7 @@ public class Main extends Application {
         Font.loadFont(getClass().getResourceAsStream("src/main/resources/css/fonts/AtkinsonHyperlegible-Regular.ttf"), 14);
 
 
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/application/canopy/view/calendar.fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/application/canopy/view/achievements.fxml")));
         Scene scene = new Scene(root, 320, 240);
 
         URL css = getClass().getResource("/css/base.css");

@@ -1,40 +1,43 @@
 package com.application.canopy.controller;
 
 import javafx.fxml.FXML;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 
-import java.util.Objects;
+import java.util.function.Consumer;
 
 public class NavController {
 
-    // Profile coins
-    @FXML private ImageView iconCoins;
+    private Consumer<String> onNavigate; // "home", "achievements", "herbarium", "calendar"
 
-    // Menu icons
-    @FXML private ImageView iconHome;
-    @FXML private ImageView iconAchievements;
-    @FXML private ImageView iconHerbarium;
-    @FXML private ImageView iconCalendar;
+    @FXML private ToggleGroup pagesGroup;
+    @FXML private ToggleButton btnHome;
+    @FXML private ToggleButton btnAchievements;
+    @FXML private ToggleButton btnHerbarium;
+    @FXML private ToggleButton btnCalendar;
 
-    // Footer icon
-    @FXML private ImageView iconLogout;
-
-    @FXML
-    public void initialize() {
-        // Carica le immagini dal **classpath** (NON file system)
-        iconCoins.setImage(load("/com/application/canopy/view/components/images/coins.png"));
-        iconHome.setImage(load("/com/application/canopy/view/components/images/home.png"));
-        iconAchievements.setImage(load("/com/application/canopy/view/components/images/achievements.png"));
-        iconHerbarium.setImage(load("/com/application/canopy/view/components/images/herbarium.png"));
-        iconCalendar.setImage(load("/com/application/canopy/view/components/images/calendar.png"));
-        iconLogout.setImage(load("/images/icons/logout.png"));
+    public void setOnNavigate(Consumer<String> onNavigate) {
+        this.onNavigate = onNavigate;
     }
 
-    private Image load(String classpathAbsolutePath) {
-        return new Image(Objects.requireNonNull(
-                getClass().getResourceAsStream(classpathAbsolutePath),
-                "Immagine non trovata nel classpath: " + classpathAbsolutePath
-        ));
+    private void fire(String route) {
+        if (onNavigate != null) onNavigate.accept(route);
+    }
+
+    // Metodi richiamati dai bottoni (onAction in FXML)
+    @FXML private void goHome()        { fire("home"); }
+    @FXML private void goAchievements(){ fire("achievements"); }
+    @FXML private void goHerbarium()   { fire("herbarium"); }
+    @FXML private void goCalendar()    { fire("calendar"); }
+
+    /** Chiamalo dalla pagina che include il nav per evidenziare la voce attiva */
+    public void setActive(String route) {
+        switch (route) {
+            case "home"         -> btnHome.setSelected(true);
+            case "achievements" -> btnAchievements.setSelected(true);
+            case "herbarium"    -> btnHerbarium.setSelected(true);
+            case "calendar"     -> btnCalendar.setSelected(true);
+            default -> pagesGroup.selectToggle(null);
+        }
     }
 }

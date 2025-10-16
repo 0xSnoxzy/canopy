@@ -5,11 +5,12 @@
 
 <?import javafx.geometry.Insets?>
 <BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:id="root"
             fx:controller="com.application.canopy.controller.CalendarController">
 
     <!-- Integrazione nav.fxml-->
     <left>
-        <fx:include source="components/nav.fxml"/>
+        <fx:include source="components/nav.fxml" fx:id="nav"/>
     </left>
 
     <!-- CENTRO: toolbar + griglia calendario -->

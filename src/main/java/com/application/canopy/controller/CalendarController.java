@@ -11,7 +11,13 @@ import java.time.*;
 import java.time.format.TextStyle;
 import java.util.Locale;
 
+import com.application.canopy.Navigator;
+import javafx.scene.layout.BorderPane;
+
 public class CalendarController {
+    // Navigazione
+    @FXML private BorderPane root;
+    @FXML private NavController navController;
 
     @FXML private ToggleButton monthBtn, weekBtn;
     @FXML private Button prevBtn, nextBtn, backToMonthBtn;
@@ -25,6 +31,7 @@ public class CalendarController {
 
     @FXML
     private void initialize() {
+        Navigator.wire(navController, root, "calendar");
         buildWeekdayHeader();
 
         monthBtn.setOnAction(e -> { weekBtn.setSelected(false); backToMonth(); refresh(); });
