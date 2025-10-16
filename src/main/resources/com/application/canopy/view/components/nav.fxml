@@ -5,6 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.image.Image?>
 
+<?import javafx.geometry.Insets?>
 <VBox fx:id="navBar"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.application.canopy.controller.NavController"
@@ -17,10 +18,23 @@
         <ToggleGroup fx:id="pagesGroup"/>
     </fx:define>
 
-    <VBox alignment="CENTER" spacing="8" styleClass="profile-section">
-        <Label text="Canopy" styleClass="app-title" />
-        <HBox alignment="CENTER" spacing="6">
-            <!-- icona monete rimossa perché assente -->
+    <VBox alignment="CENTER_LEFT"
+          spacing="8"
+          styleClass="profile-section"
+          maxWidth="Infinity"
+          fillWidth="true">
+        <padding>
+            <Insets left="12" right="12"/>
+        </padding>
+
+        <HBox alignment="CENTER_LEFT" spacing="8" maxWidth="Infinity">
+            <ImageView fitWidth="42" fitHeight="42" preserveRatio="true">
+                <image><Image url="@images/app/canopy.png"/></image>
+            </ImageView>
+            <Label text="Canopy" styleClass="app-title" />
+        </HBox>
+
+        <HBox alignment="CENTER_LEFT" spacing="6" maxWidth="Infinity">
             <Label fx:id="userPoints" text="300" styleClass="points-label" />
         </HBox>
     </VBox>

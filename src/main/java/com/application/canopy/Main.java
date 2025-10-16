@@ -17,6 +17,11 @@ public class Main extends Application {
     public void start(Stage stage) throws IOException {
         Font.loadFont(getClass().getResourceAsStream("src/main/resources/css/fonts/AtkinsonHyperlegible-Regular.ttf"), 14);
 
+        stage.getIcons().add(
+                new javafx.scene.image.Image(
+                        getClass().getResourceAsStream("/images/app/canopy.png")
+                )
+        );
 
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/application/canopy/view/achievements.fxml")));
         Scene scene = new Scene(root, 1080, 620);

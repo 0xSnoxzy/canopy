@@ -20,12 +20,9 @@
         <ScrollPane fitToWidth="true" fitToHeight="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" styleClass="scrollpane-clean">
             <content>
                 <FlowPane fx:id="achievementsFlow" hgap="16" vgap="16" alignment="TOP_LEFT">
-                    <!-- padding sicuro -->
+
                     <padding><Insets top="16" right="16" bottom="16" left="16"/></padding>
 
-                    <!-- suggerimento: in controller setta prefWrapLength in base alla larghezza disponibile
-                         es: achievementsFlow.prefWrapLengthProperty().bind(scrollPane.widthProperty().subtract(32))
-                         e usa card larghe ~ (prefWrapLength - gap)/2 -->
                 </FlowPane>
             </content>
         </ScrollPane>
