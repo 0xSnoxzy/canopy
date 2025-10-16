@@ -1,17 +1,74 @@
-<?xml version="1.0" encoding = "UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Rectangle?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.application.canopy.controller.HomeController">
+<?import java.lang.String?>
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.application.canopy.controller.HomeController"
+            prefWidth="1920" prefHeight="1080">
 
-    <!-- Menu navigazione -->
     <left>
         <fx:include source="components/nav.fxml"/>
     </left>
 
     <center>
+        <VBox spacing="14" alignment="CENTER" styleClass="center-area">
 
+            <!-- Palco della pianta -->
+            <StackPane alignment="CENTER" maxWidth="Infinity" VBox.vgrow="ALWAYS" styleClass="plant-stage">
+                <padding>
+                    <Insets top="12" right="12" bottom="12" left="12"/>
+                </padding>
+
+                <!-- (Canvas nascosto -->
+                <Canvas fx:id="canvas" width="720" height="720" visible="false" managed="false"/>
+
+                <!-- Pianta  -->
+                <ImageView fx:id="img"
+                           visible="true"
+                           preserveRatio="true"
+                           fitHeight="420"
+                           StackPane.alignment="CENTER"/>
+            </StackPane>
+
+            <!-- Timer -->
+            <Label fx:id="lblTimer" text="25:00" styleClass="timer-large"/>
+
+            <!-- Barra progresso -->
+            <ProgressBar fx:id="progress" prefWidth="720" progress="0.0"/>
+
+            <!-- Controlli inferiori -->
+            <HBox spacing="10" alignment="CENTER"  >
+                <Button fx:id="btnStartReset" text="Start" styleClass="start" defaultButton="true"/>
+                <Separator orientation="VERTICAL" prefHeight="20"/>
+                <Label text="Sessione:" styleClass="subtle"/>
+                <ComboBox fx:id="sessionCombo" promptText="Pomodoro">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList" >
+                            <String fx:value="Pomodoro (25)"/>
+                            <String fx:value="Pausa breve (5)"/>
+                            <String fx:value="Pausa lunga (15)"/>
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+                <TextField fx:id="customMinutes" promptText="Timer custom" prefWidth="110"/>
+                <CheckBox fx:id="focusMode" text="Modalità focus"/>
+            </HBox>
+        </VBox>
     </center>
+
+
+    <right>
+        <VBox spacing="8" alignment="TOP_LEFT" prefWidth="420" styleClass="side-panel">
+            <Label text="Selezione piante" styleClass="panel-title"/>
+            <ListView fx:id="list" VBox.vgrow="ALWAYS"/>
+        </VBox>
+    </right>
+
 
 </BorderPane>
