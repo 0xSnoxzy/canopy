@@ -1,10 +1,9 @@
 /* ==========================================
-   Canopy - base.css (Tema Piante / Forest)
+   Canopy - base.css
    ========================================== */
 
-/* Token (looked-up) — sovrascrivili in eventuali temi futuri */
 .root {
-  /* Palette vegetale */
+  /* Palette */
   -canopy-bg:           linear-gradient(to bottom, #0b1a12, #0a1410); /* selva scura */
   -canopy-surface:      #11231a;  /* foglie in ombra */
   -canopy-surface-2:    #142a20;  /* foglie medio scure */
@@ -40,13 +39,13 @@
   -fx-effect: dropshadow(gaussian, rgba(122,217,169,0.25), 8, 0.2, 0, 2);
 }
 
-/* Separatore “rametto” */
+/* separatore */
 .separator *.line {
   -fx-background-color: rgba(122,217,169,0.35);
   -fx-opacity: 0.9;
 }
 
-/* ---------- Sidebar / Nav ---------- */
+/* ---------- Stile Nav ---------- */
 
 .sidebar {
   -fx-background-color: -canopy-surface;
@@ -67,11 +66,11 @@
   -fx-border-radius: 999;
 }
 
-/* Contenitori di sezione (menu/footer) */
+/* Sezioni Nav (menu/footer) */
 .menu-section  { -fx-spacing: 10; }
 .logout-section{ -fx-spacing: 10; }
 
-/* Bottoni nav: icona + testo, stile “foglia” */
+/* Bottoni nav: icona + testo */
 .nav-button, .logout-button, .button, .toggle-button {
   -fx-alignment: CENTER_LEFT;
   -fx-graphic-text-gap: 10;
@@ -89,12 +88,12 @@
   -fx-background-color: transparent;
 }
 
-/* Hover: velatura “muschio” */
+/* Hover */
 .nav-button:hover, .toggle-button:hover {
   -fx-background-color: rgba(122,217,169,0.10);
 }
 
-/* Attivo (pagina selezionata): lamina con venature */
+/* Attivo (pagina selezionata) */
 .toggle-button:selected {
   -fx-background-color:
       linear-gradient(to bottom, rgba(122,217,169,0.25), rgba(122,217,169,0.18)),
@@ -104,12 +103,12 @@
   -fx-border-color: rgba(122,217,169,0.55);
 }
 
-/* Focus visibile: alone di “linfa” */
+/* Glow Selezionato (focused) */
 .nav-button:focused, .toggle-button:focused, .logout-button:focused, .button:focused {
   -fx-effect: dropshadow(gaussian, -canopy-focus, 12, 0.35, 0, 0);
 }
 
-/* Logout: bacca rossa */
+/* Logout */
 .logout-button {
   -fx-background-color: transparent;
   -fx-text-fill: -canopy-danger;
@@ -141,7 +140,7 @@
   -fx-effect: dropshadow(gaussian, rgba(122,217,169,0.25), 8, 0.2, 0, 1);
 }
 
-/* Palco della pianta: bordo “corteccia” leggero */
+/* Palco della pianta */
 .plant-stage {
   -fx-background-color: transparent;
   -fx-border-color: rgba(90,63,46,0.35);
@@ -235,7 +234,7 @@
   -fx-background-color: rgba(122,217,169,0.50);
 }
 
-/* ===== Calendario ===== */
+/* ----- Stile Calendario ----- */
 .calendar-toolbar {
   -fx-background-color: transparent;
   -fx-padding: 4 0 4 0;
@@ -308,7 +307,7 @@
   -fx-background-color: linear-gradient(to bottom, rgba(122,217,169,0.22), rgba(122,217,169,0.16));
 }
 
-/* Pulsante freccia compatto (ghost) */
+/* Pulsante freccia */
 .ghost-icon-button {
   -fx-background-color: transparent;
   -fx-text-fill: -canopy-text;
@@ -320,7 +319,7 @@
   -fx-background-color: rgba(122,217,169,0.10);
 }
 
-/* Totale minimal */
+/* Totale minuti */
 .summary-label {
   -fx-text-fill: -canopy-muted;
   -fx-font-weight: 700;
@@ -341,6 +340,81 @@
   -fx-effect: dropshadow(gaussian, rgba(122,217,169,0.25), 6, 0.2, 0, 0);
 }
 
-/* Allineamento grafica+testo già gestito da nav-button:
-   -fx-alignment: CENTER_LEFT; -fx-graphic-text-gap: 10; */
+/* ----- Stile Achievements ----- */
 
+/* Pannello dettaglio (destra) */
+.detail-pane {
+    -fx-background-color: -fx-base;            /* usa la palette che hai già */
+    -fx-background-radius: 16;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 12, 0.2, 0, 2);
+}
+.detail-pane.detail-achieved {
+    -fx-background-color: linear-gradient(to bottom, derive(-fx-base, 8%), derive(-fx-base, -2%));
+}
+.detail-pane.detail-locked {
+    -fx-background-color: linear-gradient(to bottom, derive(-fx-base, -2%), derive(-fx-base, -6%));
+}
+.section-title {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+.detail-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: 700;
+}
+.detail-subtitle {
+    -fx-text-fill: -fx-text-inner-color;
+    -fx-opacity: 0.85;
+}
+.detail-progress {
+    -fx-text-fill: -fx-text-inner-color;
+}
+
+/* ScrollPane */
+.scrollpane-clean > .viewport {
+    -fx-background-color: transparent;
+}
+.scrollpane-clean {
+    -fx-background-color: transparent;
+}
+
+/* Card Obiettivo (centro) */
+.card {
+    -fx-background-color: derive(-fx-base, -4%);
+    -fx-background-radius: 12;
+    -fx-padding: 12;
+    -fx-border-color: transparent;
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 8, 0.2, 0, 1);
+}
+
+.card:hover {
+    -fx-background-color: derive(-fx-base, 0%);
+}
+
+.card-selected {
+    -fx-border-color: -fx-accent;
+    -fx-border-width: 2;
+}
+
+.card-achieved {
+    /* in chiaro */
+    -fx-opacity: 1.0;
+}
+
+.card-locked {
+    /* in scuro */
+    -fx-opacity: 0.6;
+}
+
+.card-title {
+    -fx-font-weight: 700;
+    -fx-font-size: 13px;
+}
+
+.card-desc {
+    -fx-font-size: 12px;
+    -fx-text-fill: -fx-text-inner-color;
+    -fx-opacity: 0.9;
+}

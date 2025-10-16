@@ -3,13 +3,19 @@ package com.application.canopy.controller;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
-        import javafx.scene.layout.GridPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import com.application.canopy.model.Plant;
 
 import java.util.List;
 
+import com.application.canopy.Navigator;
+
 public class HerbariumController {
+
+    @FXML private BorderPane root;
+    @FXML private NavController navController;
 
     @FXML private TextField searchField;
     @FXML private ChoiceBox<String> filterChoice;
@@ -21,6 +27,7 @@ public class HerbariumController {
 
     @FXML
     public void initialize() {
+        Navigator.wire(navController, root, "herbarium");
         // categorie base
         filterChoice.getItems().addAll("Tutte", "Fiori", "Alberi", "Erbe");
         filterChoice.setValue("Tutte");

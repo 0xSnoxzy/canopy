@@ -13,11 +13,12 @@
 <?import javafx.scene.layout.BorderPane?>
 <BorderPane xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml"
+            fx:id="root"
             fx:controller="com.application.canopy.controller.HerbariumController">
 
     <!-- Integrazione nav.fxml-->
     <left>
-        <fx:include source="components/nav.fxml"/>
+        <fx:include source="components/nav.fxml" fx:id="nav"/>
     </left>
 
     <!-- CENTRO: toolbar + griglia calendario -->
