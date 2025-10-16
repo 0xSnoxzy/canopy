@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.geometry.Insets?>
+
+<?import javafx.scene.layout.BorderPane?>
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.application.canopy.controller.HerbariumController">
+
+    <!-- Integrazione nav.fxml-->
+    <left>
+        <fx:include source="components/nav.fxml"/>
+    </left>
+
+    <!-- CENTRO: toolbar + griglia calendario -->
+    <center>
+        <!-- SINISTRA: ricerca + griglia 2 colonne -->
+        <VBox spacing="12" HBox.hgrow="ALWAYS">
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <TextField fx:id="searchField" promptText="Cerca una pianta…"/>
+                <ChoiceBox fx:id="filterChoice"/>
+            </HBox>
+
+            <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
+                <content>
+                    <GridPane fx:id="plantGrid" hgap="12" vgap="12" />
+                </content>
+            </ScrollPane>
+        </VBox>
+    </center>
+
+    <!-- DESTRA: elenco piante del mese -->
+    <right>
+        <!-- DESTRA: dettaglio -->
+        <VBox spacing="10" prefWidth="320" styleClass="plant-detail">
+            <!-- segnaposto immagine -->
+            <Region prefWidth="300" prefHeight="220"
+                    style="-fx-background-color: rgba(0,0,0,0.06); -fx-background-radius: 12;"/>
+            <Label fx:id="plantName" text="Seleziona una pianta" styleClass="plant-name"/>
+            <TextArea fx:id="plantDescription" wrapText="true" editable="false" prefRowCount="10"/>
+        </VBox>
+    </right>
+
+</BorderPane>
