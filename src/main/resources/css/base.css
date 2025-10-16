@@ -22,6 +22,8 @@
   -canopy-danger:       #ff6b6b;
 
   -fx-font-size: 14px;
+  -fx-font-family: "AtkinsonHyperlegible";
+  -fx-font-size: 14px;
   -fx-text-fill: -canopy-text;
   -fx-base: -canopy-surface;
 }
@@ -323,3 +325,22 @@
   -fx-text-fill: -canopy-muted;
   -fx-font-weight: 700;
 }
+
+/* Icone nel nav */
+.nav-icon {
+  -fx-opacity: 0.95;
+}
+.toggle-button:hover .nav-icon,
+.button:hover .nav-icon {
+  -fx-opacity: 1.0;
+}
+
+/* Icona moneta */
+.coin-icon {
+  -fx-opacity: 1.0;
+  -fx-effect: dropshadow(gaussian, rgba(122,217,169,0.25), 6, 0.2, 0, 0);
+}
+
+/* Allineamento grafica+testo già gestito da nav-button:
+   -fx-alignment: CENTER_LEFT; -fx-graphic-text-gap: 10; */
+

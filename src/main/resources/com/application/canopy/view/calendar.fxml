@@ -53,7 +53,7 @@
                 <Insets top="12" right="12" bottom="12" left="12"/>
             </padding>
 
-            <!-- Titolo + freccia back minimal -->
+            <!-- Titolo panel -->
             <HBox spacing="8" alignment="CENTER_LEFT">
                 <Button fx:id="backToMonthBtn"
                         text="←"
@@ -65,13 +65,13 @@
                 <Region HBox.hgrow="ALWAYS"/>
             </HBox>
 
-            <!-- Totale minuti (minimal) -->
+            <!-- Totale minuti -->
             <Label fx:id="summaryLabel" text="Tot: 0 min" styleClass="summary-label"/>
 
             <!-- Lista piante del MESE -->
             <ListView fx:id="listMonth" VBox.vgrow="ALWAYS"/>
 
-            <!-- Lista piante del GIORNO (inizialmente nascosta) -->
+            <!-- Lista piante del GIORNO -->
             <ListView fx:id="listDay" VBox.vgrow="ALWAYS" visible="false" managed="false">
                 <placeholder>
                     <Label text="Nessuna pianta registrata per questo giorno"/>
