@@ -234,7 +234,7 @@
   -fx-background-color: rgba(122,217,169,0.50);
 }
 
-/* ===== Calendario ===== */
+/* ----- Stile Calendario ----- */
 .calendar-toolbar {
   -fx-background-color: transparent;
   -fx-padding: 4 0 4 0;
@@ -340,9 +340,7 @@
   -fx-effect: dropshadow(gaussian, rgba(122,217,169,0.25), 6, 0.2, 0, 0);
 }
 
-/* =========================================================
-   SEZIONE ACHIEVEMENTS
-   ========================================================= */
+/* ----- Stile Achievements ----- */
 
 /* Pannello dettaglio (destra) */
 .detail-pane {
