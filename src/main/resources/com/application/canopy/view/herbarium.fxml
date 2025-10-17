@@ -34,9 +34,9 @@
                                        fitWidth="360" preserveRatio="true"
                                        smooth="true" pickOnBounds="true"
                                        styleClass="plant-hero">
-                                <image>
+                                <!--<image>
                                     <Image url="@images/calendar-dark.png"/>
-                                </image>
+                                </image> -->
 
                             </ImageView>
 
