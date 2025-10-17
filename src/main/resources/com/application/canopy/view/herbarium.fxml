@@ -1,53 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.Region?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.geometry.Insets?>
 
-<?import javafx.scene.layout.BorderPane?>
-<BorderPane xmlns="http://javafx.com/javafx/21"
-            xmlns:fx="http://javafx.com/fxml"
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:id="root"
             fx:controller="com.application.canopy.controller.HerbariumController">
 
-    <!-- Integrazione nav.fxml-->
+    <!-- NAV SINISTRA -->
     <left>
         <fx:include source="components/nav.fxml" fx:id="nav"/>
     </left>
 
-    <!-- CENTRO: toolbar + griglia calendario -->
+    <!-- CENTRO: SplitPane = [Dettaglio | Sidebar destra] -->
     <center>
-        <!-- SINISTRA: ricerca + griglia 2 colonne -->
-        <VBox spacing="12" HBox.hgrow="ALWAYS">
-            <HBox spacing="10" alignment="CENTER_LEFT">
-                <TextField fx:id="searchField" promptText="Cerca una pianta…"/>
-                <ChoiceBox fx:id="filterChoice"/>
-            </HBox>
+        <SplitPane fx:id="mainSplit" dividerPositions="0.66">
+            <items>
+                <ScrollPane fx:id="detailScroll" fitToWidth="true" fitToHeight="true" pannable="true">
+                    <content>
+                        <FlowPane fx:id="detailFlow" hgap="24" vgap="16" padding="16" prefWrapLength="680"
+                                  styleClass="content-root">
 
-            <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
-                <content>
-                    <GridPane fx:id="plantGrid" hgap="12" vgap="12" />
-                </content>
-            </ScrollPane>
-        </VBox>
+                            <!-- Immagine grande -->
+                            <ImageView fx:id="plantImage"
+                                       fitWidth="360" preserveRatio="true"
+                                       smooth="true" pickOnBounds="true"
+                                       styleClass="plant-hero"/>
+
+                            <!-- Testo a destra (o sotto se stretto) -->
+                            <VBox spacing="12" maxWidth="Infinity">
+                                <Label fx:id="plantTitle" styleClass="h2"/>
+                                <Text fx:id="plantCuriosity" wrappingWidth="520" styleClass="muted"/>
+                                <Separator/>
+                                <Label text="Descrizione" styleClass="h3"/>
+                                <Text fx:id="plantDescription" wrappingWidth="520"/>
+                                <Separator/>
+                                <Label text="Cura" styleClass="h3"/>
+                                <Text fx:id="plantCare" wrappingWidth="520"/>
+                            </VBox>
+
+                            <!-- Hint quando nulla è selezionato -->
+                            <Label fx:id="emptyHint"
+                                   text="Seleziona una pianta a destra per vederne i dettagli"
+                                   styleClass="hint" visible="true"/>
+                        </FlowPane>
+                    </content>
+                </ScrollPane>
+
+                <!-- Sidebar destra -->
+                <VBox spacing="12" styleClass="sidebar-right"
+                      prefWidth="340" minWidth="260" maxWidth="480">
+                    <!-- Barra di ricerca -->
+                    <HBox spacing="8" alignment="CENTER_LEFT">
+                        <TextField fx:id="searchField"
+                                   promptText="Cerca per nome o parola chiave…"
+                                   HBox.hgrow="ALWAYS"
+                                   styleClass="search-bar"/>
+                        <Button fx:id="clearSearchBtn" text="×" focusTraversable="false"/>
+                    </HBox>
+
+                    <!-- Filtri -->
+                    <FlowPane hgap="8" vgap="8" prefWrapLength="320">
+                        <ToggleButton fx:id="allChip"       text="Tutte"     selected="true" styleClass="chip"/>
+                        <ToggleButton fx:id="indoorChip"    text="Indoor"                    styleClass="chip"/>
+                        <ToggleButton fx:id="outdoorChip"   text="Outdoor"                   styleClass="chip"/>
+                        <ToggleButton fx:id="succulentChip" text="Succulente"                styleClass="chip"/>
+                        <ToggleButton fx:id="herbChip"      text="Erbe"                      styleClass="chip"/>
+                    </FlowPane>
+
+                    <!-- Lista piante -->
+                    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" styleClass="list-scroll">
+                        <content>
+                            <ListView fx:id="plantsList" prefHeight="520"/>
+                        </content>
+                    </ScrollPane>
+                </VBox>
+            </items>
+        </SplitPane>
     </center>
-
-    <!-- DESTRA: elenco piante del mese -->
-    <right>
-        <!-- DESTRA: dettaglio -->
-        <VBox spacing="10" prefWidth="320" styleClass="plant-detail">
-            <!-- segnaposto immagine -->
-            <Region prefWidth="300" prefHeight="220"
-                    style="-fx-background-color: rgba(0,0,0,0.06); -fx-background-radius: 12;"/>
-            <Label fx:id="plantName" text="Seleziona una pianta" styleClass="plant-name"/>
-            <TextArea fx:id="plantDescription" wrapText="true" editable="false" prefRowCount="10"/>
-        </VBox>
-    </right>
-
 </BorderPane>

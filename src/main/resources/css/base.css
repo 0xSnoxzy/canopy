@@ -418,3 +418,120 @@
     -fx-text-fill: -fx-text-inner-color;
     -fx-opacity: 0.9;
 }
+
+/* ----- Stile Erbario ----- */
+.content-root {
+    -fx-padding: 24;
+}
+
+/* Titoli e testi (leggeri, leggibili) */
+.h2 {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+.h3 {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-opacity: 0.9;
+}
+.muted {
+    /* Text e Label usano proprietà diverse */
+    -fx-fill: #6a6a6a;
+    -fx-text-fill: #6a6a6a;
+    -fx-opacity: 0.95;
+}
+
+/* Suggerimento quando non c'è selezione */
+.hint {
+    -fx-text-fill: #7a7a7a;
+    -fx-font-size: 12px;
+    -fx-background-color: rgba(0,0,0,0.03);
+    -fx-padding: 8 12;
+    -fx-background-radius: 8;
+}
+
+/* Immagine grande: leggero sollevamento */
+.plant-hero {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 16, 0.2, 0, 4);
+}
+
+/* Colonna destra (ricerca + lista) */
+.sidebar-right {
+    -fx-padding: 16;
+    -fx-background-color: rgba(0,0,0,0.02);
+    -fx-border-color: rgba(0,0,0,0.06);
+    -fx-border-width: 0 0 0 1;
+}
+
+/* Barra di ricerca */
+.search-bar {
+    -fx-background-radius: 10;
+    -fx-padding: 8 10 8 12;
+    -fx-prompt-text-fill: #8a8a8a;
+    -fx-background-insets: 0;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+/* filtri (ToggleButton) */
+.chip {
+    -fx-background-color: rgba(0,0,0,0.04);
+    -fx-text-fill: -fx-text-base-color;
+    -fx-background-radius: 999;
+    -fx-padding: 6 12;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+    -fx-border-radius: 999;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+.chip:hover {
+    -fx-background-color: rgba(0,0,0,0.07);
+}
+.chip:selected {
+    -fx-background-color: rgba(0,0,0,0.12);
+    -fx-text-fill: -fx-text-base-color;
+}
+.chip:selected:hover {
+    -fx-background-color: rgba(0,0,0,0.15);
+}
+
+/* ScrollPane della lista */
+.list-scroll {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+.list-scroll .viewport {
+    -fx-background-color: transparent;
+}
+.scroll-bar:vertical .thumb {
+    -fx-background-color: rgba(0,0,0,0.25);
+    -fx-background-radius: 8;
+}
+.scroll-bar:vertical .track {
+    -fx-background-color: transparent;
+}
+
+/* Lista piante (ListView) */
+.list-view {
+    -fx-background-insets: 0;
+    -fx-background-color: transparent;
+}
+.list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 10 12;
+    -fx-border-color: rgba(0,0,0,0.06);
+    -fx-border-width: 0 0 1 0;
+}
+.list-cell:hover {
+    -fx-background-color: rgba(0,0,0,0.04);
+}
+.list-cell:filled:selected, .list-cell:filled:selected:hover {
+    -fx-background-color: rgba(0,0,0,0.08);
+}
+
+/* Button "×" cancella ricerca */
+.button {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
