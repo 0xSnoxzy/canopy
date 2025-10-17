@@ -28,7 +28,7 @@ public class Main extends Application {
 
         URL css = getClass().getResource("/css/base.css");
 
-        if (css == null) throw new IllegalStateException("File CSS non trovato.");
+        if (css == null) throw new IllegalStateException("File CSS non trovato");
         scene.getStylesheets().add(css.toExternalForm());
 
         stage.setScene(scene);
