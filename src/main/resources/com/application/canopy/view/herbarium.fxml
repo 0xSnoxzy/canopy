@@ -6,6 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
 
+<?import javafx.scene.image.Image?>
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:id="root"
             fx:controller="com.application.canopy.controller.HerbariumController">
@@ -21,14 +22,23 @@
             <items>
                 <ScrollPane fx:id="detailScroll" fitToWidth="true" fitToHeight="true" pannable="true">
                     <content>
-                        <FlowPane fx:id="detailFlow" hgap="24" vgap="16" padding="16" prefWrapLength="680"
+                        <FlowPane fx:id="detailFlow" hgap="24" vgap="16" prefWrapLength="680"
                                   styleClass="content-root">
+
+                            <padding>
+                                <Insets topRightBottomLeft="16"/>
+                            </padding>
 
                             <!-- Immagine grande -->
                             <ImageView fx:id="plantImage"
                                        fitWidth="360" preserveRatio="true"
                                        smooth="true" pickOnBounds="true"
-                                       styleClass="plant-hero"/>
+                                       styleClass="plant-hero">
+                                <image>
+                                    <Image url="@images/calendar-dark.png"/>
+                                </image>
+
+                            </ImageView>
 
                             <!-- Testo a destra (o sotto se stretto) -->
                             <VBox spacing="12" maxWidth="Infinity">
