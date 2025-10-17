@@ -19,7 +19,7 @@ public class Main extends Application {
 
 
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/application/canopy/view/home.fxml")));
-        Scene scene = new Scene(root, 320, 240);
+        Scene scene = new Scene(root, 1080, 720);
 
         URL css = getClass().getResource("/css/base.css");
 

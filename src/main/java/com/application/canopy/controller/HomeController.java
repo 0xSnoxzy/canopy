@@ -8,14 +8,20 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
+import com.application.canopy.Navigator;
+
 import java.net.URL;
 
 public class HomeController {
+
+    @FXML private BorderPane root;
+    @FXML private NavController navController;
 
     @FXML private Canvas canvas;
     @FXML private ImageView img;
@@ -52,6 +58,7 @@ public class HomeController {
 
     @FXML
     private void initialize() {
+        Navigator.wire(navController, root, "home");
         // canvas disattivato
         if (canvas != null) { canvas.setVisible(false); canvas.setManaged(false); }
 

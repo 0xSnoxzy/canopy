@@ -15,7 +15,7 @@ public final class Navigator {
 
     // Mappatura (nome pagina -> pagina.FXML)
     private static final Map<String, String> ROUTES = Map.of(
-            //"home",         "/com/application/canopy/view/home.fxml",
+            "home",         "/com/application/canopy/view/home.fxml",
             "herbarium",    "/com/application/canopy/view/herbarium.fxml",
             "achievements", "/com/application/canopy/view/achievements.fxml",
             "calendar",     "/com/application/canopy/view/calendar.fxml"

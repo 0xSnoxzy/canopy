@@ -9,11 +9,12 @@
 
 <?import java.lang.String?>
 <BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:id="root"
             fx:controller="com.application.canopy.controller.HomeController"
             prefWidth="1920" prefHeight="1080">
 
     <left>
-        <fx:include source="components/nav.fxml"/>
+        <fx:include source="components/nav.fxml" fx:id="nav"/>
     </left>
 
     <center>
