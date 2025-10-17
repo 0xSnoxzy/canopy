@@ -1,85 +1,184 @@
 package com.application.canopy.controller;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Region;
-import com.application.canopy.model.Plant;
-
-import java.util.List;
+import javafx.scene.layout.*;
+import javafx.scene.text.Text;
+import java.util.EnumSet;
+import java.util.Locale;
+import java.util.function.Predicate;
 
 import com.application.canopy.Navigator;
 
 public class HerbariumController {
 
+    public enum Category { ALL, INDOOR, OUTDOOR, SUCCULENT, HERB }
+
+    public static class PlantItem {
+        public final String name;
+        public final String description;
+        public final String curiosity;
+        public final String care;
+        public final Category category;
+        public final boolean unlocked;
+
+        public PlantItem(String name, String description, String curiosity, String care,
+                         Category category, boolean unlocked) {
+            this.name = name;
+            this.description = description;
+            this.curiosity = curiosity;
+            this.care = care;
+            this.category = category;
+            this.unlocked = unlocked;
+        }
+    }
+
+    // --- Riferimenti FXML ---
+
     @FXML private BorderPane root;
     @FXML private NavController navController;
 
-    @FXML private TextField searchField;
-    @FXML private ChoiceBox<String> filterChoice;
-    @FXML private GridPane plantGrid;
-    @FXML private Label plantName;
-    @FXML private TextArea plantDescription;
+    @FXML private Label plantTitle;
+    @FXML private Text plantCuriosity;
+    @FXML private Text plantDescription;
+    @FXML private Text plantCare;
+    @FXML private Label emptyHint;
 
-    private List<Plant> allPlants;
+    @FXML private TextField searchField;
+    @FXML private Button clearSearchBtn;
+    @FXML private ToggleButton allChip, indoorChip, outdoorChip, succulentChip, herbChip;
+    @FXML private ListView<PlantItem> plantsList;
+
+    @FXML private SplitPane mainSplit;
+    @FXML private ScrollPane detailScroll;
+    @FXML private FlowPane detailFlow;
+
+    private final ObservableList<PlantItem> source = FXCollections.observableArrayList();
+    private FilteredList<PlantItem> filtered;
+
+
 
     @FXML
-    public void initialize() {
+    private void initialize() {
+        // --- Dati di esempio ---
+
         Navigator.wire(navController, root, "herbarium");
-        // categorie base
-        filterChoice.getItems().addAll("Tutte", "Fiori", "Alberi", "Erbe");
-        filterChoice.setValue("Tutte");
+        source.addAll(
+                new PlantItem("Aloe Vera", "Pianta succulenta dalle foglie carnose.",
+                        "Gel lenitivo usato da secoli.", "Poca acqua, molta luce.",
+                        Category.SUCCULENT, true),
+                new PlantItem("Basilico", "Erba aromatica annuale.",
+                        "Simbolo di amore in alcune culture.", "Luce e terreno umido.",
+                        Category.HERB, true),
+                new PlantItem("Monstera", "Pianta tropicale da interno.",
+                        "Le foglie diventano forate crescendo.", "Luce indiretta e umidità.",
+                        Category.INDOOR, false)
+        );
 
-        // dati mock
-        allPlants = Plant.samplePlants();
+        // Imposta lista
+        plantsList.setCellFactory(lv -> new PlantCardCell());
+        filtered = new FilteredList<>(source, p -> true);
+        plantsList.setItems(filtered);
 
-        // listeners (filtri semplici)
-        searchField.textProperty().addListener((o, oldV, v) -> render());
-        filterChoice.getSelectionModel().selectedItemProperty().addListener((o, oldV, v) -> render());
+        // Ricerca + filtri
+        var categoryGroup = new ToggleGroup();
+        for (var b : new ToggleButton[]{allChip, indoorChip, outdoorChip, succulentChip, herbChip})
+            b.setToggleGroup(categoryGroup);
+        allChip.setSelected(true);
 
-        // layout griglia in 2 colonne
-        render();
+        searchField.textProperty().addListener((obs, oldV, newV) -> applyFilters());
+        clearSearchBtn.setOnAction(e -> searchField.clear());
+        categoryGroup.selectedToggleProperty().addListener((obs, oldT, newT) -> applyFilters());
+
+        // Selezione pianta -> mostra dettagli
+        plantsList.getSelectionModel().selectedItemProperty().addListener((obs, old, sel) -> showPlant(sel));
+
+        showEmptyState();
     }
 
-    private void render() {
-        plantGrid.getChildren().clear();
+    private void applyFilters() {
+        String q = searchField.getText() == null ? "" : searchField.getText().trim().toLowerCase(Locale.ROOT);
+        EnumSet<Category> cats = selectedCategories();
 
-        String q = (searchField.getText() == null ? "" : searchField.getText()).toLowerCase();
-        String cat = filterChoice.getValue();
+        Predicate<PlantItem> pred = p -> {
+            boolean categoryOk = cats.contains(Category.ALL) || cats.contains(p.category);
+            if (!categoryOk) return false;
 
-        List<Plant> filtered = allPlants.stream()
-                .filter(p -> p.getName().toLowerCase().contains(q) || p.getDescription().toLowerCase().contains(q))
-                .filter(p -> "Tutte".equals(cat) || p.getCategory().equals(cat))
-                .toList();
+            if (q.isEmpty()) return true;
+            return (p.name + " " + p.description + " " + p.curiosity + " " + p.care)
+                    .toLowerCase(Locale.ROOT)
+                    .contains(q);
+        };
 
-        int col = 0, row = 0;
-        for (Plant p : filtered) {
-            // placeholder "card": un semplice bottone col nome
-            Button card = new Button(p.getName());
-            card.setMinWidth(220);
-            card.setPrefHeight(60);
-            card.setMaxWidth(Double.MAX_VALUE);
-            card.getStyleClass().add("plant-card");
-            card.setOnAction(e -> showDetails(p));
-
-            plantGrid.add(card, col, row);
-            GridPane.setMargin(card, new Insets(4));
-
-            if (++col == 2) { col = 0; row++; }
-        }
-
-        // mostra il primo nei dettagli se c'è
-        if (!filtered.isEmpty()) showDetails(filtered.getFirst());
-        else {
-            plantName.setText("Nessun risultato");
-            plantDescription.setText("");
-        }
+        filtered.setPredicate(pred);
     }
 
-    private void showDetails(Plant p) {
-        plantName.setText(p.getName());
-        plantDescription.setText(p.getDescription());
+    private EnumSet<Category> selectedCategories() {
+        if (allChip.isSelected()) return EnumSet.of(Category.ALL);
+        EnumSet<Category> set = EnumSet.noneOf(Category.class);
+        if (indoorChip.isSelected()) set.add(Category.INDOOR);
+        if (outdoorChip.isSelected()) set.add(Category.OUTDOOR);
+        if (succulentChip.isSelected()) set.add(Category.SUCCULENT);
+        if (herbChip.isSelected()) set.add(Category.HERB);
+        if (set.isEmpty()) set.add(Category.ALL);
+        return set;
+    }
+
+    private void showPlant(PlantItem p) {
+        if (p == null) { showEmptyState(); return; }
+
+        emptyHint.setVisible(false);
+        plantTitle.setText(p.name);
+        plantCuriosity.setText(p.curiosity);
+        plantDescription.setText(p.description);
+        plantCare.setText(p.care);
+
+        // QUI IN FUTURO POTRAI ANCHE CAMBIARE L’IMMAGINE DELLA PIANTA SE INSERITA
+        // Esempio:
+        // plantImage.setImage(new Image(getClass().getResourceAsStream(p.imagePath)));
+    }
+
+    private void showEmptyState() {
+        emptyHint.setVisible(true);
+        plantTitle.setText("—");
+        plantCuriosity.setText("");
+        plantDescription.setText("");
+        plantCare.setText("");
+        // QUI IN FUTURO POTRAI MOSTRARE UN PLACEHOLDER IMMAGINE
+    }
+
+    /** Cella personalizzata per la lista di piante */
+    private static class PlantCardCell extends ListCell<PlantItem> {
+        private final HBox root = new HBox(12);
+        private final VBox textBox = new VBox(2);
+        private final Label title = new Label();
+        private final Label subtitle = new Label();
+        private final Pane spacer = new Pane();
+        private final Label lock = new Label();
+
+        PlantCardCell() {
+            root.getStyleClass().add("card");
+            subtitle.getStyleClass().add("muted");
+            HBox.setHgrow(spacer, Priority.ALWAYS);
+            root.getChildren().addAll(textBox, spacer, lock);
+            textBox.getChildren().addAll(title, subtitle);
+            setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+        }
+
+        @Override
+        protected void updateItem(PlantItem item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+                setGraphic(null);
+            } else {
+                title.setText(item.name);
+                subtitle.setText(item.category.name());
+                lock.setText(item.unlocked ? "" : "🔒");
+                setGraphic(root);
+            }
+        }
     }
 }
