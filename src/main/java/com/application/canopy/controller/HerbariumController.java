@@ -1,23 +1,35 @@
 package com.application.canopy.controller;
 
+import com.application.canopy.Navigator;
+import com.application.canopy.model.GameState;
+import com.application.canopy.model.Plant;
+import com.application.canopy.model.UserPlantState;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
+
+import java.net.URL;
 import java.util.EnumSet;
 import java.util.Locale;
 import java.util.function.Predicate;
 
-import com.application.canopy.Navigator;
-
 public class HerbariumController {
 
-    public enum Category { ALL, INDOOR, OUTDOOR, SUCCULENT, HERB }
+    // categorie solo per la UI
+    public enum Category { ALL, COMUNI, RARE, SPECIALE}
 
+    /**
+     * ViewModel per la lista dell’erbario,
+     * wrappa Plant + UserPlantState.
+     */
     public static class PlantItem {
+        public final Plant plant;
         public final String name;
         public final String description;
         public final String curiosity;
@@ -25,8 +37,14 @@ public class HerbariumController {
         public final Category category;
         public final boolean unlocked;
 
-        public PlantItem(String name, String description, String curiosity, String care,
-                         Category category, boolean unlocked) {
+        public PlantItem(Plant plant,
+                         String name,
+                         String description,
+                         String curiosity,
+                         String care,
+                         Category category,
+                         boolean unlocked) {
+            this.plant = plant;
             this.name = name;
             this.description = description;
             this.curiosity = curiosity;
@@ -36,7 +54,11 @@ public class HerbariumController {
         }
     }
 
-    // --- Riferimenti FXML ---
+    // --- immagini (stessa struttura della home) ---
+    private static final String ROOT = "/com/application/canopy/view/components/images/";
+    private static final String THUMBS_DIR = ROOT + "thumbs/";
+
+    // --- FXML ---
 
     @FXML private BorderPane root;
     @FXML private NavController navController;
@@ -47,9 +69,11 @@ public class HerbariumController {
     @FXML private Text plantCare;
     @FXML private Label emptyHint;
 
+    @FXML private ImageView plantImage;
+
     @FXML private TextField searchField;
     @FXML private Button clearSearchBtn;
-    @FXML private ToggleButton allChip, indoorChip, outdoorChip, succulentChip, herbChip;
+    @FXML private ToggleButton allChip, commonChip, rareChip, specialChip;
     @FXML private ListView<PlantItem> plantsList;
 
     @FXML private SplitPane mainSplit;
@@ -59,45 +83,73 @@ public class HerbariumController {
     private final ObservableList<PlantItem> source = FXCollections.observableArrayList();
     private FilteredList<PlantItem> filtered;
 
-
+    private final GameState gameState = GameState.getInstance();
 
     @FXML
     private void initialize() {
-        // --- Dati di esempio ---
-
         Navigator.wire(navController, root, "herbarium");
-        source.addAll(
-                new PlantItem("Aloe Vera", "Pianta succulenta dalle foglie carnose.",
-                        "Gel lenitivo usato da secoli.", "Poca acqua, molta luce.",
-                        Category.SUCCULENT, true),
-                new PlantItem("Basilico", "Erba aromatica annuale.",
-                        "Simbolo di amore in alcune culture.", "Luce e terreno umido.",
-                        Category.HERB, true),
-                new PlantItem("Monstera", "Pianta tropicale da interno.",
-                        "Le foglie diventano forate crescendo.", "Luce indiretta e umidità.",
-                        Category.INDOOR, false)
-        );
 
-        // Imposta lista
+        // Popola l’erbario dal modello di gioco
+        loadFromGameState();
+
+        // ListView con card + thumb
         plantsList.setCellFactory(lv -> new PlantCardCell());
         filtered = new FilteredList<>(source, p -> true);
         plantsList.setItems(filtered);
 
-        // Ricerca + filtri
-        var categoryGroup = new ToggleGroup();
-        for (var b : new ToggleButton[]{allChip, indoorChip, outdoorChip, succulentChip, herbChip})
+        // Toggle chips categorie
+        ToggleGroup categoryGroup = new ToggleGroup();
+        for (ToggleButton b : new ToggleButton[]{allChip, commonChip, rareChip, specialChip}) {
             b.setToggleGroup(categoryGroup);
+        }
         allChip.setSelected(true);
 
+        // Ricerca + clear
         searchField.textProperty().addListener((obs, oldV, newV) -> applyFilters());
         clearSearchBtn.setOnAction(e -> searchField.clear());
         categoryGroup.selectedToggleProperty().addListener((obs, oldT, newT) -> applyFilters());
 
-        // Selezione pianta -> mostra dettagli
+        // Selezione pianta → dettaglio
         plantsList.getSelectionModel().selectedItemProperty().addListener((obs, old, sel) -> showPlant(sel));
 
         showEmptyState();
     }
+
+    /** Costruisce la lista Herbarium leggendo da GameState */
+    private void loadFromGameState() {
+        source.clear();
+
+        for (UserPlantState state : gameState.getAllPlantStates()) {
+            Plant p = state.getPlant();
+            Category cat = classifyPlant(p);
+
+            PlantItem item = new PlantItem(
+                    p,
+                    p.getName(),
+                    p.getDescription(),
+                    p.getLatinName(),      // uso il nome latino come curiosità
+                    p.getCareTips(),
+                    cat,
+                    state.isUnlocked()
+            );
+
+            source.add(item);
+        }
+    }
+
+    /** Mapping semplice Plant -> categoria UI */
+    private Category classifyPlant(Plant p) {
+        String id = p.getId().toLowerCase(Locale.ROOT);
+
+        if (id.contains("radice") || id.contains("ceneradice")) return Category.SPECIALE;
+        if (id.contains("menta") || id.contains("quercia") || id.contains("peperoncino")) return Category.COMUNI;
+        if (id.contains("orchidea") || id.contains("sakura") || id.contains("lavanda")) return Category.RARE;;
+
+        return Category.COMUNI;
+
+    }
+
+    // --- filtri / ricerca --------------------------------------------------
 
     private void applyFilters() {
         String q = searchField.getText() == null ? "" : searchField.getText().trim().toLowerCase(Locale.ROOT);
@@ -108,6 +160,7 @@ public class HerbariumController {
             if (!categoryOk) return false;
 
             if (q.isEmpty()) return true;
+
             return (p.name + " " + p.description + " " + p.curiosity + " " + p.care)
                     .toLowerCase(Locale.ROOT)
                     .contains(q);
@@ -119,40 +172,68 @@ public class HerbariumController {
     private EnumSet<Category> selectedCategories() {
         if (allChip.isSelected()) return EnumSet.of(Category.ALL);
         EnumSet<Category> set = EnumSet.noneOf(Category.class);
-        if (indoorChip.isSelected()) set.add(Category.INDOOR);
-        if (outdoorChip.isSelected()) set.add(Category.OUTDOOR);
-        if (succulentChip.isSelected()) set.add(Category.SUCCULENT);
-        if (herbChip.isSelected()) set.add(Category.HERB);
+        if (commonChip.isSelected()) set.add(Category.COMUNI);
+        if (rareChip.isSelected()) set.add(Category.RARE);
+        if (specialChip.isSelected()) set.add(Category.SPECIALE);
         if (set.isEmpty()) set.add(Category.ALL);
         return set;
     }
 
+    // --- dettaglio ---------------------------------------------------------
+
     private void showPlant(PlantItem p) {
-        if (p == null) { showEmptyState(); return; }
+        if (p == null) {
+            showEmptyState();
+            return;
+        }
 
         emptyHint.setVisible(false);
+
+        if (!p.unlocked) {
+            plantTitle.setText(p.name + " (bloccata)");
+            plantCuriosity.setText("Sblocca questa pianta completando gli obiettivi.");
+            plantDescription.setText("");
+            plantCare.setText("");
+            if (plantImage != null) plantImage.setImage(loadThumbFor(p.plant)); // puoi anche metterla grigia
+            return;
+        }
+
         plantTitle.setText(p.name);
         plantCuriosity.setText(p.curiosity);
         plantDescription.setText(p.description);
         plantCare.setText(p.care);
 
-        // QUI IN FUTURO POTRAI ANCHE CAMBIARE L’IMMAGINE DELLA PIANTA SE INSERITA
-        // Esempio:
-        // plantImage.setImage(new Image(getClass().getResourceAsStream(p.imagePath)));
+        if (plantImage != null) {
+            plantImage.setImage(loadThumbFor(p.plant));
+        }
     }
 
     private void showEmptyState() {
         emptyHint.setVisible(true);
-        plantTitle.setText("—");
+        plantTitle.setText("-");
         plantCuriosity.setText("");
         plantDescription.setText("");
         plantCare.setText("");
-        // QUI IN FUTURO POTRAI MOSTRARE UN PLACEHOLDER IMMAGINE
+        if (plantImage != null) plantImage.setImage(null);
     }
 
-    /** Cella personalizzata per la lista di piante */
-    private static class PlantCardCell extends ListCell<PlantItem> {
-        private final HBox root = new HBox(12);
+    // --- immagini ----------------------------------------------------------
+
+    private Image loadThumbFor(Plant plant) {
+        String fileName = plant.getThumbFile(); // es: "Lavanda.png"
+        String path = THUMBS_DIR + fileName;
+        URL url = getClass().getResource(path);
+        if (url == null) {
+            System.err.println("[Herbarium] Thumb NON trovata: " + path);
+            return null;
+        }
+        return new Image(url.toExternalForm(), true);
+    }
+
+    /** Cella ListView con thumb + lock, stile “card” minimal */
+    private class PlantCardCell extends ListCell<PlantItem> {
+        private final HBox root = new HBox(10);
+        private final ImageView thumb = new ImageView();
         private final VBox textBox = new VBox(2);
         private final Label title = new Label();
         private final Label subtitle = new Label();
@@ -161,10 +242,19 @@ public class HerbariumController {
 
         PlantCardCell() {
             root.getStyleClass().add("card");
+            root.getStyleClass().add("plant-card");
+
+            thumb.setFitWidth(40);
+            thumb.setFitHeight(40);
+            thumb.setPreserveRatio(true);
+            thumb.setSmooth(true);
+
             subtitle.getStyleClass().add("muted");
+
             HBox.setHgrow(spacer, Priority.ALWAYS);
-            root.getChildren().addAll(textBox, spacer, lock);
             textBox.getChildren().addAll(title, subtitle);
+            root.getChildren().addAll(thumb, textBox, spacer, lock);
+
             setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         }
 
@@ -177,6 +267,10 @@ public class HerbariumController {
                 title.setText(item.name);
                 subtitle.setText(item.category.name());
                 lock.setText(item.unlocked ? "" : "🔒");
+
+                root.setOpacity(item.unlocked ? 1.0 : 0.5);
+                thumb.setImage(loadThumbFor(item.plant));
+
                 setGraphic(root);
             }
         }

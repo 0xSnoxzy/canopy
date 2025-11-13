@@ -1,5 +1,7 @@
 package com.application.canopy.controller;
 
+import com.application.canopy.Navigator;
+import com.application.canopy.model.GameState;
 import com.application.canopy.model.Plant;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -8,13 +10,8 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.util.Duration;
-
-import com.application.canopy.Navigator;
 
 import java.net.URL;
 
@@ -33,14 +30,19 @@ public class HomeController {
     @FXML private TextField customMinutes;
     @FXML private CheckBox focusMode;
 
-    @FXML private ListView<Plant> list; //
+    @FXML private ListView<Plant> list;
 
     // timer
     private Timeline timeline;
     private int totalSeconds = 25 * 60;
     private int remainingSeconds = totalSeconds;
+
     private enum TimerState { IDLE, RUNNING }
     private TimerState state = TimerState.IDLE;
+
+    // modello / stato globale
+    private final GameState gameState = GameState.getInstance();
+    private Plant currentPlant; // pianta attualmente selezionata nella home
 
     // path immagini
     private static final String ROOT = "/com/application/canopy/view/components/images/";
@@ -52,30 +54,32 @@ public class HomeController {
     private final Image[] frames = new Image[4];
     private Image wiltFrame = null;
 
-    // path di default della pianta selezionata
+    // path di default (verrà sovrascritto da setCurrentPlant)
     private String currentPlantBasePath = PLANTS_DIR + "Lavanda/";
-
 
     @FXML
     private void initialize() {
         Navigator.wire(navController, root, "home");
+
         // canvas disattivato
-        if (canvas != null) { canvas.setVisible(false); canvas.setManaged(false); }
+        if (canvas != null) {
+            canvas.setVisible(false);
+            canvas.setManaged(false);
+        }
 
         img.setVisible(true);
         img.setPreserveRatio(true);
 
         setupPlantList();
 
-        // seleziona pianta di default (di default la prima della lista) e carica subito gli stage
+        // seleziona pianta di default (prima lista) e carica gli stage
         if (!list.getItems().isEmpty()) {
             list.getSelectionModel().selectFirst();
             Plant sel = list.getSelectionModel().getSelectedItem();
-            setCurrentPlant(sel); // imposta currentPlantBasePath e carica le immagini
+            setCurrentPlant(sel);
         }
 
         btnStartReset.setOnAction(e -> onStartReset());
-
         focusMode.selectedProperty().addListener((o, was, is) -> toggleFocus(is));
 
         // preset timer
@@ -89,6 +93,7 @@ public class HomeController {
     }
 
     private void setupPlantList() {
+        // usa il catalogo dal modello (coincide col GameState)
         list.getItems().setAll(Plant.samplePlants());
 
         list.setCellFactory(v -> new ListCell<>() {
@@ -116,35 +121,35 @@ public class HomeController {
                     title.setText(p.getName());
                     subtitle.setText(p.getLatinName());
                     description.setText(p.getDescription());
-                    icon.setImage(loadThumbFor(p.getName()));
+                    icon.setImage(loadThumbFor(p));
                     setGraphic(root);
                 }
             }
         });
 
-        // selezione pianta
+        // cambio pianta
         list.getSelectionModel().selectedItemProperty().addListener((obs, oldP, p) -> {
             if (p != null) setCurrentPlant(p);
         });
     }
 
-    // imposta base path in base al nome e carica gli stage
+    // imposta base path in base alla pianta scelta e carica gli stage
     private void setCurrentPlant(Plant p) {
-        String folder = nameToFolder(p.getName());
+        this.currentPlant = p;
+        String folder = p.getFolderName(); // -> es: "Lavanda"
         currentPlantBasePath = PLANTS_DIR + folder + "/";
-        loadImages();    // carica i frame dal nuovo base path
-        showStage(0);    // mostra subito stage0
+        loadImages();
+        showStage(0);
     }
 
-    // converte nomi come "Menta piperita" in "Menta_piperita"
-    private String nameToFolder(String name) {
-        return name.trim().replaceAll("\\s+", "_");
-    }
+    // --- TIMER -------------------------------------------------------------
 
-    // timer
     private void onStartReset() {
-        if (state == TimerState.IDLE) startTimer();
-        else resetAndWilt();
+        if (state == TimerState.IDLE) {
+            startTimer();
+        } else {
+            resetAndWilt(); // interrompe → pianta "muore"
+        }
     }
 
     private void startTimer() {
@@ -170,7 +175,13 @@ public class HomeController {
 
         if (remainingSeconds == 0) {
             if (timeline != null) timeline.stop();
-            showStage(3);               // forma finale sbloccata
+            showStage(3); // forma finale
+
+            // QUI colleghiamo la home al modello di gioco -----------------
+            if (currentPlant != null) {
+                gameState.onPomodoroCompleted(currentPlant);
+            }
+
             state = TimerState.IDLE;
             updateButtonUI();
         }
@@ -178,29 +189,44 @@ public class HomeController {
 
     private void resetAndWilt() {
         if (timeline != null) timeline.stop();
+
+        // reset durante RUNNING = pomodoro interrotto → pianta "muore"
+        if (currentPlant != null) {
+            gameState.onPomodoroAborted(currentPlant);
+        }
+
         remainingSeconds = totalSeconds;
         updateUI();
-        if (wiltFrame != null) img.setImage(wiltFrame); else showStage(0);
+        if (wiltFrame != null) img.setImage(wiltFrame);
+        else showStage(0);
+
         state = TimerState.IDLE;
         updateButtonUI();
     }
 
+    // --- UI helpers --------------------------------------------------------
 
-    // UI helpers
     private void updateUI() {
         int m = remainingSeconds / 60;
         int s = remainingSeconds % 60;
         lblTimer.setText(String.format("%02d:%02d", m, s));
+
         double p = (totalSeconds == 0) ? 0 : 1.0 - (remainingSeconds / (double) totalSeconds);
         progress.setProgress(p);
+
         if (state == TimerState.RUNNING) updateGrowthFrame(p);
     }
 
     private void updateButtonUI() {
         boolean running = (state == TimerState.RUNNING);
         btnStartReset.setText(running ? "Reset" : "Start");
-        if (running) btnStartReset.getStyleClass().remove("start");
-        else if (!btnStartReset.getStyleClass().contains("start")) btnStartReset.getStyleClass().add("start");
+
+        if (running) {
+            btnStartReset.getStyleClass().remove("start");
+        } else if (!btnStartReset.getStyleClass().contains("start")) {
+            btnStartReset.getStyleClass().add("start");
+        }
+
         sessionCombo.setDisable(running || focusMode.isSelected());
         customMinutes.setDisable(running || focusMode.isSelected());
 
@@ -236,14 +262,12 @@ public class HomeController {
         updateButtonUI();
     }
 
+    // --- growth / immagini -------------------------------------------------
 
-    // growth logic
     private void loadImages() {
-        // carica gli stage per la pianta corrente
         for (int i = 0; i < STAGE_FILES.length; i++) {
             frames[i] = loadImage(currentPlantBasePath + STAGE_FILES[i]);
         }
-        // pianta appassita
         wiltFrame = loadImage(currentPlantBasePath + WILT_FILE);
 
         img.setVisible(true);
@@ -260,22 +284,30 @@ public class HomeController {
     }
 
     private void updateGrowthFrame(double p) {
-        int stage = (p >= 2.0/3.0) ? 2 : (p >= 1.0/3.0 ? 1 : 0);
+        int stage = (p >= 2.0 / 3.0) ? 2 : (p >= 1.0 / 3.0 ? 1 : 0);
         showStage(stage);
     }
 
     private void showStage(int idx) {
         if (idx < 0 || idx >= frames.length) idx = 0;
         Image target = frames[idx];
+
         if (target == null) {
-            for (int i = idx; i >= 0; i--) if (frames[i] != null) { target = frames[i]; break; }
-            if (target == null) for (int i = idx; i < frames.length; i++) if (frames[i] != null) { target = frames[i]; break; }
+            for (int i = idx; i >= 0; i--) {
+                if (frames[i] != null) { target = frames[i]; break; }
+            }
+            if (target == null) {
+                for (int i = idx; i < frames.length; i++) {
+                    if (frames[i] != null) { target = frames[i]; break; }
+                }
+            }
         }
+
         if (target != null) img.setImage(target);
     }
 
-    // focus mode
-    // TODO: assistente IA
+    // --- focus mode --------------------------------------------------------
+
     private void toggleFocus(boolean on) {
         boolean running = (state == TimerState.RUNNING);
         sessionCombo.setDisable(on || running);
@@ -298,10 +330,9 @@ public class HomeController {
         else img.sceneProperty().addListener((obs, old, sc) -> apply.run());
     }
 
-    // thumbs piante
-    private Image loadThumbFor(String commonName) {
-        // es: "Lavanda" -> ".../thumbs/Lavanda.png"
-        String fileName = commonName.trim().replaceAll("\\s+", "_") + ".png";
+    // thumbs piante (ora usa Plant.getThumbFile)
+    private Image loadThumbFor(Plant plant) {
+        String fileName = plant.getThumbFile(); // es: "Lavanda.png"
         String path = THUMBS_DIR + fileName;
         URL url = getClass().getResource(path);
         if (url == null) {

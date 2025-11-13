@@ -207,7 +207,7 @@ public class CalendarController {
     }
     private String cap(String s){ return s.substring(0,1).toUpperCase(locale) + s.substring(1); }
 
-    /* === Model & Cell minimal === */
+
     public static class PlantStat {
         public final String name;
         public final int minutes;

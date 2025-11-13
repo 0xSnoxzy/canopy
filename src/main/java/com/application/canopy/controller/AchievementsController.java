@@ -44,7 +44,7 @@ public class AchievementsController {
 
         Navigator.wire(navController, root, "achievements");
 
-        // Dati di esempio
+
         data.add(new Achievement("Botanico Professionista", "Pianta 10 piante diverse", "/images/achievements/botanist.png", 7, 10, false));
         data.add(new Achievement("Custode della Foresta", "Completa 5 sessioni giornaliere", "/images/achievements/guardian.png", 5, 5, true));
         data.add(new Achievement("Seminatore", "Pianta 3 nuove piante", "/images/achievements/seeder.png", 1, 3, false));

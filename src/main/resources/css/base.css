@@ -535,3 +535,64 @@
     -fx-focus-color: transparent;
     -fx-faint-focus-color: transparent;
 }
+
+
+/* herbarium aggiunta */
+.plant-hero {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 20, 0.3, 0, 4);
+    -fx-smooth: true;
+}
+
+.plant-card {
+    -fx-background-radius: 14;
+    -fx-padding: 8 10 8 10;
+}
+
+.list-scroll .viewport {
+    -fx-background-color: transparent;
+}
+
+/* Contenitore testo dettaglio */
+.detail-text {
+    -fx-padding: 8 0 0 0;
+}
+
+/* Header con nome pianta */
+.plant-title {
+    -fx-font-size: 26px;
+    -fx-font-weight: 800;
+    -fx-text-fill: -fx-text-base-color;
+    /* leggero gradiente fake usando effetto */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 12, 0.2, 0, 2);
+}
+
+.plant-curiosity {
+    -fx-fill: #8e8e8e;
+    -fx-font-size: 12px;
+    -fx-font-style: italic;
+}
+
+/* Card per descrizione / cura */
+.detail-section {
+    -fx-background-color: rgba(255, 255, 255, 0.03);
+    -fx-background-radius: 14;
+    -fx-padding: 12 14 12 14;
+    -fx-border-color: rgba(255, 255, 255, 0.06);
+    -fx-border-radius: 14;
+}
+
+/* Titolo sezione ("Descrizione", "Cura") */
+.section-title {
+    -fx-font-size: 11px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #a0a0a0;
+    -fx-text-transform: uppercase;        /* alcuni engine ignorano, ma ci proviamo */
+    -fx-letter-spacing: 1.5px;
+}
+
+/* Testo dentro le card */
+.section-body {
+    -fx-fill: -fx-text-base-color;
+    -fx-font-size: 13px;
+    -fx-line-spacing: 3px;
+}
