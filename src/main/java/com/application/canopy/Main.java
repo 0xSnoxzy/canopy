@@ -26,7 +26,7 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/application/canopy/view/home.fxml")));
         Scene scene = new Scene(root, 1080, 620);
 
-        URL css = getClass().getResource("/css/base.css");
+        URL css = getClass().getResource("/css/base-old.css");
 
         if (css == null) throw new IllegalStateException("File CSS non trovato.");
         scene.getStylesheets().add(css.toExternalForm());

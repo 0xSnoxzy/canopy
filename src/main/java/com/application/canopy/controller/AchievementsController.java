@@ -137,9 +137,6 @@ public class AchievementsController {
         detailPane.getStyleClass().add(a.achieved ? "detail-achieved" : "detail-locked");
     }
 
-    /**
-     * Carica un'immagine dal classpath, ma se non esiste restituisce una trasparente di fallback.
-     */
 
     private Image loadSafe(String classpathPath) {
         try (InputStream is = getClass().getResourceAsStream(classpathPath)) {
@@ -150,7 +147,6 @@ public class AchievementsController {
                 return new Image("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGNgYGD4DwABBAEAxQY9FwAAAABJRU5ErkJggg==");
             }
         } catch (Exception e) {
-            // fallback
             return new Image("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGNgYGD4DwABBAEAxQY9FwAAAABJRU5ErkJggg==");
         }
     }

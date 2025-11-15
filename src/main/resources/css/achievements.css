@@ -1,0 +1,79 @@
+
+/* ----- Stile Achievements ----- */
+
+/* Pannello dettaglio (destra) */
+.detail-pane {
+    -fx-background-color: -fx-base;            /* usa la palette che hai già */
+    -fx-background-radius: 16;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 12, 0.2, 0, 2);
+}
+.detail-pane.detail-achieved {
+    -fx-background-color: linear-gradient(to bottom, derive(-fx-base, 8%), derive(-fx-base, -2%));
+}
+.detail-pane.detail-locked {
+    -fx-background-color: linear-gradient(to bottom, derive(-fx-base, -2%), derive(-fx-base, -6%));
+}
+.section-title {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+.detail-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: 700;
+}
+.detail-subtitle {
+    -fx-text-fill: -fx-text-inner-color;
+    -fx-opacity: 0.85;
+}
+.detail-progress {
+    -fx-text-fill: -fx-text-inner-color;
+}
+
+/* ScrollPane */
+.scrollpane-clean > .viewport {
+    -fx-background-color: transparent;
+}
+.scrollpane-clean {
+    -fx-background-color: transparent;
+}
+
+/* Card Obiettivo (centro) */
+.card {
+    -fx-background-color: derive(-fx-base, -4%);
+    -fx-background-radius: 12;
+    -fx-padding: 12;
+    -fx-border-color: transparent;
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 8, 0.2, 0, 1);
+}
+
+.card:hover {
+    -fx-background-color: derive(-fx-base, 0%);
+}
+
+.card-selected {
+    -fx-border-color: -fx-accent;
+    -fx-border-width: 2;
+}
+
+.card-achieved {
+    /* in chiaro */
+    -fx-opacity: 1.0;
+}
+
+.card-locked {
+    /* in scuro */
+    -fx-opacity: 0.6;
+}
+
+.card-title {
+    -fx-font-weight: 700;
+    -fx-font-size: 13px;
+}
+
+.card-desc {
+    -fx-font-size: 12px;
+    -fx-text-fill: -fx-text-inner-color;
+    -fx-opacity: 0.9;
+}

@@ -6,7 +6,7 @@ public class Plant {
 
     private final String id;           // univoco, es: "lavanda"
     private final String name;         // nome comune: "Lavanda"
-    private final String latinName;    // es: "Lavandula angustifolia"
+    private final String curiosity;    // es: "Lavandula angustifolia"
     private final String description;  // descrizione in erbario
     private final String careTips;     // "come prendersene cura"
     private final String folderName;   // cartella immagini: "Lavanda"
@@ -14,14 +14,14 @@ public class Plant {
 
     public Plant(String id,
                  String name,
-                 String latinName,
+                 String curiosity,
                  String description,
                  String careTips,
                  String folderName,
                  String thumbFile) {
         this.id = id;
         this.name = name;
-        this.latinName = latinName;
+        this.curiosity = curiosity;
         this.description = description;
         this.careTips = careTips;
         this.folderName = folderName;
@@ -30,7 +30,7 @@ public class Plant {
 
     public String getId() { return id; }
     public String getName() { return name; }
-    public String getLatinName() { return latinName; }
+    public String getCuriosity() { return curiosity; }
     public String getDescription() { return description; }
     public String getCareTips() { return careTips; }
     public String getFolderName() { return folderName; }
@@ -42,36 +42,36 @@ public class Plant {
                 new Plant(
                                 "sakura",
                                 "Sakura",
-                                "Prunus serrulata",
-                                "",
-                                "",
+                        "In Giappone il fiore di sakura rappresenta la fugacità della vita. Ogni primavera le persone celebrano l?hanami, la tradizione di ammirare i ciliegi in fiore nei parchi e nei templi.",
+                        "Il ciliegio giapponese, simbolo di rinascita e bellezza effimera, è famoso per la sua spettacolare fioritura primaverile. I petali rosa pallido ricoprono i rami creando un paesaggio poetico, spesso associato al concetto giapponese di 'mono no aware', la malinconia delle cose che svaniscono. Cresce lentamente ma regala fioriture straordinarie quando ben curato.",
+                        "Necessita di piena luce solare e terreno ben drenato. Ama gli inverni freddi e le primavere miti. Durante il periodo vegetativo, annaffiare regolarmente evitando ristagni. Concimare due volte l?anno, preferendo fertilizzanti ricchi di fosforo per favorire la fioritura. Potare leggermente dopo la fioritura per mantenere la forma.",
                                 "Sakura",
                                 "Sakura.png"
                         ),
                 new Plant(
                                 "quercia",
                                 "Quercia",
-                                "Quercus robur",
-                                "Una pianta robusta che rappresenta stabilità e forza.",
-                                "",
+                        "In molte culture la quercia è considerata sacra. I Celti la veneravano come albero del sapere, mentre nella mitologia nordica era associata al dio Thor.",
+                        "Simbolo di forza e longevità, la quercia è uno degli alberi più maestosi delle foreste temperate. Le sue radici profonde e il tronco robusto ne fanno una presenza imponente, mentre le foglie lobate cambiano colore con le stagioni. Produce ghiande che nutrono la fauna selvatica e contribuiscono all'equilibrio dell'ecosistema.",
+                        "Predilige pieno sole e terreno profondo, leggermente acido e ben drenato. Nelle prime fasi di crescita richiede annaffiature regolari, poi diventa autonoma. Non teme il freddo e può vivere secoli. La potatura va fatta in inverno, eliminando i rami secchi o malformati.",
                                 "Quercia",
                                 "Quercia.png"
                         ),
                 new Plant(
                                 "menta",
                                 "Menta",
-                                "Mentha spicata",
-                                "",
-                                "",
+                        "Nella mitologia greca, Menta era una ninfa trasformata in pianta da Persefone. Da allora è simbolo di rinascita e freschezza.",
+                        "Pianta aromatica perenne conosciuta per il suo profumo fresco e le proprietà digestive. Le sue foglie verdi contengono oli essenziali di mentolo che donano un aroma intenso e rinfrescante. È ideale in tisane, dolci, piatti salati e anche come repellente naturale per insetti.",
+                        "Ama la luce ma non il sole diretto nelle ore più calde. Va coltivata in terreno fresco e umido, con annaffiature regolari e abbondanti durante l?estate. Cresce rapidamente: è consigliabile tenerla in vaso per controllarne l?espansione. Taglia spesso le cime per stimolare nuove foglie.",
                                 "Menta",
                                 "Menta.png"
                         ),
                 new Plant(
                                 "lavanda",
                                 "Lavanda",
-                                "Lavandula angustifolia",
-                                "",
-                                "",
+                        "I Romani usavano la lavanda nei bagni termali per le sue proprietà purificanti. Il nome deriva dal latino 'lavare'.",
+                        "Arbusto perenne tipico del Mediterraneo, celebre per i suoi fiori violacei e il profumo rilassante. Le spighe fiorite sono ricche di oli essenziali usati in aromaterapia, cosmetica e profumeria. Il suo portamento ordinato e i colori delicati la rendono perfetta per bordure o vasi soleggiati.",
+                        "Predilige il pieno sole e terreni aridi, calcarei e ben drenati. Annaffiare solo quando il terreno è completamente asciutto. Potare ogni anno dopo la fioritura per mantenere la forma compatta e stimolare nuovi germogli.",
                                 "Lavanda",
                                 "Lavanda.png"
                         ),
@@ -87,27 +87,27 @@ public class Plant {
                 new Plant(
                                 "orchidea",
                                 "Orchidea",
-                                "Orchidaceae",
-                                "",
-                                "",
+                        "Le orchidee rappresentano amore e raffinatezza. Alcune specie vivono decenni e sono impollinate solo da insetti specifici.",
+                        "Pianta elegante e raffinata, apprezzata per i fiori di lunga durata e la straordinaria varietà di forme e colori. Le radici aeree assorbono umidità e sostanze nutritive dall?aria, rendendola perfetta per interni luminosi e ambienti umidi.",
+                        "Richiede luce diffusa e costante umidità ambientale. Innaffiare una volta a settimana, preferendo immersioni brevi del vaso. Evitare ristagni e spruzzare acqua sulle radici aeree. Concimare ogni due settimane con fertilizzante bilanciato. Dopo la fioritura, tagliare lo stelo sopra il nodo per favorire nuovi germogli.",
                                 "Orchidea",
                                 "Orchidea.png"
                         ),
                 new Plant(
                                 "ceneradice",
                                 "Ceneradice",
-                                "Cineris radix",
-                                "",
-                                "",
+                        "Il Bocciotorto (il seme) emette costantemente un suono simile ad un lamento quando viene guardato.",
+                        "Ceneradice è un'esile creatura grigia composta da rami attorcigliati. Ha una testa tondeggiante con due rametti che ricordano ciuffi di capelli ai lati della testa, e due grandi occhi scintillanti.",
+                        "Non ha bisogno di acqua, non ha bisogno di cibo, ha solo bisogno di concludere il suo rito di rinascita.",
                                 "Ceneradice",
                                 "Ceneradice.png"
                         ),
                 new Plant(
                                 "radice_sussurrante",
                                 "Radice Sussurrante",
-                                "Radix susurrans",
-                                "",
-                                "",
+                        "Secondo le leggende di Nidosacro, chi dorme sotto il suo tronco può rivivere i ricordi perduti e trovare risposte alle domande dimenticate.",
+                        "Le Radici Sussurranti sono delle piante ripiene di Essenze che si trovano nel lungo e il largo di Nidosacro. Quando si colpisce una radice con l'Aculeo dei Sogni, questa farà comparire dei globi rossi che raccontano le storie di ha vissuto in quei luoghi.",
+                        "Si nutre dei ricordi di chi ci vive vicino. Non piantarlo troppo vicino pensieri pesanti.",
                                 "Radice_Sussurrante",
                                 "Radice_Sussurrante.png"
                         )

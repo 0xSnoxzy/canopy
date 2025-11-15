@@ -127,7 +127,7 @@ public class HerbariumController {
                     p,
                     p.getName(),
                     p.getDescription(),
-                    p.getLatinName(),      // uso il nome latino come curiosità
+                    p.getCuriosity(),      // uso il nome latino come curiosità
                     p.getCareTips(),
                     cat,
                     state.isUnlocked()

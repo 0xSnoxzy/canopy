@@ -119,8 +119,7 @@ public class HomeController {
                     setGraphic(null);
                 } else {
                     title.setText(p.getName());
-                    subtitle.setText(p.getLatinName());
-                    description.setText(p.getDescription());
+                    subtitle.setText(p.getDescription());
                     icon.setImage(loadThumbFor(p));
                     setGraphic(root);
                 }

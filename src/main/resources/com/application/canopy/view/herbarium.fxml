@@ -40,7 +40,6 @@
                             <!-- Testo a destra (o sotto se stretto) -->
                             <!-- Testo a destra (o sotto se stretto) -->
                             <VBox spacing="16" maxWidth="Infinity" styleClass="detail-text">
-
                                 <!-- Header pianta -->
                                 <VBox spacing="6" styleClass="detail-header">
                                     <Label fx:id="plantTitle" styleClass="plant-title"/>
