@@ -1,196 +1,285 @@
 /* ==========================================
-   Canopy - base.css
+   Canopy - base.css (Theme B - Forest Soft Glow)
    ========================================== */
 
-.root {
-  /* Palette */
-  -canopy-bg:           linear-gradient(to bottom, #0b1a12, #0a1410); /* selva scura */
-  -canopy-surface:      #11231a;  /* foglie in ombra */
-  -canopy-surface-2:    #142a20;  /* foglie medio scure */
-  -canopy-card:         #183226;  /* lamina foglia */
-  -canopy-text:         #e7f6ef;  /* chiarore */
-  -canopy-muted:        #a6c8b8;  /* licheni */
-  -canopy-accent:       #4cc38a;  /* linfa viva */
-  -canopy-accent-2:     #7ad9a9;  /* muschio chiaro */
-  -canopy-bark:         #5a3f2e;  /* corteccia */
-  -canopy-soil:         #2b1f19;  /* terreno */
+/* ---------- ROOT & PALETTE ---------- */
 
-  /* Focus / stati */
-  -canopy-focus:        rgba(122, 217, 169, 0.7);
-  -canopy-focus-soft:   rgba(122, 217, 169, 0.18);
+.root {
+  /* Palette soft forest */
+  -canopy-bg:           linear-gradient(to bottom, #050907, #050f0b);
+  -canopy-surface:      #091711;   /* pannelli principali */
+  -canopy-surface-2:    #0f2119;   /* superfici sopraelevate */
+  -canopy-card:         #152a20;   /* card contenuto */
+  -canopy-card-soft:    rgba(21, 42, 32, 0.96);
+  -canopy-text:         #f4fff9;
+  -canopy-muted:        #aacfbf;
+  -canopy-accent:       #58c98a;   /* verde principale */
+  -canopy-accent-2:     #9be3b8;   /* highlight */
+  -canopy-bark:         #5a3f2e;
+  -canopy-soil:         #141e18;
+
+  -canopy-focus:        rgba(155, 227, 184, 0.75);
+  -canopy-focus-soft:   rgba(155, 227, 184, 0.18);
   -canopy-danger:       #ff6b6b;
 
-  -fx-font-size: 14px;
   -fx-font-family: "AtkinsonHyperlegible";
   -fx-font-size: 14px;
   -fx-text-fill: -canopy-text;
-  -fx-base: -canopy-surface;
+
+  -fx-base:   -canopy-surface;
+  -fx-accent: -canopy-accent;
 }
 
-/* ---------- Elementi generali ---------- */
+/* ---------- TIPOGRAFIA GENERALE ---------- */
 
-.label { -fx-text-fill: -canopy-text; }
-.subtle { -fx-text-fill: -canopy-muted; }
+.label {
+  -fx-text-fill: -canopy-text;
+}
+
+.subtle {
+  -fx-text-fill: -canopy-muted;
+}
 
 .app-title {
-  -fx-font-size: 18px;
-  -fx-font-weight: 800;
+  -fx-font-size: 20px;
+  -fx-font-weight: 900;
   -fx-text-fill: -canopy-accent-2;
-  -fx-effect: dropshadow(gaussian, rgba(122,217,169,0.25), 8, 0.2, 0, 2);
+  -fx-effect: dropshadow(gaussian, rgba(155,227,184,0.28), 16, 0.3, 0, 3);
 }
 
-/* separatore */
-.separator *.line {
-  -fx-background-color: rgba(122,217,169,0.35);
-  -fx-opacity: 0.9;
-}
-
-/* ---------- Stile Nav ---------- */
-
-.sidebar {
-  -fx-background-color: -canopy-surface;
-  -fx-padding: 16 12;
-  -fx-spacing: 12;
-  -fx-border-color: rgba(122,217,169,0.18);
-  -fx-border-width: 0 1 0 0;
-  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 12, 0.2, 0, 2);
-}
-
-.points-label {
-  -fx-background-color: linear-gradient(to bottom, -canopy-card, -canopy-surface-2);
-  -fx-text-fill: -canopy-accent-2;
-  -fx-padding: 6 10;
-  -fx-background-radius: 999; /* “seme” tondo */
+/* micro-heading riutilizzabile */
+.heading-chip {
+  -fx-font-size: 11px;
   -fx-font-weight: 700;
-  -fx-border-color: rgba(122,217,169,0.35);
+  -fx-text-fill: -canopy-muted;
+  -fx-background-color: rgba(155,227,184,0.12);
+  -fx-background-radius: 999;
+  -fx-padding: 3 8;
+  -fx-border-color: rgba(155,227,184,0.30);
   -fx-border-radius: 999;
 }
 
-/* Sezioni Nav (menu/footer) */
+.separator *.line {
+  -fx-background-color: rgba(155,227,184,0.40);
+  -fx-opacity: 0.9;
+}
+
+/* ---------- NAV LATERALE ---------- */
+
+.sidebar {
+  -fx-background-color:
+    linear-gradient(to bottom, #040f0b, #071511);
+  -fx-padding: 18 14;
+  -fx-spacing: 12;
+  -fx-border-color: rgba(155,227,184,0.25);
+  -fx-border-width: 0 1 0 0;
+  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.45), 18, 0.35, 0, 0);
+}
+
+.points-label {
+  -fx-background-color:
+    linear-gradient(to bottom, -canopy-card, -canopy-surface-2);
+  -fx-text-fill: -canopy-accent-2;
+  -fx-padding: 6 12;
+  -fx-background-radius: 999;
+  -fx-font-weight: 800;
+  -fx-border-color: rgba(155,227,184,0.55);
+  -fx-border-radius: 999;
+  -fx-effect: dropshadow(gaussian, rgba(155,227,184,0.30), 10, 0.35, 0, 2);
+}
+
 .menu-section  { -fx-spacing: 10; }
 .logout-section{ -fx-spacing: 10; }
 
-/* Bottoni nav: icona + testo */
-.nav-button, .logout-button, .button, .toggle-button {
+.nav-button,
+.logout-button,
+.button,
+.toggle-button {
   -fx-alignment: CENTER_LEFT;
   -fx-graphic-text-gap: 10;
   -fx-padding: 9 14;
-  -fx-background-radius: 14;   /* sagoma foglia */
+  -fx-background-radius: 999;
   -fx-background-insets: 0;
   -fx-text-fill: -canopy-text;
   -fx-cursor: hand;
   -fx-border-color: transparent;
-  -fx-border-radius: 14;
+  -fx-border-radius: 999;
 }
 
-/* Stato base nav */
-.nav-button, .toggle-button {
+/* base nav */
+.nav-button,
+.toggle-button {
   -fx-background-color: transparent;
 }
 
-/* Hover */
-.nav-button:hover, .toggle-button:hover {
-  -fx-background-color: rgba(122,217,169,0.10);
+.nav-button:hover,
+.toggle-button:hover {
+  -fx-background-color: rgba(155,227,184,0.10);
 }
 
-/* Attivo (pagina selezionata) */
+/* selezionato */
 .toggle-button:selected {
   -fx-background-color:
-      linear-gradient(to bottom, rgba(122,217,169,0.25), rgba(122,217,169,0.18)),
-      linear-gradient(to bottom, -canopy-card, -canopy-surface-2);
-  -fx-text-fill: -canopy-text;
-  -fx-font-weight: 800;
-  -fx-border-color: rgba(122,217,169,0.55);
+      linear-gradient(to right,
+        rgba(155,227,184,0.32),
+        rgba(88,201,138,0.26));
+  -fx-text-fill: #03150d;
+  -fx-font-weight: 900;
+  -fx-border-color: rgba(155,227,184,0.82);
+  -fx-border-width: 1.3;
 }
 
-/* Glow Selezionato (focused) */
-.nav-button:focused, .toggle-button:focused, .logout-button:focused, .button:focused {
-  -fx-effect: dropshadow(gaussian, -canopy-focus, 12, 0.35, 0, 0);
+/* focus */
+.nav-button:focused,
+.toggle-button:focused,
+.logout-button:focused,
+.button:focused {
+  -fx-effect: dropshadow(gaussian, -canopy-focus, 14, 0.45, 0, 0);
 }
 
-/* Logout */
+/* logout */
 .logout-button {
   -fx-background-color: transparent;
   -fx-text-fill: -canopy-danger;
 }
 .logout-button:hover {
-  -fx-background-color: rgba(255,107,107,0.10);
+  -fx-background-color: rgba(255,107,107,0.12);
 }
 
-/* ---------- Aree contenuto ---------- */
+/* Icone nav */
+.nav-icon {
+  -fx-opacity: 0.92;
+}
+.toggle-button:hover .nav-icon,
+.button:hover .nav-icon {
+  -fx-opacity: 1.0;
+}
+
+/* Icona moneta */
+.coin-icon {
+  -fx-opacity: 1.0;
+  -fx-effect: dropshadow(gaussian, rgba(155,227,184,0.40), 8, 0.30, 0, 0);
+}
+
+/* ---------- LAYOUT CONTENUTO GENERALE ---------- */
 
 .center-area {
-  -fx-background-color: -canopy-bg;
-  -fx-background-radius: 18;
-  -fx-padding: 8;
+  -fx-background-color:
+    radial-gradient(center 18% 0%, radius 110%,
+        rgba(88,201,138,0.16),
+        transparent 55%),
+    -canopy-bg;
+  -fx-background-radius: 22;
+  -fx-padding: 16;
 }
 
+/* pannello generico “grande” */
+.main-panel {
+  -fx-background-color:
+    linear-gradient(to bottom, -canopy-surface-2, -canopy-surface);
+  -fx-background-radius: 20;
+  -fx-padding: 16;
+  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.45), 18, 0.32, 0, 6);
+  -fx-border-color: rgba(155,227,184,0.20);
+  -fx-border-radius: 20;
+}
+
+/* side-panel (es. colonna destra home) */
 .side-panel {
-  -fx-background-color: linear-gradient(to bottom, -canopy-surface, -canopy-soil);
-  -fx-padding: 12;
+  -fx-background-color:
+    linear-gradient(to bottom, #071711, #050c09);
+  -fx-padding: 14;
   -fx-spacing: 10;
-  -fx-border-color: rgba(122,217,169,0.18);
+  -fx-border-color: rgba(155,227,184,0.20);
   -fx-border-width: 0 0 0 1;
 }
 
 .panel-title {
-  -fx-font-size: 14px;
+  -fx-font-size: 15px;
   -fx-font-weight: 800;
   -fx-text-fill: -canopy-accent-2;
-  -fx-effect: dropshadow(gaussian, rgba(122,217,169,0.25), 8, 0.2, 0, 1);
+  -fx-effect: dropshadow(gaussian, rgba(155,227,184,0.35), 10, 0.4, 0, 2);
 }
 
-/* Palco della pianta */
+/* Palco della pianta (home) */
 .plant-stage {
-  -fx-background-color: transparent;
-  -fx-border-color: rgba(90,63,46,0.35);
-  -fx-border-width: 2;
-  -fx-border-radius: 18;
+  -fx-background-color:
+    linear-gradient(to bottom, rgba(88,201,138,0.16), rgba(5,15,11,0.9));
+  -fx-border-color: rgba(88,201,138,0.42);
+  -fx-border-width: 1.5;
+  -fx-border-radius: 20;
+  -fx-background-radius: 20;
 }
 
-/* Timer grande con “goccia” */
+/* Timer grande */
 .timer-large {
-  -fx-font-size: 44px;
+  -fx-font-size: 46px;
   -fx-font-weight: 900;
   -fx-text-fill: -canopy-accent-2;
-  -fx-effect: dropshadow(gaussian, rgba(122,217,169,0.25), 14, 0.3, 0, 3);
+  -fx-effect: dropshadow(gaussian, rgba(155,227,184,0.40), 16, 0.4, 0, 4);
 }
 
-/* ---------- Controlli generici ---------- */
+/* ---------- CONTROLLI GENERICI ---------- */
 
-/* Bottoni primari (es. Start) */
-.button.start, .button:default {
-  -fx-background-color: linear-gradient(to bottom, -canopy-accent-2, -canopy-accent);
-  -fx-text-fill: #08140f;
-  -fx-font-weight: 800;
+/* Bottoni primari */
+.button.start,
+.button:default {
+  -fx-background-color:
+      linear-gradient(to bottom, -canopy-accent-2, -canopy-accent);
+  -fx-text-fill: #03130c;
+  -fx-font-weight: 900;
+  -fx-background-radius: 999;
 }
-.button.start:hover, .button:default:hover {
-  -fx-background-color: linear-gradient(to bottom, -canopy-accent, #39b97f);
+.button.start:hover,
+.button:default:hover {
+  -fx-background-color:
+      linear-gradient(to bottom, -canopy-accent, #3fb578);
 }
 
-/* Bottoni secondari (Pausa/Reset) */
+/* Bottoni secondari */
 .button {
   -fx-background-color: rgba(255,255,255,0.06);
+  -fx-background-radius: 999;
 }
 .button:hover {
   -fx-background-color: rgba(255,255,255,0.10);
 }
+.button {
+  -fx-focus-color: transparent;
+  -fx-faint-focus-color: transparent;
+}
 
-/* TextField / ChoiceBox in stile “vaso” */
-.text-field, .choice-box, .combo-box-base {
+/* Ghost icon button (es. frecce calendario) */
+.ghost-icon-button {
+  -fx-background-color: transparent;
+  -fx-text-fill: -canopy-text;
+  -fx-font-weight: 800;
+  -fx-background-radius: 999;
+  -fx-padding: 4 6;
+}
+.ghost-icon-button:hover {
+  -fx-background-color: rgba(155,227,184,0.12);
+}
+
+/* TextField / ChoiceBox / ComboBox */
+.text-field,
+.choice-box,
+.combo-box-base {
   -fx-background-color: -canopy-surface-2;
   -fx-text-fill: -canopy-text;
   -fx-background-radius: 12;
   -fx-border-radius: 12;
-  -fx-border-color: rgba(122,217,169,0.20);
+  -fx-border-color: rgba(155,227,184,0.25);
   -fx-padding: 8 10;
 }
-.text-field:focused, .choice-box:focused, .combo-box-base:focused {
-  -fx-border-color: rgba(122,217,169,0.45);
-  -fx-effect: dropshadow(gaussian, -canopy-focus-soft, 10, 0.3, 0, 0);
+.text-field:focused,
+.choice-box:focused,
+.combo-box-base:focused {
+  -fx-border-color: rgba(155,227,184,0.80);
+  -fx-effect: dropshadow(gaussian, -canopy-focus-soft, 14, 0.5, 0, 0);
 }
 
-/* ListView “foglia” */
+/* ListView unificata */
 .list-view {
   -fx-background-color: transparent;
   -fx-control-inner-background: transparent;
@@ -202,13 +291,19 @@
   -fx-text-fill: -canopy-text;
   -fx-padding: 8 10;
   -fx-background-radius: 12;
+  -fx-border-color: rgba(155,227,184,0.12);
+  -fx-border-width: 0 0 1 0;
 }
 .list-cell:hover {
-  -fx-background-color: rgba(122,217,169,0.08);
+  -fx-background-color: rgba(155,227,184,0.10);
 }
-.list-cell:selected {
-  -fx-background-color: linear-gradient(to bottom, rgba(122,217,169,0.22), rgba(122,217,169,0.16));
-  -fx-text-fill: -canopy-text;
+.list-cell:selected,
+.list-cell:filled:selected:hover {
+  -fx-background-color:
+      linear-gradient(to right,
+        rgba(155,227,184,0.24),
+        rgba(88,201,138,0.18));
+  -fx-text-fill: #03130c;
 }
 
 /* ProgressBar “linfa” */
@@ -222,28 +317,52 @@
   -fx-background-radius: 999;
 }
 
-/* ScrollBar tono muschio */
-.scroll-bar:vertical, .scroll-bar:horizontal {
+/* ScrollBar */
+.scroll-bar:vertical,
+.scroll-bar:horizontal {
   -fx-background-color: transparent;
 }
 .scroll-bar .thumb {
-  -fx-background-color: rgba(122,217,169,0.35);
+  -fx-background-color: rgba(155,227,184,0.40);
   -fx-background-radius: 999;
 }
 .scroll-bar .thumb:hover {
-  -fx-background-color: rgba(122,217,169,0.50);
+  -fx-background-color: rgba(155,227,184,0.65);
 }
 
-/* ----- Stile Calendario ----- */
+/* ScrollPane pulito */
+.scrollpane-clean > .viewport {
+  -fx-background-color: transparent;
+}
+.scrollpane-clean {
+  -fx-background-color: transparent;
+}
+
+/* ---------- CALENDARIO ---------- */
+
 .calendar-toolbar {
   -fx-background-color: transparent;
-  -fx-padding: 4 0 4 0;
+  -fx-padding: 4 0 10 0;
 }
 
+.weekday-header {
+  -fx-padding: 0 0 4 2;
+}
 .weekday-header .weekday {
   -fx-text-fill: -canopy-muted;
   -fx-alignment: CENTER_LEFT;
   -fx-pref-width: Infinity;
+  -fx-font-weight: 700;
+}
+
+/* wrapper calendario (verde scuro centrale) */
+.calendar-root {
+  -fx-background-color:
+      linear-gradient(to bottom, #071710, #050c09);
+  -fx-background-radius: 18;
+  -fx-padding: 12;
+  -fx-border-color: rgba(155,227,184,0.22);
+  -fx-border-radius: 18;
 }
 
 .calendar-grid {
@@ -251,35 +370,32 @@
   -fx-padding: 4 0 0 0;
 }
 
+/* celle giorno */
 .day-cell {
-  -fx-background-color: linear-gradient(to bottom, -canopy-surface-2, -canopy-surface);
+  -fx-background-color:
+     linear-gradient(to bottom, -canopy-surface-2, -canopy-surface);
   -fx-background-radius: 12;
   -fx-border-radius: 12;
-  -fx-border-color: rgba(122,217,169,0.18);
+  -fx-border-color: rgba(155,227,184,0.18);
   -fx-padding: 4;
 }
 .day-cell:hover {
-  -fx-background-color: linear-gradient(to bottom, rgba(122,217,169,0.18), -canopy-surface);
+  -fx-background-color:
+    linear-gradient(to bottom,
+      rgba(88,201,138,0.14),
+      -canopy-surface);
 }
 .day-cell-out {
   -fx-opacity: 0.55;
 }
 .day-cell-today {
-  -fx-border-color: rgba(122,217,169,0.55);
-  -fx-effect: dropshadow(gaussian, rgba(122,217,169,0.25), 10, 0.3, 0, 0);
+  -fx-border-color: rgba(155,227,184,0.75);
+  -fx-effect: dropshadow(gaussian, rgba(155,227,184,0.32), 12, 0.45, 0, 0);
 }
+
 .day-number {
   -fx-text-fill: -canopy-text;
   -fx-font-weight: 800;
-}
-
-/* Header dei giorni */
-.weekday-header {
-  -fx-padding: 0 0 0 2;
-}
-.weekday {
-  -fx-text-fill: -canopy-muted;
-  -fx-font-weight: 700;
 }
 
 /* Dialog “piante del giorno” */
@@ -294,305 +410,337 @@
   -fx-font-weight: 800;
 }
 
-/* Celle lista piante (mese/giorno) */
-.list-view .list-cell {
-  -fx-background-color: transparent;
-  -fx-padding: 8 10;
-  -fx-background-radius: 10;
-}
-.list-view .list-cell:hover {
-  -fx-background-color: rgba(122,217,169,0.08);
-}
-.list-view .list-cell:selected {
-  -fx-background-color: linear-gradient(to bottom, rgba(122,217,169,0.22), rgba(122,217,169,0.16));
-}
-
-/* Pulsante freccia */
-.ghost-icon-button {
-  -fx-background-color: transparent;
-  -fx-text-fill: -canopy-text;
-  -fx-font-weight: 800;
-  -fx-background-radius: 10;
-  -fx-padding: 4 0 4 0;
-}
-.ghost-icon-button:hover {
-  -fx-background-color: rgba(122,217,169,0.10);
-}
-
 /* Totale minuti */
 .summary-label {
   -fx-text-fill: -canopy-muted;
   -fx-font-weight: 700;
 }
 
-/* Icone nel nav */
-.nav-icon {
+/* ---------- ACHIEVEMENTS ---------- */
+
+/* eventualmente wrapper fxml: <BorderPane styleClass="achievements-root"> */
+.achievements-root {
+  -fx-background-color:
+    radial-gradient(center 15% 0%, radius 120%,
+        rgba(88,201,138,0.16),
+        transparent 60%),
+    linear-gradient(to bottom, #050b08, #050f0b);
+  -fx-background-radius: 22;
+  -fx-padding: 18;
+}
+
+/* FlowPane centrale della griglia */
+.achievements-grid {
+  -fx-hgap: 12;
+  -fx-vgap: 12;
+  -fx-padding: 4 0 0 0;
+}
+
+/* pannello dettaglio a destra */
+.detail-pane {
+  -fx-background-color:
+      linear-gradient(to bottom,
+          rgba(20,42,32,0.96),
+          rgba(9,23,17,1.0));
+  -fx-background-radius: 20;
+  -fx-padding: 16;
+  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.55), 18, 0.4, 0, 5);
+  -fx-border-color: rgba(155,227,184,0.22);
+  -fx-border-radius: 20;
+}
+
+.detail-pane.detail-achieved {
+  -fx-background-color:
+      linear-gradient(to bottom,
+          rgba(88,201,138,0.18),
+          rgba(16,38,28,1.0));
+}
+
+.detail-pane.detail-locked {
+  -fx-background-color:
+      linear-gradient(to bottom,
+          #050a08,
+          #040806);
   -fx-opacity: 0.95;
 }
-.toggle-button:hover .nav-icon,
-.button:hover .nav-icon {
-  -fx-opacity: 1.0;
-}
 
-/* Icona moneta */
-.coin-icon {
-  -fx-opacity: 1.0;
-  -fx-effect: dropshadow(gaussian, rgba(122,217,169,0.25), 6, 0.2, 0, 0);
-}
-
-/* ----- Stile Achievements ----- */
-
-/* Pannello dettaglio (destra) */
-.detail-pane {
-    -fx-background-color: -fx-base;            /* usa la palette che hai già */
-    -fx-background-radius: 16;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 12, 0.2, 0, 2);
-}
-.detail-pane.detail-achieved {
-    -fx-background-color: linear-gradient(to bottom, derive(-fx-base, 8%), derive(-fx-base, -2%));
-}
-.detail-pane.detail-locked {
-    -fx-background-color: linear-gradient(to bottom, derive(-fx-base, -2%), derive(-fx-base, -6%));
-}
+/* micro-sezione tipo “PROGRESSO” / “DETTAGLI” */
 .section-title {
-    -fx-font-size: 14px;
-    -fx-font-weight: bold;
+  -fx-font-size: 11px;
+  -fx-font-weight: 700;
+  -fx-text-fill: -canopy-muted;
+  -fx-letter-spacing: 1.2px;
 }
+
+/* titolo obiettivo selezionato */
 .detail-title {
-    -fx-font-size: 16px;
-    -fx-font-weight: 700;
+  -fx-font-size: 18px;
+  -fx-font-weight: 900;
+  -fx-text-fill: -canopy-text;
+  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.45), 12, 0.4, 0, 2);
 }
+
+/* sottotitolo / descrizione breve */
 .detail-subtitle {
-    -fx-text-fill: -fx-text-inner-color;
-    -fx-opacity: 0.85;
+  -fx-text-fill: -canopy-muted;
+  -fx-opacity: 0.98;
 }
+
+/* testo progresso numerico */
 .detail-progress {
-    -fx-text-fill: -fx-text-inner-color;
+  -fx-text-fill: -canopy-accent-2;
+  -fx-font-weight: 800;
 }
 
-/* ScrollPane */
-.scrollpane-clean > .viewport {
-    -fx-background-color: transparent;
+/* badge stato (se usi label con queste styleClass) */
+.badge {
+  -fx-font-size: 10px;
+  -fx-font-weight: 800;
+  -fx-background-radius: 999;
+  -fx-padding: 3 8;
+  -fx-letter-spacing: 1.1px;
 }
-.scrollpane-clean {
-    -fx-background-color: transparent;
+.badge-achieved {
+  -fx-background-color: rgba(88,201,138,0.32);
+  -fx-text-fill: -canopy-text;
+}
+.badge-locked {
+  -fx-background-color: rgba(255,255,255,0.10);
+  -fx-text-fill: #bbbbbb;
 }
 
-/* Card Obiettivo (centro) */
+/* ----- Card obiettivi centrali (VERAMENTE rifatte) ----- */
+
 .card {
-    -fx-background-color: derive(-fx-base, -4%);
-    -fx-background-radius: 12;
-    -fx-padding: 12;
-    -fx-border-color: transparent;
-    -fx-border-radius: 12;
-    -fx-border-width: 1;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 8, 0.2, 0, 1);
+  -fx-background-color:
+    linear-gradient(to bottom,
+        rgba(21,42,32,0.85),
+        rgba(9,23,17,0.96));
+  -fx-background-radius: 18;
+  -fx-padding: 10 12;
+  -fx-border-color: rgba(155,227,184,0.18);
+  -fx-border-radius: 18;
+  -fx-border-width: 1;
+  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.55), 14, 0.38, 0, 3);
+  -fx-cursor: hand;
+  -fx-opacity: 0.96;
 }
 
 .card:hover {
-    -fx-background-color: derive(-fx-base, 0%);
+  -fx-background-color:
+    linear-gradient(to bottom,
+        rgba(30,64,48,0.92),
+        rgba(11,27,19,0.98));
+  -fx-border-color: rgba(155,227,184,0.32);
 }
 
 .card-selected {
-    -fx-border-color: -fx-accent;
-    -fx-border-width: 2;
+  -fx-background-color:
+    linear-gradient(to bottom,
+        rgba(88,201,138,0.16),
+        rgba(21,42,32,0.96));
+  -fx-border-color: rgba(155,227,184,0.80);
+  -fx-border-width: 2;
+  -fx-effect: dropshadow(gaussian, rgba(155,227,184,0.45), 16, 0.55, 0, 3);
 }
 
 .card-achieved {
-    /* in chiaro */
-    -fx-opacity: 1.0;
+  -fx-opacity: 1.0;
+  -fx-background-color:
+    linear-gradient(to bottom,
+      rgba(128,217,157,0.12),
+      rgba(18,46,34,1.0));
 }
 
 .card-locked {
-    /* in scuro */
-    -fx-opacity: 0.6;
+  -fx-opacity: 0.55;
+  -fx-background-color:
+    linear-gradient(to bottom,
+      rgba(5,10,7,0.95),
+      rgba(3,6,5,0.98));
+  -fx-border-color: rgba(155,227,184,0.10);
 }
 
+/* titolo e descrizione interno card */
 .card-title {
-    -fx-font-weight: 700;
-    -fx-font-size: 13px;
+  -fx-font-weight: 800;
+  -fx-font-size: 13px;
+  -fx-text-fill: -canopy-text;
+  -fx-wrap-text: true;
 }
-
 .card-desc {
-    -fx-font-size: 12px;
-    -fx-text-fill: -fx-text-inner-color;
-    -fx-opacity: 0.9;
+  -fx-font-size: 11px;
+  -fx-text-fill: -canopy-muted;
+  -fx-opacity: 0.96;
 }
 
-/* ----- Stile Erbario ----- */
+/* mini-pill di progresso (se usi Label con questa classe) */
+.card-progress-pill {
+  -fx-font-size: 10px;
+  -fx-font-weight: 700;
+  -fx-text-fill: -canopy-text;
+  -fx-background-color: rgba(155,227,184,0.16);
+  -fx-background-radius: 999;
+  -fx-padding: 2 6;
+}
+.card-achieved .card-progress-pill {
+  -fx-background-color: rgba(88,201,138,0.40);
+}
+.card-locked .card-progress-pill {
+  -fx-background-color: rgba(255,255,255,0.12);
+  -fx-text-fill: #b1b1b1;
+}
+
+/* ---------- ERBARIO (HERBARIUM) ---------- */
+
 .content-root {
-    -fx-padding: 24;
+  -fx-padding: 22;
+  -fx-background-color:
+     linear-gradient(to bottom,
+        rgba(88,201,138,0.08),
+        #050c09);
+  -fx-background-radius: 20;
+  -fx-border-color: rgba(155,227,184,0.18);
+  -fx-border-radius: 20;
 }
 
-/* Titoli e testi (leggeri, leggibili) */
+/* Titoli & testi */
 .h2 {
-    -fx-font-size: 20px;
-    -fx-font-weight: bold;
+  -fx-font-size: 22px;
+  -fx-font-weight: 900;
+  -fx-text-fill: -canopy-text;
 }
 .h3 {
-    -fx-font-size: 14px;
-    -fx-font-weight: bold;
-    -fx-opacity: 0.9;
+  -fx-font-size: 14px;
+  -fx-font-weight: 800;
+  -fx-text-fill: -canopy-text;
 }
 .muted {
-    /* Text e Label usano proprietà diverse */
-    -fx-fill: #6a6a6a;
-    -fx-text-fill: #6a6a6a;
-    -fx-opacity: 0.95;
+  -fx-fill: -canopy-muted;
+  -fx-text-fill: -canopy-muted;
+  -fx-opacity: 0.96;
 }
 
-/* Suggerimento quando non c'è selezione */
+/* messaggio “nessuna pianta selezionata” */
 .hint {
-    -fx-text-fill: #7a7a7a;
-    -fx-font-size: 12px;
-    -fx-background-color: rgba(0,0,0,0.03);
-    -fx-padding: 8 12;
-    -fx-background-radius: 8;
+  -fx-text-fill: -canopy-muted;
+  -fx-font-size: 12px;
+  -fx-background-color: rgba(0,0,0,0.35);
+  -fx-padding: 8 12;
+  -fx-background-radius: 10;
 }
 
-/* Immagine grande: leggero sollevamento */
+/* immagine grande pianta */
 .plant-hero {
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 16, 0.2, 0, 4);
+  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.55), 22, 0.4, 0, 6);
+  -fx-smooth: true;
 }
 
-/* Colonna destra (ricerca + lista) */
+/* colonna destra erbario (search + lista) */
 .sidebar-right {
-    -fx-padding: 16;
-    -fx-background-color: rgba(0,0,0,0.02);
-    -fx-border-color: rgba(0,0,0,0.06);
-    -fx-border-width: 0 0 0 1;
+  -fx-padding: 16;
+  -fx-background-color:
+    linear-gradient(to bottom, #07140f, #050a07);
+  -fx-border-color: rgba(155,227,184,0.20);
+  -fx-border-width: 0 0 0 1;
 }
 
-/* Barra di ricerca */
+/* barra di ricerca */
 .search-bar {
-    -fx-background-radius: 10;
-    -fx-padding: 8 10 8 12;
-    -fx-prompt-text-fill: #8a8a8a;
-    -fx-background-insets: 0;
-    -fx-focus-color: transparent;
-    -fx-faint-focus-color: transparent;
+  -fx-background-radius: 999;
+  -fx-padding: 8 10 8 14;
+  -fx-background-insets: 0;
+  -fx-background-color: -canopy-surface-2;
+  -fx-prompt-text-fill: -canopy-muted;
+  -fx-text-fill: -canopy-text;
+  -fx-border-color: rgba(155,227,184,0.25);
+  -fx-border-radius: 999;
+  -fx-focus-color: transparent;
+  -fx-faint-focus-color: transparent;
 }
 
-/* filtri (ToggleButton) */
+/* filtri chip */
 .chip {
-    -fx-background-color: rgba(0,0,0,0.04);
-    -fx-text-fill: -fx-text-base-color;
-    -fx-background-radius: 999;
-    -fx-padding: 6 12;
-    -fx-cursor: hand;
-    -fx-border-color: transparent;
-    -fx-border-radius: 999;
-    -fx-focus-color: transparent;
-    -fx-faint-focus-color: transparent;
+  -fx-background-color: rgba(155,227,184,0.10);
+  -fx-text-fill: -canopy-text;
+  -fx-background-radius: 999;
+  -fx-padding: 6 12;
+  -fx-cursor: hand;
+  -fx-border-color: rgba(155,227,184,0.22);
+  -fx-border-radius: 999;
+  -fx-focus-color: transparent;
+  -fx-faint-focus-color: transparent;
 }
 .chip:hover {
-    -fx-background-color: rgba(0,0,0,0.07);
+  -fx-background-color: rgba(155,227,184,0.18);
 }
 .chip:selected {
-    -fx-background-color: rgba(0,0,0,0.12);
-    -fx-text-fill: -fx-text-base-color;
+  -fx-background-color:
+    linear-gradient(to right, -canopy-accent, -canopy-accent-2);
+  -fx-text-fill: #03130c;
+  -fx-border-color: transparent;
 }
 .chip:selected:hover {
-    -fx-background-color: rgba(0,0,0,0.15);
+  -fx-background-color:
+    linear-gradient(to right, -canopy-accent-2, #3fb578);
 }
 
-/* ScrollPane della lista */
+/* scroll lista erbario */
 .list-scroll {
-    -fx-background-color: transparent;
-    -fx-padding: 0;
+  -fx-background-color: transparent;
+  -fx-padding: 0;
 }
 .list-scroll .viewport {
-    -fx-background-color: transparent;
-}
-.scroll-bar:vertical .thumb {
-    -fx-background-color: rgba(0,0,0,0.25);
-    -fx-background-radius: 8;
-}
-.scroll-bar:vertical .track {
-    -fx-background-color: transparent;
+  -fx-background-color: transparent;
 }
 
-/* Lista piante (ListView) */
-.list-view {
-    -fx-background-insets: 0;
-    -fx-background-color: transparent;
-}
-.list-cell {
-    -fx-background-color: transparent;
-    -fx-padding: 10 12;
-    -fx-border-color: rgba(0,0,0,0.06);
-    -fx-border-width: 0 0 1 0;
-}
-.list-cell:hover {
-    -fx-background-color: rgba(0,0,0,0.04);
-}
-.list-cell:filled:selected, .list-cell:filled:selected:hover {
-    -fx-background-color: rgba(0,0,0,0.08);
-}
-
-/* Button "×" cancella ricerca */
-.button {
-    -fx-focus-color: transparent;
-    -fx-faint-focus-color: transparent;
-}
-
-
-/* herbarium aggiunta */
-.plant-hero {
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 20, 0.3, 0, 4);
-    -fx-smooth: true;
-}
-
+/* card nella lista piante (si appoggia a .list-cell) */
 .plant-card {
-    -fx-background-radius: 14;
-    -fx-padding: 8 10 8 10;
+  -fx-background-radius: 14;
+  -fx-padding: 8 10 8 10;
 }
 
-.list-scroll .viewport {
-    -fx-background-color: transparent;
-}
-
-/* Contenitore testo dettaglio */
+/* contenitore testo dettaglio pianta */
 .detail-text {
-    -fx-padding: 8 0 0 0;
+  -fx-padding: 10 0 0 0;
 }
 
-/* Header con nome pianta */
+/* titolo pianta */
 .plant-title {
-    -fx-font-size: 26px;
-    -fx-font-weight: 800;
-    -fx-text-fill: -fx-text-base-color;
-    /* leggero gradiente fake usando effetto */
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 12, 0.2, 0, 2);
+  -fx-font-size: 24px;
+  -fx-font-weight: 900;
+  -fx-text-fill: -canopy-text;
+  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.55), 14, 0.45, 0, 2);
 }
 
+/* curiosità */
 .plant-curiosity {
-    -fx-fill: #8e8e8e;
-    -fx-font-size: 12px;
-    -fx-font-style: italic;
+  -fx-fill: -canopy-muted;
+  -fx-font-size: 12px;
+  -fx-font-style: italic;
 }
 
-/* Card per descrizione / cura */
+/* card per descrizione/cura */
 .detail-section {
-    -fx-background-color: rgba(255, 255, 255, 0.03);
-    -fx-background-radius: 14;
-    -fx-padding: 12 14 12 14;
-    -fx-border-color: rgba(255, 255, 255, 0.06);
-    -fx-border-radius: 14;
+  -fx-background-color:
+    rgba(9, 23, 17, 0.96);
+  -fx-background-radius: 16;
+  -fx-padding: 12 14;
+  -fx-border-color: rgba(155,227,184,0.18);
+  -fx-border-radius: 16;
 }
 
-/* Titolo sezione ("Descrizione", "Cura") */
-.section-title {
-    -fx-font-size: 11px;
-    -fx-font-weight: 700;
-    -fx-text-fill: #a0a0a0;
-    -fx-text-transform: uppercase;        /* alcuni engine ignorano, ma ci proviamo */
-    -fx-letter-spacing: 1.5px;
+/* titolo sezione (Descrizione/Cura) */
+.section-title-herb {
+  -fx-font-size: 11px;
+  -fx-font-weight: 800;
+  -fx-text-fill: -canopy-muted;
+  -fx-letter-spacing: 1.4px;
 }
 
-/* Testo dentro le card */
+/* testo dentro le card */
 .section-body {
-    -fx-fill: -fx-text-base-color;
-    -fx-font-size: 13px;
-    -fx-line-spacing: 3px;
+  -fx-fill: -canopy-text;
+  -fx-font-size: 13px;
+  -fx-line-spacing: 3px;
 }

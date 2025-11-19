@@ -78,9 +78,9 @@ public class Plant {
                 new Plant(
                                 "peperoncino",
                                 "Peperoncino",
-                                "Capsicum annuum",
-                                "",
-                                "",
+                                "Nell’antico Perù il peperoncino era usato come mezzo di scambio. Le bacche senza picciolo e liberate dai semi, erano chiamate “guaine” e venivano usate nei mercati come moneta. Fino alla metà del XX secolo, nella piazza del mercato di Cuzco si potevano comprare merci con una manciata di peperoncini (in genere una mezza dozzina) detta rantii.",
+                                "il frutto di alcune varietà piccanti di piante del genere Capsicum, della famiglia delle Solanaceae, originarie del Centro e Sud America.",
+                                "E' fondamentale fornirle molta luce solare diretta, annaffiarla regolarmente senza esagerare (evitando ristagni d'acqua e bagnando solo il terreno), e concimare con un prodotto ricco di potassio durante la fase di crescita e fruttificazione",
                                 "Peperoncino",
                                 "Peperoncino.png"
                         ),
