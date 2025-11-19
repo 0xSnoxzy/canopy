@@ -115,6 +115,16 @@
 
     <VBox alignment="BOTTOM_CENTER" spacing="8" styleClass="logout-section" VBox.vgrow="ALWAYS">
         <Separator prefWidth="150"/>
+
+        <!-- Pulsante tema -->
+        <Button fx:id="btnTheme"
+                text="🌞"
+                contentDisplay="LEFT"
+                graphicTextGap="10"
+                maxWidth="Infinity"
+                styleClass="nav-button theme-toggle-button"
+                onAction="#toggleTheme"/>
+
         <Button fx:id="btnLogout"
                 text="Logout"
                 contentDisplay="LEFT"
@@ -123,4 +133,6 @@
                 styleClass="logout-button"
                 accessibleText="Esegui il logout"/>
     </VBox>
+
+
 </VBox>

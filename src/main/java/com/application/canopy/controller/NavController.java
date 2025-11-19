@@ -1,8 +1,14 @@
 package com.application.canopy.controller;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+
+import com.application.canopy.model.ThemeManager;
+import static com.application.canopy.model.ThemeManager.Theme;
 
 import java.util.function.Consumer;
 
@@ -15,6 +21,24 @@ public class NavController {
     @FXML private ToggleButton btnAchievements;
     @FXML private ToggleButton btnHerbarium;
     @FXML private ToggleButton btnCalendar;
+    @FXML private Button btnTheme;
+
+    @FXML
+    private void toggleTheme() {
+        Scene scene = btnTheme.getScene();
+        if (scene == null) return;
+
+        // chiede al ThemeManager di fare toggle globale
+        ThemeManager.toggle(scene);
+
+        // aggiorna icona in base allo stato corrente
+        Theme theme = ThemeManager.getCurrentTheme();
+        if (theme == Theme.DARK) {
+            btnTheme.setText("🌞"); // sei in dark, il bottone mostra il sole (passa a light)
+        } else {
+            btnTheme.setText("🌙"); // sei in light, il bottone mostra la luna (passa a dark)
+        }
+    }
 
     public void setOnNavigate(Consumer<String> onNavigate) {
         this.onNavigate = onNavigate;

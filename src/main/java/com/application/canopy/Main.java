@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
 
+import com.application.canopy.model.ThemeManager;
+
 public class Main extends Application {
 
     @Override
@@ -24,6 +26,9 @@ public class Main extends Application {
         );
 
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/application/canopy/view/home.fxml")));
+
+        ThemeManager.applyTheme(root);
+
         Scene scene = new Scene(root, 1080, 620);
 
         URL css = getClass().getResource("/css/base-old.css");
