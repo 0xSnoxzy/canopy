@@ -4,8 +4,8 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.image.Image?>
-
 <?import javafx.geometry.Insets?>
+
 <VBox fx:id="navBar"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.application.canopy.controller.NavController"
@@ -54,7 +54,11 @@
                       accessibleText="Vai alla Home"
                       onAction="#goHome">
             <graphic>
-                <ImageView fitWidth="30" fitHeight="30" preserveRatio="true">
+                <ImageView fx:id="homeIcon"
+                           fitWidth="30" fitHeight="30"
+                           preserveRatio="true"
+                           styleClass="nav-icon">
+                    <!-- di default dark, poi il controller li sostituisce in base al tema -->
                     <image><Image url="@images/home-dark.png"/></image>
                 </ImageView>
             </graphic>
@@ -71,7 +75,10 @@
                       accessibleText="Apri la pagina degli obiettivi"
                       onAction="#goAchievements">
             <graphic>
-                <ImageView fitWidth="30" fitHeight="30" preserveRatio="true">
+                <ImageView fx:id="achievementsIcon"
+                           fitWidth="30" fitHeight="30"
+                           preserveRatio="true"
+                           styleClass="nav-icon">
                     <image><Image url="@images/achievements-dark.png"/></image>
                 </ImageView>
             </graphic>
@@ -88,7 +95,10 @@
                       accessibleText="Apri l'erbario"
                       onAction="#goHerbarium">
             <graphic>
-                <ImageView fitWidth="30" fitHeight="30" preserveRatio="true">
+                <ImageView fx:id="herbariumIcon"
+                           fitWidth="30" fitHeight="30"
+                           preserveRatio="true"
+                           styleClass="nav-icon">
                     <image><Image url="@images/herbarium-dark.png"/></image>
                 </ImageView>
             </graphic>
@@ -105,7 +115,10 @@
                       accessibleText="Apri il calendario"
                       onAction="#goCalendar">
             <graphic>
-                <ImageView fitWidth="30" fitHeight="30" preserveRatio="true">
+                <ImageView fx:id="calendarIcon"
+                           fitWidth="30" fitHeight="30"
+                           preserveRatio="true"
+                           styleClass="nav-icon">
                     <image><Image url="@images/calendar-dark.png"/></image>
                 </ImageView>
             </graphic>
@@ -133,6 +146,5 @@
                 styleClass="logout-button"
                 accessibleText="Esegui il logout"/>
     </VBox>
-
 
 </VBox>
