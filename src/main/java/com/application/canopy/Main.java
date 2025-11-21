@@ -12,12 +12,15 @@ import java.net.URL;
 import java.util.Objects;
 
 import com.application.canopy.model.ThemeManager;
+import com.application.canopy.model.FontManager;
 
 public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
         Font.loadFont(getClass().getResourceAsStream("src/main/resources/css/fonts/AtkinsonHyperlegible-Regular.ttf"), 14);
+        Font.loadFont(getClass().getResourceAsStream("/css/fonts/ComicNeue-Regular.ttf"), 14);
+        Font.loadFont(getClass().getResourceAsStream("/css/fonts/RobotoMono-Regular.ttf"), 14);
 
         stage.getIcons().add(
                 new javafx.scene.image.Image(
@@ -27,7 +30,11 @@ public class Main extends Application {
 
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/application/canopy/view/home.fxml")));
 
+        // applica il tema
         ThemeManager.applyTheme(root);
+
+        // applica font scelto dall’utente
+        FontManager.applyFont(root);
 
         Scene scene = new Scene(root, 1080, 620);
 

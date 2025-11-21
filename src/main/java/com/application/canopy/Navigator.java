@@ -1,11 +1,12 @@
 package com.application.canopy;
 
 import com.application.canopy.controller.NavController;
-import com.application.canopy.model.ThemeManager;  // <--- AGGIUNTO
+import com.application.canopy.model.ThemeManager;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
+import com.application.canopy.model.FontManager;
 
 import java.io.IOException;
 import java.util.Map;
@@ -30,8 +31,10 @@ public final class Navigator {
         try {
             Parent newRoot = FXMLLoader.load(Navigator.class.getResource(fxml));
 
-            // ⬇⬇⬇ **APPLICA IL TEMA ATTUALE ALLA NUOVA PAGINA**
+            // tema
             ThemeManager.applyTheme(newRoot);
+            // font
+            FontManager.applyFont(newRoot);
 
             Scene scene = currentRoot.getScene();
             if (scene != null) {

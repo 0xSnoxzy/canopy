@@ -2,9 +2,12 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.application.canopy.controller.SettingsController"
@@ -20,7 +23,7 @@
     <center>
         <!-- sfondo centrale coerente con le altre pagine -->
         <StackPane styleClass="center-area">
-            <!-- wrapper contenuto erbario/impostazioni -->
+            <!-- wrapper contenuto impostazioni -->
             <VBox styleClass="content-root"
                   spacing="18"
                   maxWidth="Infinity"
@@ -32,17 +35,23 @@
                 <!-- titolo pagina -->
                 <Label text="Impostazioni" styleClass="h2"/>
 
-                <!-- sottotitolo / placeholder -->
+                <!-- sottotitolo -->
                 <Label text="Qui potrai configurare le impostazioni dell'app Canopy."
                        styleClass="muted"/>
 
-                <!-- spazio per future sezioni -->
-                <!--
-                Qui potrai aggiungere:
-                  - toggle per suoni / notifiche
-                  - scelta lingua
-                  - reset progressi, ecc.
-                -->
+                <!-- Sezione FONT -->
+                <Separator/>
+
+                <Label text="Aspetto" styleClass="h3"/>
+
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Font dell'interfaccia" styleClass="muted"/>
+                    <ComboBox fx:id="fontCombo" prefWidth="230"/>
+                </HBox>
+
+                <Label text="Il font predefinito è Atkinson Hyperlegible, pensato per l'accessibilità."
+                       styleClass="muted"/>
+
             </VBox>
         </StackPane>
     </center>
