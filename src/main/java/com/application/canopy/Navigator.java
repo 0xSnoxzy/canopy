@@ -19,7 +19,8 @@ public final class Navigator {
             "home",         "/com/application/canopy/view/home.fxml",
             "herbarium",    "/com/application/canopy/view/herbarium.fxml",
             "achievements", "/com/application/canopy/view/achievements.fxml",
-            "calendar",     "/com/application/canopy/view/calendar.fxml"
+            "calendar",     "/com/application/canopy/view/calendar.fxml",
+            "settings",     "/com/application/canopy/view/settings.fxml"
     );
 
     public static void go(BorderPane currentRoot, String route) {

@@ -2,7 +2,6 @@ package com.application.canopy.controller;
 
 import com.application.canopy.model.ThemeManager;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
@@ -16,13 +15,14 @@ import static com.application.canopy.model.ThemeManager.Theme;
 
 public class NavController {
 
-    private Consumer<String> onNavigate; // "home", "achievements", "herbarium", "calendar"
+    private Consumer<String> onNavigate; // "home", "achievements", "herbarium", "calendar", "settings"
 
     @FXML private ToggleGroup pagesGroup;
     @FXML private ToggleButton btnHome;
     @FXML private ToggleButton btnAchievements;
     @FXML private ToggleButton btnHerbarium;
     @FXML private ToggleButton btnCalendar;
+    @FXML private ToggleButton btnSettings;   // <--- nuovo
 
     @FXML private Button btnTheme;
 
@@ -31,6 +31,7 @@ public class NavController {
     @FXML private ImageView achievementsIcon;
     @FXML private ImageView herbariumIcon;
     @FXML private ImageView calendarIcon;
+    @FXML private ImageView settingsIcon;     // <--- nuovo
 
     // ========================================================
     //  INIT — viene chiamato automaticamente dal FXMLLoader
@@ -54,11 +55,13 @@ public class NavController {
             achievementsIcon.setImage(new Image(getClass().getResourceAsStream(base + "achievements-dark.png")));
             herbariumIcon.setImage(new Image(getClass().getResourceAsStream(base + "herbarium-dark.png")));
             calendarIcon.setImage(new Image(getClass().getResourceAsStream(base + "calendar-dark.png")));
+            settingsIcon.setImage(new Image(getClass().getResourceAsStream(base + "settings-dark.png"))); // <---
         } else {
             homeIcon.setImage(new Image(getClass().getResourceAsStream(base + "home.png")));
             achievementsIcon.setImage(new Image(getClass().getResourceAsStream(base + "achievements.png")));
             herbariumIcon.setImage(new Image(getClass().getResourceAsStream(base + "herbarium.png")));
             calendarIcon.setImage(new Image(getClass().getResourceAsStream(base + "calendar.png")));
+            settingsIcon.setImage(new Image(getClass().getResourceAsStream(base + "settings.png")));       // <---
         }
     }
 
@@ -91,6 +94,7 @@ public class NavController {
     @FXML private void goAchievements(){ fire("achievements"); }
     @FXML private void goHerbarium()   { fire("herbarium"); }
     @FXML private void goCalendar()    { fire("calendar"); }
+    @FXML private void goSettings()    { fire("settings"); }   // <---
 
     /** Evidenzia la voce attiva */
     public void setActive(String route) {
@@ -99,7 +103,8 @@ public class NavController {
             case "achievements" -> btnAchievements.setSelected(true);
             case "herbarium"    -> btnHerbarium.setSelected(true);
             case "calendar"     -> btnCalendar.setSelected(true);
-            default -> pagesGroup.selectToggle(null);
+            case "settings"     -> btnSettings.setSelected(true); // <---
+            default             -> pagesGroup.selectToggle(null);
         }
     }
 }

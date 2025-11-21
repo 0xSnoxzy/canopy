@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.application.canopy.controller.SettingsController"
+            fx:id="root"
+            prefWidth="1100" prefHeight="700">
+
+    <!-- NAV LATERALE -->
+    <left>
+        <fx:include source="components/nav.fxml" fx:id="nav"/>
+    </left>
+
+    <!-- CONTENUTO CENTRALE -->
+    <center>
+        <!-- sfondo centrale coerente con le altre pagine -->
+        <StackPane styleClass="center-area">
+            <!-- wrapper contenuto erbario/impostazioni -->
+            <VBox styleClass="content-root"
+                  spacing="18"
+                  maxWidth="Infinity"
+                  maxHeight="Infinity">
+                <padding>
+                    <Insets top="16" right="16" bottom="16" left="16"/>
+                </padding>
+
+                <!-- titolo pagina -->
+                <Label text="Impostazioni" styleClass="h2"/>
+
+                <!-- sottotitolo / placeholder -->
+                <Label text="Qui potrai configurare le impostazioni dell'app Canopy."
+                       styleClass="muted"/>
+
+                <!-- spazio per future sezioni -->
+                <!--
+                Qui potrai aggiungere:
+                  - toggle per suoni / notifiche
+                  - scelta lingua
+                  - reset progressi, ecc.
+                -->
+            </VBox>
+        </StackPane>
+    </center>
+
+</BorderPane>
