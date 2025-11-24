@@ -796,3 +796,17 @@
   -fx-font-weight: 800;
 }
 
+/* ---------- FONT SWITCHER ---------- */
+/* classi applicate da FontManager */
+
+.root.font-atkinson {
+  -fx-font-family: "Atkinson Hyperlegible";
+}
+
+.root.font-comicneue {
+  -fx-font-family: "Comic Neue";
+}
+
+.root.font-robotomono {
+  -fx-font-family: "Roboto Mono";
+}
