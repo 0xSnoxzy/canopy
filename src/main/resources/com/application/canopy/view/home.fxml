@@ -62,7 +62,7 @@
     </center>
 
     <right>
-        <VBox spacing="8" alignment="TOP_LEFT" prefWidth="420" styleClass="side-panel">
+        <VBox spacing="8" alignment="TOP_LEFT" prefWidth="420" styleClass="sidebar-right">
             <Label text="Selezione piante" styleClass="panel-title"/>
             <ListView fx:id="list" VBox.vgrow="ALWAYS"/>
         </VBox>
