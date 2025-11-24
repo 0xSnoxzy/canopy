@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.input.*?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:id="root"
             fx:controller="com.application.canopy.controller.CalendarController">
-
-    <!-- Integrazione nav.fxml-->
-    <left>
-        <fx:include source="components/nav.fxml" fx:id="nav"/>
-    </left>
 
     <!-- CENTRO: toolbar + griglia calendario -->
     <center>
@@ -26,19 +21,19 @@
                 <ToggleButton fx:id="weekBtn"  text="Settimana"/>
                 <Region HBox.hgrow="ALWAYS"/>
                 <Button fx:id="prevBtn" text="⟨" minWidth="36"/>
-                <Label  fx:id="periodLabel" styleClass="h2"/>
+                <Label fx:id="periodLabel" styleClass="h2"/>
                 <Button fx:id="nextBtn" text="⟩" minWidth="36"/>
             </HBox>
 
             <!-- Nomi giorni -->
             <GridPane fx:id="weekdayHeader" hgap="6" styleClass="weekday-header">
-                <Label text="Lun" HBox.hgrow="ALWAYS" styleClass="weekday" />
-                <Label text="Mar" HBox.hgrow="ALWAYS" styleClass="weekday" />
-                <Label text="Mer" HBox.hgrow="ALWAYS" styleClass="weekday" />
-                <Label text="Gio" HBox.hgrow="ALWAYS" styleClass="weekday" />
-                <Label text="Ven" HBox.hgrow="ALWAYS" styleClass="weekday" />
-                <Label text="Sab" HBox.hgrow="ALWAYS" styleClass="weekday" />
-                <Label text="Dom" HBox.hgrow="ALWAYS" styleClass="weekday" />
+                <Label text="Lun" HBox.hgrow="ALWAYS" styleClass="weekday"/>
+                <Label text="Mar" HBox.hgrow="ALWAYS" styleClass="weekday"/>
+                <Label text="Mer" HBox.hgrow="ALWAYS" styleClass="weekday"/>
+                <Label text="Gio" HBox.hgrow="ALWAYS" styleClass="weekday"/>
+                <Label text="Ven" HBox.hgrow="ALWAYS" styleClass="weekday"/>
+                <Label text="Sab" HBox.hgrow="ALWAYS" styleClass="weekday"/>
+                <Label text="Dom" HBox.hgrow="ALWAYS" styleClass="weekday"/>
             </GridPane>
 
             <!-- Griglia giorni -->

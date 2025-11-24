@@ -6,16 +6,14 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.Rectangle?>
-
 <?import java.lang.String?>
+
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:id="root"
             fx:controller="com.application.canopy.controller.HomeController"
             prefWidth="1920" prefHeight="1080">
 
-    <left>
-        <fx:include source="components/nav.fxml" fx:id="nav"/>
-    </left>
+    <!-- NIENTE NAV QUI -->
 
     <center>
         <VBox spacing="14" alignment="CENTER" styleClass="center-area">
@@ -26,7 +24,7 @@
                     <Insets top="12" right="12" bottom="12" left="12"/>
                 </padding>
 
-                <!-- (Canvas nascosto -->
+                <!-- Canvas nascosto -->
                 <Canvas fx:id="canvas" width="720" height="720" visible="false" managed="false"/>
 
                 <!-- Pianta  -->
@@ -44,13 +42,13 @@
             <ProgressBar fx:id="progress" prefWidth="720" progress="0.0"/>
 
             <!-- Controlli inferiori -->
-            <HBox spacing="10" alignment="CENTER"  >
+            <HBox spacing="10" alignment="CENTER">
                 <Button fx:id="btnStartReset" text="Start" styleClass="start" defaultButton="true"/>
                 <Separator orientation="VERTICAL" prefHeight="20"/>
                 <Label text="Sessione:" styleClass="subtle"/>
                 <ComboBox fx:id="sessionCombo" promptText="Pomodoro">
                     <items>
-                        <FXCollections fx:factory="observableArrayList" >
+                        <FXCollections fx:factory="observableArrayList">
                             <String fx:value="Pomodoro (25)"/>
                             <String fx:value="Pausa breve (5)"/>
                             <String fx:value="Pausa lunga (15)"/>
@@ -63,13 +61,11 @@
         </VBox>
     </center>
 
-
     <right>
         <VBox spacing="8" alignment="TOP_LEFT" prefWidth="420" styleClass="side-panel">
             <Label text="Selezione piante" styleClass="panel-title"/>
             <ListView fx:id="list" VBox.vgrow="ALWAYS"/>
         </VBox>
     </right>
-
 
 </BorderPane>

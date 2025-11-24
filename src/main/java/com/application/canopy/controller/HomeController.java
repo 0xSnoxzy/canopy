@@ -59,8 +59,6 @@ public class HomeController {
 
     @FXML
     private void initialize() {
-        Navigator.wire(navController, root, "home");
-
         // canvas disattivato
         if (canvas != null) {
             canvas.setVisible(false);

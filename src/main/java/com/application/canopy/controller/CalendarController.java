@@ -31,7 +31,6 @@ public class CalendarController {
 
     @FXML
     private void initialize() {
-        Navigator.wire(navController, root, "calendar");
         buildWeekdayHeader();
 
         monthBtn.setOnAction(e -> { weekBtn.setSelected(false); backToMonth(); refresh(); });

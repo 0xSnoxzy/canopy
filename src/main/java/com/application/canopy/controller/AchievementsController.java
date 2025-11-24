@@ -13,12 +13,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-import java.io.IOException;
-
 import com.application.canopy.Navigator;
 
 public class AchievementsController {
@@ -41,9 +35,6 @@ public class AchievementsController {
 
     @FXML
     public void initialize() {
-
-        Navigator.wire(navController, root, "achievements");
-
 
         data.add(new Achievement("Botanico Professionista", "Pianta 10 piante diverse", "/images/achievements/botanist.png", 7, 10, false));
         data.add(new Achievement("Custode della Foresta", "Completa 5 sessioni giornaliere", "/images/achievements/guardian.png", 5, 5, true));

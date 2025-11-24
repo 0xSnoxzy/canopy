@@ -1,20 +1,19 @@
 package com.application.canopy;
 
-import com.application.canopy.controller.NavController;
-import com.application.canopy.model.ThemeManager;  // <--- AGGIUNTO
+import com.application.canopy.model.ThemeManager;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.Node;
+import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 public final class Navigator {
 
     private Navigator() {}
 
-    // Mappatura (nome pagina -> pagina.FXML)
+    // nome pagina -> FXML del contenuto (senza nav)
     private static final Map<String, String> ROUTES = Map.of(
             "home",         "/com/application/canopy/view/home.fxml",
             "herbarium",    "/com/application/canopy/view/herbarium.fxml",
@@ -22,30 +21,39 @@ public final class Navigator {
             "calendar",     "/com/application/canopy/view/calendar.fxml"
     );
 
-    public static void go(BorderPane currentRoot, String route) {
-        String fxml = ROUTES.get(route);
-        if (fxml == null) return;
+    private static final Map<String, Node> PAGES = new HashMap<>();
 
-        try {
-            Parent newRoot = FXMLLoader.load(Navigator.class.getResource(fxml));
+    // contenitore centrale dove mostriamo le pagine
+    private static StackPane contentRoot;
 
-            // ⬇⬇⬇ **APPLICA IL TEMA ATTUALE ALLA NUOVA PAGINA**
-            ThemeManager.applyTheme(newRoot);
+    // chiamato da AppController.initialize()
+    public static void init(StackPane container) {
+        contentRoot = container;
 
-            Scene scene = currentRoot.getScene();
-            if (scene != null) {
-                scene.setRoot(newRoot);
-            } else {
-                currentRoot.getChildren().setAll(newRoot);
+        // PRECARICO TUTTE LE PAGINE
+        ROUTES.forEach((route, fxmlPath) -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(Navigator.class.getResource(fxmlPath));
+                Node node = loader.load();
+
+                PAGES.put(route, node);
+            } catch (IOException e) {
+                System.err.println("Errore caricando " + route + " (" + fxmlPath + ")");
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        });
     }
 
-    /** Collega il Nav della pagina corrente al Router e seleziona la voce attiva */
-    public static void wire(NavController nav, BorderPane pageRoot, String activeRoute) {
-        nav.setOnNavigate(route -> go(pageRoot, route));
-        nav.setActive(activeRoute);
+    // mostra una pagina nel centro
+    public static void show(String route) {
+        if (contentRoot == null) return;
+
+        Node page = PAGES.get(route);
+        if (page == null) {
+            System.err.println("Pagina non trovata: " + route);
+            return;
+        }
+
+        contentRoot.getChildren().setAll(page);
     }
 }

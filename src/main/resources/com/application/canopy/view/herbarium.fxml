@@ -1,76 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
 
-<?import javafx.scene.image.Image?>
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:id="root"
             fx:controller="com.application.canopy.controller.HerbariumController">
 
-    <!-- NAV SINISTRA -->
-    <left>
-        <fx:include source="components/nav.fxml" fx:id="nav"/>
-    </left>
+    <!-- ⚠️ NIENTE NAV QUI ⚠️ -->
 
     <!-- CENTRO: SplitPane = [Dettaglio | Sidebar destra] -->
     <center>
         <SplitPane fx:id="mainSplit" dividerPositions="0.66">
             <items>
 
-                <!-- PANNELLO DETTAGLIO -->
                 <ScrollPane fx:id="detailScroll" fitToWidth="true" fitToHeight="true" pannable="true">
                     <content>
-                        <FlowPane fx:id="detailFlow" hgap="24" vgap="16" prefWrapLength="680"
-                                  styleClass="content-root">
-
+                        <VBox spacing="16" styleClass="content-root">
                             <padding>
-                                <Insets topRightBottomLeft="16"/>
+                                <Insets top="16" right="16" bottom="16" left="16"/>
                             </padding>
 
-                            <!-- Immagine grande -->
-                            <ImageView fx:id="plantImage"
-                                       fitWidth="360" preserveRatio="true"
-                                       smooth="true" pickOnBounds="true"
-                                       styleClass="plant-hero"/>
+                            <StackPane fx:id="stageContainer" styleClass="plant-stage">
+                                <!-- background -->
+                                <ImageView fx:id="stageBackground"
+                                           preserveRatio="true" smooth="true"
+                                           pickOnBounds="false"/>
 
-                            <!-- Testo a destra (o sotto se stretto) -->
-                            <!-- Testo a destra (o sotto se stretto) -->
-                            <VBox spacing="16" maxWidth="Infinity" styleClass="detail-text">
-                                <!-- Header pianta -->
-                                <VBox spacing="6" styleClass="detail-header">
-                                    <Label fx:id="plantTitle" styleClass="plant-title"/>
-                                    <Text fx:id="plantCuriosity"
-                                          wrappingWidth="520"
-                                          styleClass="plant-curiosity"/>
-                                </VBox>
+                                <!-- tasto switch sfondo -->
+                                <HBox spacing="8" alignment="CENTER_RIGHT" StackPane.alignment="TOP_RIGHT"
+                                      styleClass="stage-controls">
+                                    <Label text="Sfondo:"/>
+                                    <ChoiceBox fx:id="backgroundChoice" prefWidth="200"/>
+                                </HBox>
 
-                                <!-- Card: descrizione -->
+                                <!-- overlay della pianta -->
+                                <ImageView fx:id="plantImage"
+                                           preserveRatio="true" smooth="true"
+                                           pickOnBounds="true" styleClass="plant-hero"/>
+                            </StackPane>
+
+                            <!-- TESTI PIANTE -->
+                            <VBox spacing="12" styleClass="detail">
+                                <Label fx:id="plantTitle" styleClass="plant-title"/>
+                                <Text fx:id="plantCuriosity" wrappingWidth="800" styleClass="plant-curiosity"/>
+
                                 <VBox spacing="6" styleClass="detail-section">
                                     <Label text="Descrizione" styleClass="section-title"/>
-                                    <Text fx:id="plantDescription"
-                                          wrappingWidth="520"
-                                          styleClass="section-body"/>
+                                    <Text fx:id="plantDescription" wrappingWidth="800" styleClass="section-body"/>
                                 </VBox>
 
-                                <!-- Card: cura -->
                                 <VBox spacing="6" styleClass="detail-section">
                                     <Label text="Cura" styleClass="section-title"/>
-                                    <Text fx:id="plantCare"
-                                          wrappingWidth="520"
-                                          styleClass="section-body"/>
+                                    <Text fx:id="plantCare" wrappingWidth="800" styleClass="section-body"/>
                                 </VBox>
+
+                                <!-- Nessuna selezione -->
+                                <Label fx:id="emptyHint"
+                                       text="Seleziona una pianta a destra per vederne i dettagli"
+                                       styleClass="hint" visible="true"/>
                             </VBox>
-
-
-                            <!-- Hint quando nulla è selezionato -->
-                            <Label fx:id="emptyHint"
-                                   text="Seleziona una pianta a destra per vederne i dettagli"
-                                   styleClass="hint" visible="true"/>
-                        </FlowPane>
+                        </VBox>
                     </content>
                 </ScrollPane>
 
@@ -78,7 +71,6 @@
                 <VBox spacing="12" styleClass="sidebar-right"
                       prefWidth="340" minWidth="260" maxWidth="480">
 
-                    <!-- Barra di ricerca -->
                     <HBox spacing="8" alignment="CENTER_LEFT">
                         <TextField fx:id="searchField"
                                    promptText="Cerca per nome o parola chiave…"
@@ -87,20 +79,18 @@
                         <Button fx:id="clearSearchBtn" text="×" focusTraversable="false"/>
                     </HBox>
 
-                    <!-- Filtri (categorie: COMUNI, RARE, SPECIALE) -->
                     <FlowPane hgap="8" vgap="8" prefWrapLength="320">
-                        <ToggleButton fx:id="allChip"    text="Tutte"    selected="true" styleClass="chip"/>
-                        <ToggleButton fx:id="commonChip" text="Comuni"               styleClass="chip"/>
-                        <ToggleButton fx:id="rareChip"   text="Rare"                 styleClass="chip"/>
-                        <ToggleButton fx:id="specialChip" text="Speciali"            styleClass="chip"/>
+                        <ToggleButton fx:id="allChip"     text="Tutte"    selected="true" styleClass="chip"/>
+                        <ToggleButton fx:id="commonChip"  text="Comuni"                 styleClass="chip"/>
+                        <ToggleButton fx:id="rareChip"    text="Rare"                   styleClass="chip"/>
+                        <ToggleButton fx:id="specialChip" text="Speciali"               styleClass="chip"/>
                     </FlowPane>
 
-                    <!-- Lista piante (senza ScrollPane annidato) -->
-                    <ListView fx:id="plantsList"
-                              prefHeight="520"
-                              VBox.vgrow="ALWAYS"/>
+                    <ListView fx:id="plantsList" prefHeight="520" VBox.vgrow="ALWAYS"/>
                 </VBox>
+
             </items>
         </SplitPane>
     </center>
+
 </BorderPane>

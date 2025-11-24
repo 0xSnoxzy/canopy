@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.ImageView?>
@@ -10,41 +9,71 @@
             fx:id="root"
             prefWidth="1100" prefHeight="700">
 
-    <!-- SINISTRA: NAV -->
-    <left>
-        <fx:include source="components/nav.fxml" fx:id="nav"/>
-    </left>
+    <!-- ⚠️ NIENTE NAV QUI ⚠️ -->
 
-    <!-- CENTRO: griglia achievements (FlowPane, 2 card per riga in base alla larghezza) -->
+    <!-- CENTRO: griglia achievements -->
     <center>
-        <ScrollPane fitToWidth="true" fitToHeight="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" styleClass="scrollpane-clean">
+        <ScrollPane fitToWidth="true" fitToHeight="true"
+                    hbarPolicy="NEVER"
+                    vbarPolicy="AS_NEEDED"
+                    styleClass="scrollpane-clean">
+
             <content>
                 <FlowPane fx:id="achievementsFlow" hgap="16" vgap="16" alignment="TOP_LEFT">
-
-                    <padding><Insets top="16" right="16" bottom="16" left="16"/></padding>
-
+                    <padding>
+                        <Insets top="16" right="16" bottom="16" left="16"/>
+                    </padding>
                 </FlowPane>
             </content>
+
         </ScrollPane>
     </center>
 
     <!-- DESTRA: dettaglio obiettivo -->
     <right>
-        <VBox fx:id="detailPane" spacing="12" alignment="TOP_LEFT" prefWidth="320" styleClass="detail-pane">
-            <padding><Insets top="16" right="16" bottom="16" left="16"/></padding>
+        <VBox fx:id="detailPane"
+              spacing="12"
+              alignment="TOP_LEFT"
+              prefWidth="320"
+              styleClass="detail-pane">
+
+            <padding>
+                <Insets top="16" right="16" bottom="16" left="16"/>
+            </padding>
 
             <Label text="Dettagli obiettivo" styleClass="section-title"/>
             <Separator/>
-            <ImageView fx:id="detailImage" fitWidth="64" fitHeight="64" preserveRatio="true"/>
-            <Label fx:id="detailTitle" styleClass="detail-title" text="Seleziona un obiettivo"/>
-            <Label fx:id="detailSubtitle" styleClass="detail-subtitle" text="Descrizione"/>
-            <Label fx:id="detailProgress" styleClass="detail-progress" text="Progresso: 0/0"/>
+
+            <ImageView fx:id="detailImage"
+                       fitWidth="64"
+                       fitHeight="64"
+                       preserveRatio="true"/>
+
+            <Label fx:id="detailTitle"
+                   styleClass="detail-title"
+                   text="Seleziona un obiettivo"/>
+
+            <Label fx:id="detailSubtitle"
+                   styleClass="detail-subtitle"
+                   text="Descrizione"/>
+
+            <Label fx:id="detailProgress"
+                   styleClass="detail-progress"
+                   text="Progresso: 0/0"/>
+
             <HBox spacing="8" alignment="CENTER_LEFT">
                 <Label text="Stato:" styleClass="muted"/>
                 <Label fx:id="detailStatus" text="—"/>
             </HBox>
+
             <Separator/>
-            <Button fx:id="btnTrack" text="Traccia/Apri" maxWidth="Infinity" styleClass="primary-button"/>
+
+            <Button fx:id="btnTrack"
+                    text="Traccia/Apri"
+                    maxWidth="Infinity"
+                    styleClass="primary-button"/>
+
         </VBox>
     </right>
+
 </BorderPane>

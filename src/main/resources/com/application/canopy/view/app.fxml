@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.application.canopy.controller.AppController"
+            fx:id="root"
+            prefWidth="1080" prefHeight="620">
+
+    <!-- SINISTRA: NAV UNICO -->
+    <left>
+        <fx:include source="components/nav.fxml" fx:id="nav"/>
+    </left>
+
+    <!-- CENTRO: contenuto variabile -->
+    <center>
+        <StackPane fx:id="contentRoot"/>
+    </center>
+
+</BorderPane>

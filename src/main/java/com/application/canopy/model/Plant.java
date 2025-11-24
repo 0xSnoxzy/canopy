@@ -42,7 +42,7 @@ public class Plant {
                 new Plant(
                                 "sakura",
                                 "Sakura",
-                        "In Giappone il fiore di sakura rappresenta la fugacità della vita. Ogni primavera le persone celebrano l?hanami, la tradizione di ammirare i ciliegi in fiore nei parchi e nei templi.",
+                        "In Giappone il fiore di sakura rappresenta la fugacità della vita. Ogni primavera le persone celebrano l'hanami, la tradizione di ammirare i ciliegi in fiore nei parchi e nei templi.",
                         "Il ciliegio giapponese, simbolo di rinascita e bellezza effimera, è famoso per la sua spettacolare fioritura primaverile. I petali rosa pallido ricoprono i rami creando un paesaggio poetico, spesso associato al concetto giapponese di 'mono no aware', la malinconia delle cose che svaniscono. Cresce lentamente ma regala fioriture straordinarie quando ben curato.",
                         "Necessita di piena luce solare e terreno ben drenato. Ama gli inverni freddi e le primavere miti. Durante il periodo vegetativo, annaffiare regolarmente evitando ristagni. Concimare due volte l?anno, preferendo fertilizzanti ricchi di fosforo per favorire la fioritura. Potare leggermente dopo la fioritura per mantenere la forma.",
                                 "Sakura",
