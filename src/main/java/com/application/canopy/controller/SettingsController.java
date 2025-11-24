@@ -1,6 +1,5 @@
 package com.application.canopy.controller;
 
-import com.application.canopy.Navigator;
 import com.application.canopy.model.FontManager;
 import com.application.canopy.model.FontManager.AppFont;
 import javafx.fxml.FXML;
@@ -13,26 +12,17 @@ public class SettingsController {
     private BorderPane root;
 
     @FXML
-    private NavController navController;
-
-    @FXML
     private ComboBox<String> fontCombo;
 
     @FXML
     private void initialize() {
-        // collega nav e pagina
-        if (root != null && navController != null) {
-            Navigator.wire(navController, root, "settings");
-        }
-
-        // inizializza combo font
         setupFontCombo();
     }
 
     private void setupFontCombo() {
         if (fontCombo == null) return;
 
-        // riempi combo con i nomi da mostrare
+        // riempi combo
         fontCombo.getItems().setAll(
                 AppFont.ATKINSON.getDisplayName(),
                 AppFont.COMIC_NEUE.getDisplayName(),
@@ -43,13 +33,16 @@ public class SettingsController {
         AppFont current = FontManager.getCurrentFont();
         fontCombo.getSelectionModel().select(current.getDisplayName());
 
-        // listener cambi
+        // listener
         fontCombo.getSelectionModel()
                 .selectedItemProperty()
                 .addListener((obs, oldVal, newVal) -> {
                     if (newVal == null) return;
                     AppFont selected = AppFont.fromDisplayName(newVal);
-                    FontManager.setFont(selected, root);
+
+                    if (root != null && root.getScene() != null) {
+                        FontManager.setFont(selected, root.getScene());
+                    }
                 });
     }
 }

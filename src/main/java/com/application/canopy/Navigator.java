@@ -18,41 +18,34 @@ public final class Navigator {
             "home",         "/com/application/canopy/view/home.fxml",
             "herbarium",    "/com/application/canopy/view/herbarium.fxml",
             "achievements", "/com/application/canopy/view/achievements.fxml",
-            "calendar",     "/com/application/canopy/view/calendar.fxml"
+            "calendar",     "/com/application/canopy/view/calendar.fxml",
+            "settings",     "/com/application/canopy/view/settings.fxml"
     );
 
     private static final Map<String, Node> PAGES = new HashMap<>();
 
-    // contenitore centrale dove mostriamo le pagine
     private static StackPane contentRoot;
 
-    // chiamato da AppController.initialize()
     public static void init(StackPane container) {
         contentRoot = container;
 
-        // PRECARICO TUTTE LE PAGINE
+        // precarico tutte le pagine
         ROUTES.forEach((route, fxmlPath) -> {
             try {
                 FXMLLoader loader = new FXMLLoader(Navigator.class.getResource(fxmlPath));
                 Node node = loader.load();
-
                 PAGES.put(route, node);
             } catch (IOException e) {
-                System.err.println("Errore caricando " + route + " (" + fxmlPath + ")");
                 e.printStackTrace();
             }
         });
     }
 
-    // mostra una pagina nel centro
     public static void show(String route) {
         if (contentRoot == null) return;
 
         Node page = PAGES.get(route);
-        if (page == null) {
-            System.err.println("Pagina non trovata: " + route);
-            return;
-        }
+        if (page == null) return;
 
         contentRoot.getChildren().setAll(page);
     }

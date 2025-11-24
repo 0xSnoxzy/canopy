@@ -1,29 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.application.canopy.controller.SettingsController"
             fx:id="root"
             prefWidth="1100" prefHeight="700">
 
-    <!-- NAV LATERALE -->
-    <left>
-        <fx:include source="components/nav.fxml" fx:id="nav"/>
-    </left>
+    <!-- ⚠️ NIENTE NAV QUI ⚠️ -->
 
-    <!-- CONTENUTO CENTRALE -->
     <center>
-        <!-- sfondo centrale coerente con le altre pagine -->
         <StackPane styleClass="center-area">
-            <!-- wrapper contenuto impostazioni -->
+
             <VBox styleClass="content-root"
                   spacing="18"
                   maxWidth="Infinity"
@@ -36,10 +25,9 @@
                 <Label text="Impostazioni" styleClass="h2"/>
 
                 <!-- sottotitolo -->
-                <Label text="Qui potrai configurare le impostazioni dell'app Canopy."
+                <Label text="Qui puoi configurare le impostazioni dell'app Canopy."
                        styleClass="muted"/>
 
-                <!-- Sezione FONT -->
                 <Separator/>
 
                 <Label text="Aspetto" styleClass="h3"/>
@@ -51,8 +39,8 @@
 
                 <Label text="Il font predefinito è Atkinson Hyperlegible, pensato per l'accessibilità."
                        styleClass="muted"/>
-
             </VBox>
+
         </StackPane>
     </center>
 

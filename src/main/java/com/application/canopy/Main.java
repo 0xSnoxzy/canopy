@@ -1,5 +1,6 @@
 package com.application.canopy;
 
+import com.application.canopy.model.FontManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,13 +19,8 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        // Font (correzione path: niente src/main/resources qui)
-        Font.loadFont(
-                Objects.requireNonNull(
-                        getClass().getResourceAsStream("/css/fonts/AtkinsonHyperlegible-Regular.ttf")
-                ),
-                14
-        );
+        // 1) inizializza i font (carica i .ttf e legge la scelta dalle prefs)
+        FontManager.initFonts();
 
         stage.getIcons().add(
                 new javafx.scene.image.Image(
@@ -49,6 +45,7 @@ public class Main extends Application {
         scene.getStylesheets().add(css.toExternalForm());
 
         ThemeManager.applyTheme(root);
+        FontManager.applyCurrentFont(scene);
 
         stage.setScene(scene);
         stage.setTitle("Canopy");
