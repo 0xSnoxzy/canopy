@@ -9,8 +9,6 @@ import javafx.scene.image.ImageView;
 
 import java.util.function.Consumer;
 
-import static com.application.canopy.model.ThemeManager.Theme;
-
 public class NavController {
 
     private Consumer<String> onNavigate; // "home", "achievements", "herbarium", "calendar", "settings"
@@ -29,37 +27,33 @@ public class NavController {
     @FXML private ImageView calendarIcon;
     @FXML private ImageView settingsIcon;
 
-    // ========================================================
-    //  INIT — viene chiamato automaticamente dal FXMLLoader
-    // ========================================================
     @FXML
     private void initialize() {
-        // mi iscrivo ai cambi tema
+        // mi iscrivo ai cambi tema; ricevo sempre themeId (es. "dark", "sakura-light", "lavanda-dark", ...)
         ThemeManager.addThemeListener(this::updateIconsForTheme);
-        // non serve più chiamare getCurrentTheme() manualmente:
-        // addThemeListener chiama subito updateIconsForTheme col tema corrente
     }
 
-    // ========================================================
-    //  Aggiorna icone in base al tema corrente
-    // ========================================================
-    private void updateIconsForTheme(Theme theme) {
+    private void updateIconsForTheme(String themeId) {
         String base = "/com/application/canopy/view/components/images/";
 
-        if (theme == Theme.LIGHT) {
-            // TEMA CHIARO → icone nere (i tuoi .png normali)
-            homeIcon.setImage(new Image(getClass().getResourceAsStream(base + "home.png")));
-            achievementsIcon.setImage(new Image(getClass().getResourceAsStream(base + "achievements.png")));
-            herbariumIcon.setImage(new Image(getClass().getResourceAsStream(base + "herbarium.png")));
-            calendarIcon.setImage(new Image(getClass().getResourceAsStream(base + "calendar.png")));
-            settingsIcon.setImage(new Image(getClass().getResourceAsStream(base + "settings.png")));
-        } else {
-            // TEMA SCURO → icone bianche (i tuoi *-dark che hai detto essere bianchi)
+        boolean isDark =
+                "dark".equalsIgnoreCase(themeId) ||
+                        themeId.toLowerCase().endsWith("-dark");
+
+        if (isDark) {
+            // modalità scura → icone bianche
             homeIcon.setImage(new Image(getClass().getResourceAsStream(base + "home-dark.png")));
             achievementsIcon.setImage(new Image(getClass().getResourceAsStream(base + "achievements-dark.png")));
             herbariumIcon.setImage(new Image(getClass().getResourceAsStream(base + "herbarium-dark.png")));
             calendarIcon.setImage(new Image(getClass().getResourceAsStream(base + "calendar-dark.png")));
             settingsIcon.setImage(new Image(getClass().getResourceAsStream(base + "settings-dark.png")));
+        } else {
+            // modalità chiara → icone nere
+            homeIcon.setImage(new Image(getClass().getResourceAsStream(base + "home.png")));
+            achievementsIcon.setImage(new Image(getClass().getResourceAsStream(base + "achievements.png")));
+            herbariumIcon.setImage(new Image(getClass().getResourceAsStream(base + "herbarium.png")));
+            calendarIcon.setImage(new Image(getClass().getResourceAsStream(base + "calendar.png")));
+            settingsIcon.setImage(new Image(getClass().getResourceAsStream(base + "settings.png")));
         }
     }
 
@@ -71,14 +65,12 @@ public class NavController {
         if (onNavigate != null) onNavigate.accept(route);
     }
 
-    // Metodi richiamati dai bottoni
     @FXML private void goHome()        { fire("home"); }
     @FXML private void goAchievements(){ fire("achievements"); }
     @FXML private void goHerbarium()   { fire("herbarium"); }
     @FXML private void goCalendar()    { fire("calendar"); }
     @FXML private void goSettings()    { fire("settings"); }
 
-    /** Evidenzia la voce attiva */
     public void setActive(String route) {
         switch (route) {
             case "home"         -> btnHome.setSelected(true);

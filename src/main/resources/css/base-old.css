@@ -17,67 +17,363 @@
   -fx-accent: -canopy-accent;
 }
 
-/* Tema DARK – Evergreen Deep Forest */
+/* Tema DARK – Evergreen Deep Forest 2.0 */
 .root.theme-dark {
-  /* Palette base */
-  -canopy-bg:           linear-gradient(to bottom, #141C12, #141C12);
-  -canopy-surface:      #2C3A27;                     /* pannelli principali */
-  -canopy-surface-2:    #141C12;                     /* superfici più profonde */
-  -canopy-card:         #485B3F;                     /* card contenuto */
-  -canopy-card-soft:    rgba(72, 91, 63, 0.96);
 
-  -canopy-text:         #CED9C3;                     /* testo principale */
-  -canopy-muted:        #C4D7B7;                     /* testo attenuato */
+  /* BACKGROUND più profondo, ma leggibile */
+  -canopy-bg:
+      linear-gradient(to bottom, #0D130C, #151F12);
 
-  -canopy-accent:       #598024;                     /* elementi interattivi / primari */
-  -canopy-accent-2:     #B0CF97;                     /* highlight */
-  -canopy-bark:         #738D61;                     /* “legno” / bordi */
-  -canopy-soil:         #141C12;                     /* strato profondo */
+  /* SUPERFICI con più contrasto tra pannelli e sfondo */
+  -canopy-surface:      #233021;                     /* pannelli principali */
+  -canopy-surface-2:    #161F15;                     /* superfici più profonde */
+  -canopy-card:         #313F2E;                     /* card contenuto */
+  -canopy-card-soft:    rgba(49, 63, 46, 0.96);
 
-  -canopy-focus:        rgba(176, 207, 151, 0.75);
-  -canopy-focus-soft:   rgba(176, 207, 151, 0.20);
-  -canopy-danger:       #ff6b6b;
+  /* TESTO più chiaro e leggibile */
+  -canopy-text:         #E3F1D8;                     /* testo principale */
+  -canopy-muted:        #AEBFA3;                     /* testo attenuato */
 
-  /* Token derivati per bordi / soft accent */
-  -canopy-border-subtle: rgba(206, 217, 195, 0.16);
-  -canopy-border-strong: rgba(206, 217, 195, 0.32);
-  -canopy-accent-soft:   rgba(176, 207, 151, 0.24);
+  /* ACCENTI un po' più brillanti */
+  -canopy-accent:       #75B548;                     /* elementi interattivi / primari */
+  -canopy-accent-2:     #C7E39A;                     /* highlight / titoli */
+  -canopy-bark:         #8B6E4E;                     /* “legno” / bordi */
+  -canopy-soil:         #10160F;                     /* strato profondo */
+
+  /* FOCUS più morbido ma visibile */
+  -canopy-focus:        rgba(199, 227, 154, 0.65);
+  -canopy-focus-soft:   rgba(199, 227, 154, 0.20);
+
+  -canopy-danger:       #FF7D7D;
+
+  /* Derivati per bordi / soft accent */
+  -canopy-border-subtle: rgba(227, 241, 216, 0.12);
+  -canopy-border-strong: rgba(227, 241, 216, 0.28);
+  -canopy-accent-soft:   rgba(152, 206, 115, 0.26);
 }
-
-/* Tema LIGHT – Deep Olive Garden */
+/* Tema LIGHT – Evergreen Garden 2.0 */
 .root.theme-light {
 
-  /* BACKGROUND chiaro, soft */
+  /* BACKGROUND più soft e meno “neon” */
   -canopy-bg:
-      linear-gradient(to bottom, #CED9C3, #C4D7B7);  /* beige → tea-green */
+      linear-gradient(to bottom, #E6F2DC, #D3E4C6);  /* verde tenue → garden */
 
-  /* SUPERFICI */
-  -canopy-surface:      #C4D7B7;                     /* pannelli principali */
-  -canopy-surface-2:    #B0CF97;                     /* superfici sopraelevate */
-  -canopy-card:         #CED9C3;                     /* card contenuto */
-  -canopy-card-soft:    rgba(206, 217, 195, 0.96);
+  /* SUPERFICI con gerarchia più chiara */
+  -canopy-surface:      #D3E4C6;                     /* pannelli principali */
+  -canopy-surface-2:    #C3D5B5;                     /* superfici sopraelevate */
+  -canopy-card:         #E6F2DC;                     /* card contenuto */
+  -canopy-card-soft:    rgba(230, 242, 220, 0.96);
 
-  /* TESTO */
-  -canopy-text:         #141C12;                     /* quasi nero-verde */
-  -canopy-muted:        #485B3F;                     /* hunter-green attenuato */
+  /* TESTO più scuro e leggibile */
+  -canopy-text:         #1B2616;                     /* quasi nero-verde */
+  -canopy-muted:        #4F6445;                     /* verde attenuato */
 
-  /* ACCENTI */
-  -canopy-accent:       #386812;                     /* olive-leaf */
-  -canopy-accent-2:     #2C3A27;                     /* evergreen scuro (selezioni) */
-  -canopy-bark:         #598024;                     /* forest-moss */
-  -canopy-soil:         #738D61;                     /* dusty-olive */
+  /* ACCENTI più naturali, meno acidi */
+  -canopy-accent:       #4D8F2F;                     /* olive/leaf */
+  -canopy-accent-2:     #31581D;                     /* evergreen scuro per titoli */
+  -canopy-bark:         #7B9C54;                     /* mossy-bark */
+  -canopy-soil:         #8AA36C;                     /* olive-soil */
 
-  /* FOCUS */
-  -canopy-focus:        rgba(44, 58, 39, 0.45);
-  -canopy-focus-soft:   rgba(44, 58, 39, 0.18);
+  /* FOCUS più discreto ma chiaro */
+  -canopy-focus:        rgba(77, 143, 47, 0.32);
+  -canopy-focus-soft:   rgba(77, 143, 47, 0.16);
 
-  -canopy-danger:       #e24b4b;
+  -canopy-danger:       #E04D4D;
 
   /* Derivati */
-  -canopy-border-subtle: rgba(20, 28, 18, 0.10);
-  -canopy-border-strong: rgba(20, 28, 18, 0.20);
-  -canopy-accent-soft:   rgba(56, 104, 18, 0.18);
+  -canopy-border-subtle: rgba(27, 38, 22, 0.09);
+  -canopy-border-strong: rgba(27, 38, 22, 0.20);
+  -canopy-accent-soft:   rgba(77, 143, 47, 0.20);
 }
+
+/* SAKURA LIGHT */
+.root.theme-sakura-light {
+  -canopy-bg:           linear-gradient(to bottom, #FFEAF3, #FFD6E8);
+  -canopy-surface:      #F9CADA;
+  -canopy-surface-2:    #F4B5CA;
+  -canopy-card:         #FFD6E8;
+  -canopy-card-soft:    rgba(255,214,232,0.92);
+
+  -canopy-text:         #5A2D3E;
+  -canopy-muted:        #8A5065;
+
+  -canopy-accent:       #E7639E;
+  -canopy-accent-2:     #C23F78;
+  -canopy-bark:         #A75C6F;
+  -canopy-soil:         #E1A2B8;
+
+  -canopy-focus:        rgba(231, 99, 158, 0.45);
+  -canopy-focus-soft:   rgba(231, 99, 158, 0.18);
+
+  -canopy-border-subtle: rgba(90,45,62,0.10);
+  -canopy-border-strong: rgba(90,45,62,0.20);
+  -canopy-accent-soft:   rgba(231,99,158,0.22);
+}
+
+/* SAKURA DARK */
+.root.theme-sakura-dark {
+  -canopy-bg:           linear-gradient(to bottom, #1C0E14, #26101B);
+  -canopy-surface:      #3A1C2A;
+  -canopy-surface-2:    #2B1521;
+  -canopy-card:         #4A2334;
+  -canopy-card-soft:    rgba(74,35,52,0.96);
+
+  -canopy-text:         #FDE8F0;
+  -canopy-muted:        #E7B4CB;
+
+  -canopy-accent:       #E7639E;
+  -canopy-accent-2:     #FF9BC5;
+  -canopy-bark:         #B96A8C;
+  -canopy-soil:         #42202F;
+
+  -canopy-focus:        rgba(231, 99, 158, 0.55);
+  -canopy-focus-soft:   rgba(231, 99, 158, 0.20);
+
+  -canopy-border-subtle: rgba(253,232,240,0.12);
+  -canopy-border-strong: rgba(253,232,240,0.26);
+  -canopy-accent-soft:   rgba(231,99,158,0.28);
+}
+
+/* QUERCIA LIGHT */
+.root.theme-quercia-light {
+  -canopy-bg:           linear-gradient(to bottom, #E8EFE3, #D9E5D1);
+  -canopy-surface:      #C9D7BC;
+  -canopy-surface-2:    #B7C8A8;
+  -canopy-card:         #D9E5D1;
+  -canopy-card-soft:    rgba(217,229,209,0.94);
+
+  -canopy-text:         #2F3C25;
+  -canopy-muted:        #56694A;
+
+  -canopy-accent:       #6F8E54;
+  -canopy-accent-2:     #4D623C;
+  -canopy-bark:         #7B5A40;
+  -canopy-soil:         #A87D55;
+
+  -canopy-focus:        rgba(111,142,84,0.45);
+  -canopy-focus-soft:   rgba(111,142,84,0.18);
+
+  -canopy-border-subtle: rgba(47,60,37,0.10);
+  -canopy-border-strong: rgba(47,60,37,0.20);
+  -canopy-accent-soft:   rgba(111,142,84,0.22);
+}
+
+/* QUERCIA DARK */
+.root.theme-quercia-dark {
+  -canopy-bg:           linear-gradient(to bottom, #11150E, #161C11);
+  -canopy-surface:      #222A1B;
+  -canopy-surface-2:    #171E13;
+  -canopy-card:         #2E3823;
+  -canopy-card-soft:    rgba(46,56,35,0.96);
+
+  -canopy-text:         #E4F0D9;
+  -canopy-muted:        #B7C7A6;
+
+  -canopy-accent:       #6F8E54;
+  -canopy-accent-2:     #94B06E;
+  -canopy-bark:         #8C6944;
+  -canopy-soil:         #3A2A1A;
+
+  -canopy-focus:        rgba(148,176,110,0.55);
+  -canopy-focus-soft:   rgba(148,176,110,0.22);
+
+  -canopy-border-subtle: rgba(228,240,217,0.10);
+  -canopy-border-strong: rgba(228,240,217,0.22);
+  -canopy-accent-soft:   rgba(148,176,110,0.26);
+}
+
+/* MENTA LIGHT */
+.root.theme-menta-light {
+  -canopy-bg:           linear-gradient(to bottom, #DAFFF1, #C4F7E4);
+  -canopy-surface:      #B3ECDC;
+  -canopy-surface-2:    #A0E3D0;
+  -canopy-card:         #D0F7EC;
+  -canopy-card-soft:    rgba(208,247,236,0.92);
+
+  -canopy-text:         #1E3F38;
+  -canopy-muted:        #41756B;
+
+  -canopy-accent:       #4AC9A6;
+  -canopy-accent-2:     #2EA487;
+  -canopy-bark:         #63B29A;
+  -canopy-soil:         #4F8F7F;
+
+  -canopy-focus:        rgba(74,201,166,0.45);
+  -canopy-focus-soft:   rgba(74,201,166,0.18);
+
+  -canopy-border-subtle: rgba(30,63,56,0.10);
+  -canopy-border-strong: rgba(30,63,56,0.20);
+  -canopy-accent-soft:   rgba(74,201,166,0.22);
+}
+
+/* MENTA DARK */
+.root.theme-menta-dark {
+  -canopy-bg:           linear-gradient(to bottom, #071814, #0C221D);
+  -canopy-surface:      #12332A;
+  -canopy-surface-2:    #0D2520;
+  -canopy-card:         #164036;
+  -canopy-card-soft:    rgba(22,64,54,0.96);
+
+  -canopy-text:         #D5FFF3;
+  -canopy-muted:        #9DD7C6;
+
+  -canopy-accent:       #4AC9A6;
+  -canopy-accent-2:     #7AE0BF;
+  -canopy-bark:         #4D9B84;
+  -canopy-soil:         #193730;
+
+  -canopy-focus:        rgba(74,201,166,0.55);
+  -canopy-focus-soft:   rgba(74,201,166,0.22);
+
+  -canopy-border-subtle: rgba(213,255,243,0.10);
+  -canopy-border-strong: rgba(213,255,243,0.22);
+  -canopy-accent-soft:   rgba(74,201,166,0.26);
+}
+
+/* PEPERONCINO LIGHT */
+.root.theme-peperoncino-light {
+  -canopy-bg:           linear-gradient(to bottom, #FFE1E1, #FFCBCB);
+  -canopy-surface:      #FFB4B4;
+  -canopy-surface-2:    #FF9B9B;
+  -canopy-card:         #FFC7C7;
+  -canopy-card-soft:    rgba(255,199,199,0.92);
+
+  -canopy-text:         #4A2020;
+  -canopy-muted:        #824646;
+
+  -canopy-accent:       #E03E3E;
+  -canopy-accent-2:     #B52D2D;
+  -canopy-bark:         #A44747;
+  -canopy-soil:         #CE6464;
+
+  -canopy-focus:        rgba(224,62,62,0.50);
+  -canopy-focus-soft:   rgba(224,62,62,0.20);
+
+  -canopy-border-subtle: rgba(74,32,32,0.10);
+  -canopy-border-strong: rgba(74,32,32,0.20);
+  -canopy-accent-soft:   rgba(224,62,62,0.22);
+}
+
+/* PEPERONCINO DARK */
+.root.theme-peperoncino-dark {
+  -canopy-bg:           linear-gradient(to bottom, #190707, #210909);
+  -canopy-surface:      #311012;
+  -canopy-surface-2:    #240A0C;
+  -canopy-card:         #3F1719;
+  -canopy-card-soft:    rgba(63,23,25,0.96);
+
+  -canopy-text:         #FFE5E5;
+  -canopy-muted:        #F0A3A3;
+
+  -canopy-accent:       #E03E3E;
+  -canopy-accent-2:     #FF6B6B;
+  -canopy-bark:         #B35353;
+  -canopy-soil:         #361212;
+
+  -canopy-focus:        rgba(255,107,107,0.54);
+  -canopy-focus-soft:   rgba(255,107,107,0.22);
+
+  -canopy-border-subtle: rgba(255,229,229,0.10);
+  -canopy-border-strong: rgba(255,229,229,0.22);
+  -canopy-accent-soft:   rgba(224,62,62,0.28);
+}
+
+/* LAVANDA LIGHT */
+.root.theme-lavanda-light {
+  -canopy-bg:           linear-gradient(to bottom, #F1E7FF, #E3D6FF);
+  -canopy-surface:      #D6C5FF;
+  -canopy-surface-2:    #C7B1FA;
+  -canopy-card:         #E4D8FF;
+  -canopy-card-soft:    rgba(228,216,255,0.92);
+
+  -canopy-text:         #3B2A5A;
+  -canopy-muted:        #675A89;
+
+  -canopy-accent:       #8C6FE8;
+  -canopy-accent-2:     #6B4EC6;
+  -canopy-bark:         #7C66B8;
+  -canopy-soil:         #A594D6;
+
+  -canopy-focus:        rgba(140,111,232,0.42);
+  -canopy-focus-soft:   rgba(140,111,232,0.18);
+
+  -canopy-border-subtle: rgba(59,42,90,0.10);
+  -canopy-border-strong: rgba(59,42,90,0.20);
+  -canopy-accent-soft:   rgba(140,111,232,0.22);
+}
+
+/* LAVANDA DARK */
+.root.theme-lavanda-dark {
+  -canopy-bg:           linear-gradient(to bottom, #150F22, #1C142E);
+  -canopy-surface:      #261A3C;
+  -canopy-surface-2:    #1D1430;
+  -canopy-card:         #302149;
+  -canopy-card-soft:    rgba(48,33,73,0.96);
+
+  -canopy-text:         #F2E8FF;
+  -canopy-muted:        #C1ACF1;
+
+  -canopy-accent:       #8C6FE8;
+  -canopy-accent-2:     #B396FF;
+  -canopy-bark:         #7359C5;
+  -canopy-soil:         #241736;
+
+  -canopy-focus:        rgba(179,150,255,0.50);
+  -canopy-focus-soft:   rgba(179,150,255,0.22);
+
+  -canopy-border-subtle: rgba(242,232,255,0.10);
+  -canopy-border-strong: rgba(242,232,255,0.22);
+  -canopy-accent-soft:   rgba(140,111,232,0.28);
+}
+
+/* ORCHIDEA LIGHT */
+.root.theme-orchidea-light {
+  -canopy-bg:           linear-gradient(to bottom, #F3E6FF, #EDD7FF);
+  -canopy-surface:      #E0C7FF;
+  -canopy-surface-2:    #D1AFFF;
+  -canopy-card:         #E9D6FF;
+  -canopy-card-soft:    rgba(233,214,255,0.92);
+
+  -canopy-text:         #402856;
+  -canopy-muted:        #6C5687;
+
+  -canopy-accent:       #B375FF;
+  -canopy-accent-2:     #8A52D4;
+  -canopy-bark:         #9864C6;
+  -canopy-soil:         #B58CE0;
+
+  -canopy-focus:        rgba(179,117,255,0.45);
+  -canopy-focus-soft:   rgba(179,117,255,0.18);
+
+  -canopy-border-subtle: rgba(64,40,86,0.10);
+  -canopy-border-strong: rgba(64,40,86,0.20);
+  -canopy-accent-soft:   rgba(179,117,255,0.23);
+}
+
+/* ORCHIDEA DARK */
+.root.theme-orchidea-dark {
+  -canopy-bg:           linear-gradient(to bottom, #160D26, #1C1030);
+  -canopy-surface:      #28143E;
+  -canopy-surface-2:    #1F0F32;
+  -canopy-card:         #341A4E;
+  -canopy-card-soft:    rgba(52,26,78,0.96);
+
+  -canopy-text:         #F7EBFF;
+  -canopy-muted:        #D0B2F5;
+
+  -canopy-accent:       #B375FF;
+  -canopy-accent-2:     #D3A4FF;
+  -canopy-bark:         #8F5DD3;
+  -canopy-soil:         #261337;
+
+  -canopy-focus:        rgba(211,164,255,0.50);
+  -canopy-focus-soft:   rgba(211,164,255,0.22);
+
+  -canopy-border-subtle: rgba(247,235,255,0.10);
+  -canopy-border-strong: rgba(247,235,255,0.22);
+  -canopy-accent-soft:   rgba(179,117,255,0.28);
+}
+
 
 /* ---------- TIPOGRAFIA GENERALE ---------- */
 

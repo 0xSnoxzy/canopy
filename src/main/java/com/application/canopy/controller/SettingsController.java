@@ -1,19 +1,14 @@
 package com.application.canopy.controller;
 
+import com.application.canopy.db.DatabaseManager;
+import com.application.canopy.db.PlantActivityRepository;
 import com.application.canopy.model.FontManager;
 import com.application.canopy.model.FontManager.AppFont;
 import com.application.canopy.model.ThemeManager;
-import com.application.canopy.model.ThemeManager.Theme;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
-import javafx.scene.control.ComboBox;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
-
-import com.application.canopy.db.DatabaseManager;
-import com.application.canopy.db.PlantActivityRepository;
-
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 
 import java.sql.SQLException;
 
@@ -26,11 +21,15 @@ public class SettingsController {
     private ComboBox<String> fontCombo;
 
     @FXML
-    private ComboBox<String> themeCombo;
+    private ComboBox<String> modeCombo;   // nuova combo modalità
+
+    @FXML
+    private ComboBox<String> themeCombo;  // combo tema botanico
 
     @FXML
     private void initialize() {
         setupFontCombo();
+        setupModeCombo();
         setupThemeCombo();
     }
 
@@ -39,14 +38,13 @@ public class SettingsController {
     // ============================
     @FXML
     private void onResetCalendarStats() {
-        // Dialog di conferma
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
         confirm.setTitle("Svuota statistiche calendario");
         confirm.setHeaderText("Vuoi davvero cancellare tutte le statistiche del calendario?");
         confirm.setContentText("Questa operazione non può essere annullata.");
 
         if (confirm.showAndWait().orElse(ButtonType.CANCEL) != ButtonType.OK) {
-            return; // annullato
+            return;
         }
 
         try {
@@ -76,18 +74,15 @@ public class SettingsController {
     private void setupFontCombo() {
         if (fontCombo == null) return;
 
-        // riempi combo
         fontCombo.getItems().setAll(
                 AppFont.ATKINSON.getDisplayName(),
                 AppFont.COMIC_NEUE.getDisplayName(),
                 AppFont.ROBOTO_MONO.getDisplayName()
         );
 
-        // selezione iniziale = font corrente
         AppFont current = FontManager.getCurrentFont();
         fontCombo.getSelectionModel().select(current.getDisplayName());
 
-        // listener
         fontCombo.getSelectionModel()
                 .selectedItemProperty()
                 .addListener((obs, oldVal, newVal) -> {
@@ -101,23 +96,60 @@ public class SettingsController {
     }
 
     // ============================
-    // TEMA
+    // MODALITÀ (LIGHT / DARK)
+    // ============================
+    private void setupModeCombo() {
+        if (modeCombo == null) return;
+
+        modeCombo.getItems().setAll("Chiara", "Scura");
+
+        String currentMode = ThemeManager.getCurrentMode(); // "light" o "dark"
+        modeCombo.getSelectionModel().select(
+                "dark".equals(currentMode) ? "Scura" : "Chiara"
+        );
+
+        modeCombo.getSelectionModel()
+                .selectedItemProperty()
+                .addListener((obs, oldVal, newVal) -> {
+                    if (newVal == null) return;
+                    if (root == null) return;
+
+                    Scene scene = root.getScene();
+                    if (scene == null) return;
+
+                    String modeId = "Scura".equals(newVal) ? "dark" : "light";
+                    ThemeManager.setMode(modeId, scene);
+                });
+    }
+
+    // ============================
+    // TEMA BOTANICO
     // ============================
     private void setupThemeCombo() {
         if (themeCombo == null) return;
 
-        // valori user-friendly
-        themeCombo.getItems().setAll("Scuro", "Chiaro");
+        themeCombo.getItems().setAll(
+                "Evergreen",
+                "Sakura",
+                "Quercia",
+                "Menta",
+                "Peperoncino",
+                "Lavanda",
+                "Orchidea"
+        );
 
-        // selezione iniziale in base al tema corrente
-        Theme currentTheme = ThemeManager.getCurrentTheme();
-        if (currentTheme == Theme.DARK) {
-            themeCombo.getSelectionModel().select("Scuro");
-        } else {
-            themeCombo.getSelectionModel().select("Chiaro");
-        }
+        String currentPalette = ThemeManager.getCurrentPalette(); // evergreen / sakura / ...
+        String label = switch (currentPalette) {
+            case "sakura"      -> "Sakura";
+            case "quercia"     -> "Quercia";
+            case "menta"       -> "Menta";
+            case "peperoncino" -> "Peperoncino";
+            case "lavanda"     -> "Lavanda";
+            case "orchidea"    -> "Orchidea";
+            default            -> "Evergreen";
+        };
+        themeCombo.getSelectionModel().select(label);
 
-        // listener sui cambi di selezione
         themeCombo.getSelectionModel()
                 .selectedItemProperty()
                 .addListener((obs, oldVal, newVal) -> {
@@ -127,10 +159,17 @@ public class SettingsController {
                     Scene scene = root.getScene();
                     if (scene == null) return;
 
-                    Theme selectedTheme =
-                            "Scuro".equals(newVal) ? Theme.DARK : Theme.LIGHT;
+                    String paletteId = switch (newVal) {
+                        case "Sakura"      -> "sakura";
+                        case "Quercia"     -> "quercia";
+                        case "Menta"       -> "menta";
+                        case "Peperoncino" -> "peperoncino";
+                        case "Lavanda"     -> "lavanda";
+                        case "Orchidea"    -> "orchidea";
+                        default            -> "evergreen";
+                    };
 
-                    ThemeManager.setTheme(selectedTheme, scene);
+                    ThemeManager.setPalette(paletteId, scene);
                 });
     }
 }

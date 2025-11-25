@@ -3,90 +3,127 @@ package com.application.canopy.model;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.prefs.Preferences;
 
 public class ThemeManager {
 
-    public enum Theme {
-        DARK, LIGHT
-    }
+    private static final String PREF_KEY = "canopy.themeId";
 
-    private static final String PREF_KEY = "canopy.theme";
+    /**
+     * themeId supportati:
+     *  - "dark", "light"                       -> Evergreen scuro/chiaro
+     *  - "sakura-light", "sakura-dark"
+     *  - "quercia-light", "quercia-dark"
+     *  - "menta-light", "menta-dark"
+     *  - "peperoncino-light", "peperoncino-dark"
+     *  - "lavanda-light", "lavanda-dark"
+     *  - "orchidea-light", "orchidea-dark"
+     */
+    private static final Set<String> SUPPORTED_THEMES = Set.of(
+            "dark",
+            "light",
+            "sakura-light", "sakura-dark",
+            "quercia-light", "quercia-dark",
+            "menta-light", "menta-dark",
+            "peperoncino-light", "peperoncino-dark",
+            "lavanda-light", "lavanda-dark",
+            "orchidea-light", "orchidea-dark"
+    );
 
-    private static Theme currentTheme = Theme.DARK;
+    // di default: evergreen dark
+    private static String currentThemeId = "dark";
 
-    // ----- LISTENER CAMBIO TEMA -----
-    private static final List<Consumer<Theme>> listeners = new ArrayList<>();
+    // listener che ascoltano i cambi di tema (Nav, ecc.)
+    private static final List<Consumer<String>> listeners = new ArrayList<>();
 
-    public static void addThemeListener(Consumer<Theme> listener) {
-        if (listener == null) return;
-        listeners.add(listener);
-        // gli mando SUBITO il tema corrente, così si inizializza correttamente
-        listener.accept(currentTheme);
-    }
-
-    private static void notifyThemeListeners() {
-        for (Consumer<Theme> l : listeners) {
-            l.accept(currentTheme);
-        }
-    }
-
-    // Blocco statico: eseguito una volta sola quando la classe viene caricata
     static {
         try {
             Preferences prefs = Preferences.userNodeForPackage(ThemeManager.class);
-            String saved = prefs.get(PREF_KEY, Theme.DARK.name()); // default DARK
-            currentTheme = Theme.valueOf(saved);
+            String saved = prefs.get(PREF_KEY, "dark");
+            saved = saved.toLowerCase(Locale.ROOT);
+            if (SUPPORTED_THEMES.contains(saved)) {
+                currentThemeId = saved;
+            } else {
+                currentThemeId = "dark";
+            }
         } catch (Exception e) {
-            currentTheme = Theme.DARK; // fallback sicuro
+            currentThemeId = "dark";
         }
     }
 
-    public static Theme getCurrentTheme() {
-        return currentTheme;
+    // =======================
+    //  API PUBBLICA
+    // =======================
+
+    public static String getCurrentThemeId() {
+        return currentThemeId;
     }
 
-    /** Salva il tema corrente nelle preferenze utente */
-    private static void saveCurrentTheme() {
-        try {
-            Preferences prefs = Preferences.userNodeForPackage(ThemeManager.class);
-            prefs.put(PREF_KEY, currentTheme.name());
-        } catch (Exception e) {
-            // se qualcosa va storto, pazienza: semplicemente non ricordiamo il tema
+    /** Ritorna solo la modalità: "light" o "dark" */
+    public static String getCurrentMode() {
+        if ("dark".equals(currentThemeId) || currentThemeId.endsWith("-dark")) {
+            return "dark";
         }
+        return "light";
     }
 
+    /** Ritorna la "palette": evergreen / sakura / quercia / ... */
+    public static String getCurrentPalette() {
+        return switch (currentThemeId) {
+            case "dark", "light" -> "evergreen";
+            default -> {
+                int dash = currentThemeId.indexOf('-');
+                if (dash > 0) {
+                    yield currentThemeId.substring(0, dash);
+                } else {
+                    yield "evergreen";
+                }
+            }
+        };
+    }
+
+    /** Listener per i cambi di tema. Riceve sempre il themeId (es. "sakura-dark"). */
+    public static void addThemeListener(Consumer<String> listener) {
+        if (listener == null) return;
+        listeners.add(listener);
+        // allinea subito col tema corrente
+        listener.accept(currentThemeId);
+    }
+
+    /** Applica la classe CSS corretta al root */
     public static void applyTheme(Parent root) {
         if (root == null) return;
 
         var styles = root.getStyleClass();
-        styles.removeAll("theme-dark", "theme-light");
+        styles.removeAll(
+                "theme-dark",
+                "theme-light",
+                "theme-sakura-light", "theme-sakura-dark",
+                "theme-quercia-light", "theme-quercia-dark",
+                "theme-menta-light", "theme-menta-dark",
+                "theme-peperoncino-light", "theme-peperoncino-dark",
+                "theme-lavanda-light", "theme-lavanda-dark",
+                "theme-orchidea-light", "theme-orchidea-dark"
+        );
 
-        if (currentTheme == Theme.DARK) {
-            styles.add("theme-dark");
-        } else {
-            styles.add("theme-light");
+        String cssClass = "theme-" + currentThemeId;
+        if (!styles.contains(cssClass)) {
+            styles.add(cssClass);
         }
     }
 
-    /** Toggle globale per la scena corrente (usato eventualmente dalla nav se tenessi un bottone) */
-    public static void toggle(Scene scene) {
-        if (scene == null) return;
+    /** Imposta direttamente un themeId supportato */
+    public static void setTheme(String themeId, Scene scene) {
+        if (themeId == null) return;
 
-        currentTheme = (currentTheme == Theme.DARK) ? Theme.LIGHT : Theme.DARK;
-        saveCurrentTheme();
-        applyTheme(scene.getRoot());
-        notifyThemeListeners();
-    }
+        themeId = themeId.toLowerCase(Locale.ROOT);
+        if (!SUPPORTED_THEMES.contains(themeId)) {
+            themeId = "dark";
+        }
 
-    /** Imposta esplicitamente il tema (usato da Settings) */
-    public static void setTheme(Theme theme, Scene scene) {
-        if (theme == null) return;
-
-        currentTheme = theme;
+        currentThemeId = themeId;
         saveCurrentTheme();
 
         if (scene != null) {
@@ -94,5 +131,64 @@ public class ThemeManager {
         }
 
         notifyThemeListeners();
+    }
+
+    /** Helper: cambia solo la modalità (light/dark) mantenendo la palette */
+    public static void setMode(String mode, Scene scene) {
+        if (mode == null) return;
+        mode = mode.toLowerCase(Locale.ROOT);
+        if (!mode.equals("light") && !mode.equals("dark")) return;
+
+        String palette = getCurrentPalette();
+        String newThemeId;
+
+        if ("evergreen".equals(palette)) {
+            // evergreen rimane mappato su "dark" / "light"
+            newThemeId = mode;
+        } else {
+            newThemeId = palette + "-" + mode;
+        }
+
+        setTheme(newThemeId, scene);
+    }
+
+    /** Helper: cambia solo la palette mantenendo la modalità */
+    public static void setPalette(String palette, Scene scene) {
+        if (palette == null) return;
+        palette = palette.toLowerCase(Locale.ROOT);
+
+        // palette supportate
+        if (!Set.of("evergreen", "sakura", "quercia", "menta",
+                "peperoncino", "lavanda", "orchidea").contains(palette)) {
+            palette = "evergreen";
+        }
+
+        String mode = getCurrentMode();
+        String newThemeId;
+
+        if ("evergreen".equals(palette)) {
+            newThemeId = mode; // "dark"/"light"
+        } else {
+            newThemeId = palette + "-" + mode;
+        }
+
+        setTheme(newThemeId, scene);
+    }
+
+    // =======================
+    //  PRIVATI
+    // =======================
+
+    private static void saveCurrentTheme() {
+        try {
+            Preferences prefs = Preferences.userNodeForPackage(ThemeManager.class);
+            prefs.put(PREF_KEY, currentThemeId);
+        } catch (Exception ignored) {}
+    }
+
+    private static void notifyThemeListeners() {
+        for (Consumer<String> l : listeners) {
+            l.accept(currentThemeId);
+        }
     }
 }

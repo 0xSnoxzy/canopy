@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -30,7 +31,9 @@
 
                 <Separator/>
 
-                <!-- FONT -->
+                <!-- ========================= -->
+                <!-- FONT INTERFACCIA         -->
+                <!-- ========================= -->
                 <Label text="Aspetto" styleClass="h3"/>
 
                 <HBox spacing="10" alignment="CENTER_LEFT">
@@ -43,31 +46,50 @@
 
                 <Separator/>
 
-                <!-- TEMA -->
-                <Label text="Tema" styleClass="h3"/>
+                <!-- ========================= -->
+                <!-- MODALITÀ (LIGHT / DARK)  -->
+                <!-- ========================= -->
+                <Label text="Modalità" styleClass="h3"/>
 
                 <HBox spacing="10" alignment="CENTER_LEFT">
-                    <Label text="Tema dell'interfaccia" styleClass="muted"/>
-                    <ComboBox fx:id="themeCombo" prefWidth="230"/>
+                    <Label text="Modalità generale" styleClass="muted"/>
+                    <ComboBox fx:id="modeCombo" prefWidth="230"/>
                 </HBox>
 
-                <Label text="Puoi scegliere il tema chiaro o scuro. La scelta verrà ricordata."
+                <Label text="Scegli se usare una modalità chiara o scura. La scelta influisce su tutti i temi."
                        styleClass="muted"/>
 
                 <Separator/>
 
+                <!-- ========================= -->
+                <!-- TEMA BOTANICO            -->
+                <!-- ========================= -->
+                <Label text="Tema botanico" styleClass="h3"/>
+
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Tema di colore" styleClass="muted"/>
+                    <ComboBox fx:id="themeCombo" prefWidth="230"/>
+                </HBox>
+
+                <Label text="Scegli un tema ispirato alle piante di Canopy (Evergreen, Sakura, Quercia, Menta, Peperoncino, Lavanda, Orchidea)."
+                       styleClass="muted"/>
+
+                <Separator/>
+
+                <!-- ========================= -->
+                <!-- SEZIONE DATI / CALENDARIO-->
+                <!-- ========================= -->
                 <Label text="Dati" styleClass="h3"/>
 
-                <HBox spacing="8" alignment="CENTER_LEFT">
-                    <Label text="Svuota DataBase" styleClass="muted"/>
-                    <Button fx:id="resetCalendarBtn"
-                            text="Svuota statistiche calendario"
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Statistiche calendario" styleClass="muted"/>
+                    <Button text="Svuota statistiche"
                             onAction="#onResetCalendarStats"
-                            styleClass="logout-button"/>
+                            styleClass="button danger-button"/>
                 </HBox>
-                <Label text="Puoi cancellare tutte le statistiche del calendario salvate nel database. Questa operazione non può essere annullata."
-                       styleClass="muted"
-                       wrapText="true"/>
+
+                <Label text="Puoi svuotare le statistiche del calendario. Questa operazione non può essere annullata."
+                       styleClass="muted"/>
 
             </VBox>
 
