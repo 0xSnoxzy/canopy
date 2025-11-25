@@ -9,6 +9,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.BorderPane;
 
+import com.application.canopy.db.DatabaseManager;
+import com.application.canopy.db.PlantActivityRepository;
+
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+
+import java.sql.SQLException;
+
 public class SettingsController {
 
     @FXML
@@ -24,6 +32,42 @@ public class SettingsController {
     private void initialize() {
         setupFontCombo();
         setupThemeCombo();
+    }
+
+    // ============================
+    // RESET STATISTICHE CALENDARIO (DB)
+    // ============================
+    @FXML
+    private void onResetCalendarStats() {
+        // Dialog di conferma
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Svuota statistiche calendario");
+        confirm.setHeaderText("Vuoi davvero cancellare tutte le statistiche del calendario?");
+        confirm.setContentText("Questa operazione non può essere annullata.");
+
+        if (confirm.showAndWait().orElse(ButtonType.CANCEL) != ButtonType.OK) {
+            return; // annullato
+        }
+
+        try {
+            PlantActivityRepository repo =
+                    new PlantActivityRepository(DatabaseManager.getConnection());
+            repo.deleteAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Errore");
+            error.setHeaderText("Impossibile svuotare le statistiche del calendario.");
+            error.setContentText("Dettagli: " + e.getMessage());
+            error.showAndWait();
+            return;
+        }
+
+        Alert ok = new Alert(Alert.AlertType.INFORMATION);
+        ok.setTitle("Statistiche svuotate");
+        ok.setHeaderText(null);
+        ok.setContentText("Tutte le statistiche del calendario sono state cancellate.");
+        ok.showAndWait();
     }
 
     // ============================

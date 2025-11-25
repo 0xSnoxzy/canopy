@@ -59,7 +59,6 @@ public class ThemeManager {
         }
     }
 
-    /** Applica la classe CSS corretta al root passato */
     public static void applyTheme(Parent root) {
         if (root == null) return;
 

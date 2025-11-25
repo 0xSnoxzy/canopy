@@ -1,0 +1,67 @@
+package com.application.canopy.db;
+
+import java.nio.file.*;
+import java.sql.*;
+
+public final class DatabaseManager {
+
+    private static Connection connection;
+
+    private DatabaseManager() { }
+
+    public static void init() throws SQLException {
+        if (connection != null) return;
+
+        try {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            throw new SQLException("SQLite JDBC driver non trovato", e);
+        }
+
+        // Posizione file DB: nella cartella utente, sottocartella .canopy
+        Path baseDir = Paths.get(System.getProperty("user.home"), ".canopy");
+        try {
+            Files.createDirectories(baseDir);
+        } catch (Exception e) {
+            throw new SQLException("Impossibile creare la cartella del DB", e);
+        }
+
+        Path dbPath = baseDir.resolve("canopy.db");
+        String url = "jdbc:sqlite:" + dbPath.toString();
+
+        connection = DriverManager.getConnection(url);
+
+        createTablesIfNeeded();
+    }
+
+    private static void createTablesIfNeeded() throws SQLException {
+        // Qui creiamo SOLO la tabella per le attività delle piante.
+        // In futuro puoi aggiungere altre tabelle.
+        String sql = """
+            CREATE TABLE IF NOT EXISTS plant_activity (
+                id          INTEGER PRIMARY KEY AUTOINCREMENT,
+                date        TEXT    NOT NULL,   -- ISO: 2025-10-05
+                plant_name  TEXT    NOT NULL,
+                minutes     INTEGER NOT NULL
+            );
+            """;
+
+        try (Statement st = connection.createStatement()) {
+            st.execute(sql);
+        }
+    }
+
+    public static Connection getConnection() throws SQLException {
+        if (connection == null) {
+            init();
+        }
+        return connection;
+    }
+
+    public static void close() {
+        if (connection != null) {
+            try { connection.close(); } catch (SQLException ignored) {}
+            connection = null;
+        }
+    }
+}

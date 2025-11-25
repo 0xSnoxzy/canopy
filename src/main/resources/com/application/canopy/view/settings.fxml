@@ -54,6 +54,21 @@
                 <Label text="Puoi scegliere il tema chiaro o scuro. La scelta verrà ricordata."
                        styleClass="muted"/>
 
+                <Separator/>
+
+                <Label text="Dati" styleClass="h3"/>
+
+                <HBox spacing="8" alignment="CENTER_LEFT">
+                    <Label text="Svuota DataBase" styleClass="muted"/>
+                    <Button fx:id="resetCalendarBtn"
+                            text="Svuota statistiche calendario"
+                            onAction="#onResetCalendarStats"
+                            styleClass="logout-button"/>
+                </HBox>
+                <Label text="Puoi cancellare tutte le statistiche del calendario salvate nel database. Questa operazione non può essere annullata."
+                       styleClass="muted"
+                       wrapText="true"/>
+
             </VBox>
 
         </StackPane>

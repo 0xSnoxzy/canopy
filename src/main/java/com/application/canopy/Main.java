@@ -1,25 +1,35 @@
 package com.application.canopy;
 
 import com.application.canopy.model.FontManager;
+import com.application.canopy.model.ThemeManager;
+
+import com.application.canopy.db.DatabaseManager;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
 
-import com.application.canopy.model.ThemeManager;
-
-
 public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        // 1) inizializza i font (carica i .ttf e legge la scelta dalle prefs)
+
+        /* Inizializza SQLite*/
+        try {
+            DatabaseManager.init();
+            System.out.println("SQLite inizializzato!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Errore durante inizializzazione SQLite", e);
+        }
+
+        // Font e icona come prima
         FontManager.initFonts();
 
         stage.getIcons().add(
@@ -32,7 +42,7 @@ public class Main extends Application {
                 )
         );
 
-        // Carico il guscio con nav + centro vuoto
+        // Caricamento FXML
         FXMLLoader loader = new FXMLLoader(
                 getClass().getResource("/com/application/canopy/view/app.fxml")
         );
@@ -40,6 +50,7 @@ public class Main extends Application {
 
         Scene scene = new Scene(root, 1080, 620);
 
+        // Caricamento CSS
         URL css = getClass().getResource("/css/base-old.css");
         if (css == null) throw new IllegalStateException("File CSS non trovato.");
         scene.getStylesheets().add(css.toExternalForm());
@@ -50,6 +61,13 @@ public class Main extends Application {
         stage.setScene(scene);
         stage.setTitle("Canopy");
         stage.show();
+    }
+
+    @Override
+    public void stop() throws Exception {
+        super.stop();
+        // Chiudiamo la connessione DB quando l'app si chiude
+        DatabaseManager.close();
     }
 
     public static void main(String[] args) {

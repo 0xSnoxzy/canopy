@@ -210,7 +210,6 @@ public class HerbariumController {
         plantDescription.setText(safe(p.description));
         plantCare.setText(safe(p.care));
 
-        // PNG foreground della pianta sullo stage
         if (plantImage != null) {
             Image hero = loadHeroFor(p.plant);
             plantImage.setImage(hero != null ? hero : loadThumbFor(p.plant));
@@ -237,7 +236,6 @@ public class HerbariumController {
         }
     }
 
-    // --- immagini ----------------------------------------------------------
 
     private Image loadThumbFor(Plant plant) {
         String fileName = plant.getThumbFile(); // es: "Lavanda.png"
@@ -245,7 +243,7 @@ public class HerbariumController {
         return loadImageFromResource(path);
     }
 
-    /** Prova a caricare una PNG “hero” trasparente; fallback su thumb. */
+    /** Prova a caricare una PNG trasparente; fallback su thumb. */
     private Image loadHeroFor(Plant plant) {
         // 1) Se il modello espone un file specifico (es. getHeroFile())
         String file = tryGetHeroFileFromModel(plant);
@@ -256,7 +254,7 @@ public class HerbariumController {
             img = loadImageFromResource(file);
             if (img != null) return img;
         }
-        // 2) Fallback: usa la thumb (spesso già PNG trasparente)
+
         return loadThumbFor(plant);
     }
 
@@ -271,7 +269,7 @@ public class HerbariumController {
             Object r = m.invoke(plant);
             if (r instanceof String s && !s.isBlank()) return s;
         } catch (ReflectiveOperationException ignored) { }
-        // eventuale alias più generico
+
         try {
             var m = plant.getClass().getMethod("getImageFile");
             Object r = m.invoke(plant);
@@ -290,7 +288,7 @@ public class HerbariumController {
         return new Image(url.toExternalForm(), true);
     }
 
-    // --- stage (sfondo + responsività) ------------------------------------
+    // --- stage
 
     private void initStage() {
         if (stageContainer == null || stageBackground == null || backgroundChoice == null || plantImage == null) {
@@ -298,7 +296,6 @@ public class HerbariumController {
             return;
         }
 
-        // 16:9 responsive + dimensionamento overlay pianta (~60% della larghezza)
         stageContainer.widthProperty().addListener((o, ov, w) -> {
             double ww = w.doubleValue();
             stageContainer.setPrefHeight((ww * 9 / 16)/2);
@@ -306,7 +303,6 @@ public class HerbariumController {
             plantImage.setFitWidth(ww * 0.60);
         });
 
-        // Opzioni sfondo (aggiungi/rinomina a piacere i file in /stage/)
         bgMap.clear();
         bgMap.put("Studio — Soft", STAGE_DIR + "studio_soft.jpg");
         bgMap.put("Legno — Warm",  STAGE_DIR + "wood_warm.jpg");
@@ -368,8 +364,6 @@ public class HerbariumController {
             }
         }
     }
-
-    // --- util --------------------------------------------------------------
 
     private static String safe(String s) { return s == null ? "" : s; }
 }
