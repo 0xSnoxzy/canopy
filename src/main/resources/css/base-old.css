@@ -1,11 +1,8 @@
 /* ==========================================
-   Canopy - base.css (Theme B - Forest Soft Glow)
-   Palette: RealtimeColors Forest
-   Text: #ebf9e5
-   Bg:   #141f0f
-   Prim: #a4e68b
-   Sec:  #1d8756
-   Acc:  #26b759
+   Canopy - base.css (Themeable Version)
+   Palette gestita da:
+   - .root.theme-dark
+   - .root.theme-light
    ========================================== */
 
 /* ---------- ROOT & PALETTE ---------- */
@@ -20,56 +17,66 @@
   -fx-accent: -canopy-accent;
 }
 
-/* Tema DARK: quello che avevi prima */
+/* Tema DARK – Evergreen Deep Forest */
 .root.theme-dark {
-  /* Palette soft forest (dark) */
-  -canopy-bg:           linear-gradient(to bottom, #0e160b, #141f0f);
-  -canopy-surface:      #182612;   /* pannelli principali */
-  -canopy-surface-2:    #1e3017;   /* superfici sopraelevate */
-  -canopy-card:         #22371b;   /* card contenuto */
-  -canopy-card-soft:    rgba(34, 55, 27, 0.96);
-  -canopy-text:         #ebf9e5;
-  -canopy-muted:        #c0ddba;
-  -canopy-accent:       #26b759;   /* verde principale (Accent) */
-  -canopy-accent-2:     #a4e68b;   /* highlight (Primary) */
-  -canopy-bark:         #4b3a2a;
-  -canopy-soil:         #1b2614;
+  /* Palette base */
+  -canopy-bg:           linear-gradient(to bottom, #141C12, #141C12);
+  -canopy-surface:      #2C3A27;                     /* pannelli principali */
+  -canopy-surface-2:    #141C12;                     /* superfici più profonde */
+  -canopy-card:         #485B3F;                     /* card contenuto */
+  -canopy-card-soft:    rgba(72, 91, 63, 0.96);
 
-  -canopy-focus:        rgba(164, 230, 139, 0.78);
-  -canopy-focus-soft:   rgba(164, 230, 139, 0.20);
+  -canopy-text:         #CED9C3;                     /* testo principale */
+  -canopy-muted:        #C4D7B7;                     /* testo attenuato */
+
+  -canopy-accent:       #598024;                     /* elementi interattivi / primari */
+  -canopy-accent-2:     #B0CF97;                     /* highlight */
+  -canopy-bark:         #738D61;                     /* “legno” / bordi */
+  -canopy-soil:         #141C12;                     /* strato profondo */
+
+  -canopy-focus:        rgba(176, 207, 151, 0.75);
+  -canopy-focus-soft:   rgba(176, 207, 151, 0.20);
   -canopy-danger:       #ff6b6b;
+
+  /* Token derivati per bordi / soft accent */
+  -canopy-border-subtle: rgba(206, 217, 195, 0.16);
+  -canopy-border-strong: rgba(206, 217, 195, 0.32);
+  -canopy-accent-soft:   rgba(176, 207, 151, 0.24);
 }
 
-/* Tema LIGHT – Bumbi Forest (contrastato) */
+/* Tema LIGHT – Deep Olive Garden */
 .root.theme-light {
 
-  /* BACKGROUND: verde chiaro ma non slavato */
+  /* BACKGROUND chiaro, soft */
   -canopy-bg:
-      linear-gradient(to bottom, #b9cfb3, #cde0c9);
+      linear-gradient(to bottom, #CED9C3, #C4D7B7);  /* beige → tea-green */
 
-  /* SUPERFICI: leggermente più scure del bg per dare struttura */
-  -canopy-surface:      #c7d8c1;     /* pannelli principali */
-  -canopy-surface-2:    #b3c9af;     /* superfici sopraelevate */
-  -canopy-card:         #d6e4cf;     /* card contenuto */
-  -canopy-card-soft:    rgba(214, 228, 207, 0.94);
+  /* SUPERFICI */
+  -canopy-surface:      #C4D7B7;                     /* pannelli principali */
+  -canopy-surface-2:    #B0CF97;                     /* superfici sopraelevate */
+  -canopy-card:         #CED9C3;                     /* card contenuto */
+  -canopy-card-soft:    rgba(206, 217, 195, 0.96);
 
   /* TESTO */
-  -canopy-text:         #070c06;     /* Text */
-  -canopy-muted:        #445343;     /* testo attenuato, più leggibile */
+  -canopy-text:         #141C12;                     /* quasi nero-verde */
+  -canopy-muted:        #485B3F;                     /* hunter-green attenuato */
 
-  /* ACCENTI (scuriti per più contrasto) */
-  -canopy-accent:       #1f8a60;     /* accent scuro */
-  -canopy-accent-2:     #4b876c;     /* secondario scuro */
-  -canopy-bark:         #66ad5c;     /* Primary (resta il tuo originale) */
-
-  /* STRATO PROFONDO / TERRENO */
-  -canopy-soil:         #a3b79b;     /* base un po' più scura per sfondi profondi */
+  /* ACCENTI */
+  -canopy-accent:       #386812;                     /* olive-leaf */
+  -canopy-accent-2:     #2C3A27;                     /* evergreen scuro (selezioni) */
+  -canopy-bark:         #598024;                     /* forest-moss */
+  -canopy-soil:         #738D61;                     /* dusty-olive */
 
   /* FOCUS */
-  -canopy-focus:        rgba(31, 138, 96, 0.45);
-  -canopy-focus-soft:   rgba(31, 138, 96, 0.18);
+  -canopy-focus:        rgba(44, 58, 39, 0.45);
+  -canopy-focus-soft:   rgba(44, 58, 39, 0.18);
 
   -canopy-danger:       #e24b4b;
+
+  /* Derivati */
+  -canopy-border-subtle: rgba(20, 28, 18, 0.10);
+  -canopy-border-strong: rgba(20, 28, 18, 0.20);
+  -canopy-accent-soft:   rgba(56, 104, 18, 0.18);
 }
 
 /* ---------- TIPOGRAFIA GENERALE ---------- */
@@ -78,7 +85,7 @@
   -fx-text-fill: -canopy-text;
 }
 
-.subtle {
+.subtle, .muted {
   -fx-text-fill: -canopy-muted;
 }
 
@@ -86,7 +93,7 @@
   -fx-font-size: 20px;
   -fx-font-weight: 900;
   -fx-text-fill: -canopy-accent-2;
-  -fx-effect: dropshadow(gaussian, rgba(164, 230, 139, 0.28), 16, 0.3, 0, 3);
+  -fx-effect: dropshadow(gaussian, -canopy-focus-soft, 16, 0.3, 0, 3);
 }
 
 /* micro-heading riutilizzabile */
@@ -94,15 +101,15 @@
   -fx-font-size: 11px;
   -fx-font-weight: 700;
   -fx-text-fill: -canopy-muted;
-  -fx-background-color: rgba(164, 230, 139, 0.12);
+  -fx-background-color: -canopy-accent-soft;
   -fx-background-radius: 999;
   -fx-padding: 3 8;
-  -fx-border-color: rgba(164, 230, 139, 0.30);
+  -fx-border-color: -canopy-border-subtle;
   -fx-border-radius: 999;
 }
 
 .separator *.line {
-  -fx-background-color: rgba(164, 230, 139, 0.40);
+  -fx-background-color: -canopy-border-strong;
   -fx-opacity: 0.9;
 }
 
@@ -114,11 +121,10 @@
     linear-gradient(to bottom, -canopy-surface-2, -canopy-surface);
   -fx-padding: 18 14;
   -fx-spacing: 12;
-  -fx-border-color: -canopy-accent-2;
+  -fx-border-color: -canopy-border-strong;
   -fx-border-width: 0 1 0 0;
   -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.45), 18, 0.35, 0, 0);
 }
-
 
 .points-label {
   -fx-background-color:
@@ -127,9 +133,9 @@
   -fx-padding: 6 12;
   -fx-background-radius: 999;
   -fx-font-weight: 800;
-  -fx-border-color: rgba(164, 230, 139, 0.55);
+  -fx-border-color: -canopy-border-strong;
   -fx-border-radius: 999;
-  -fx-effect: dropshadow(gaussian, rgba(164, 230, 139, 0.30), 10, 0.35, 0, 2);
+  -fx-effect: dropshadow(gaussian, -canopy-focus-soft, 10, 0.35, 0, 2);
 }
 
 .menu-section  { -fx-spacing: 10; }
@@ -158,18 +164,18 @@
 
 .nav-button:hover,
 .toggle-button:hover {
-  -fx-background-color: rgba(164, 230, 139, 0.10);
+  -fx-background-color: -canopy-accent-soft;
 }
 
-/* selezionato */
+/* selezionato (token-based base, verrà overridato per tema) */
 .toggle-button:selected {
   -fx-background-color:
       linear-gradient(to right,
-        rgba(164, 230, 139, 0.32),
-        rgba(38, 183, 89, 0.26));
-  -fx-text-fill: #05180e;
+        derive(-canopy-accent-2, 10%),
+        -canopy-accent-2);
+  -fx-text-fill: -canopy-card;
   -fx-font-weight: 900;
-  -fx-border-color: rgba(164, 230, 139, 0.82);
+  -fx-border-color: -canopy-border-strong;
   -fx-border-width: 1.3;
 }
 
@@ -202,7 +208,7 @@
 /* Icona moneta */
 .coin-icon {
   -fx-opacity: 1.0;
-  -fx-effect: dropshadow(gaussian, rgba(164, 230, 139, 0.40), 8, 0.30, 0, 0);
+  -fx-effect: dropshadow(gaussian, -canopy-focus-soft, 8, 0.30, 0, 0);
 }
 
 /* ---------- LAYOUT CONTENUTO GENERALE ---------- */
@@ -210,7 +216,7 @@
 .center-area {
   -fx-background-color:
     radial-gradient(center 18% 0%, radius 110%,
-        rgba(38, 183, 89, 0.16),
+        -canopy-accent-soft,
         transparent 55%),
     -canopy-bg;
   -fx-background-radius: 22;
@@ -224,7 +230,7 @@
   -fx-background-radius: 20;
   -fx-padding: 16;
   -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.45), 18, 0.32, 0, 6);
-  -fx-border-color: rgba(164, 230, 139, 0.20);
+  -fx-border-color: -canopy-border-subtle;
   -fx-border-radius: 20;
 }
 
@@ -234,7 +240,7 @@
     linear-gradient(to bottom, -canopy-surface-2, -canopy-surface);
   -fx-padding: 14;
   -fx-spacing: 10;
-  -fx-border-color: -canopy-accent-2;
+  -fx-border-color: -canopy-border-strong;
   -fx-border-width: 0 0 0 1;
 }
 
@@ -242,7 +248,7 @@
   -fx-font-size: 15px;
   -fx-font-weight: 800;
   -fx-text-fill: -canopy-accent-2;
-  -fx-effect: dropshadow(gaussian, rgba(164, 230, 139, 0.35), 10, 0.4, 0, 2);
+  -fx-effect: dropshadow(gaussian, -canopy-focus-soft, 10, 0.4, 0, 2);
 }
 
 .plant-stage {
@@ -256,35 +262,36 @@
   -fx-background-radius: 20;
 }
 
-
 /* Timer grande */
 .timer-large {
   -fx-font-size: 46px;
   -fx-font-weight: 900;
   -fx-text-fill: -canopy-accent-2;
-  -fx-effect: dropshadow(gaussian, rgba(164, 230, 139, 0.40), 16, 0.4, 0, 4);
+  -fx-effect: dropshadow(gaussian, -canopy-focus-soft, 16, 0.4, 0, 4);
 }
 
 /* ---------- CONTROLLI GENERICI ---------- */
 
-/* Bottoni primari */
+/* Bottoni primari (START/timer) */
 .button.start,
 .button:default {
   -fx-background-color:
-      linear-gradient(to bottom, -canopy-accent-2, -canopy-accent);
-  -fx-text-fill: #03130c;
+      linear-gradient(to bottom, -canopy-bark, -canopy-accent);
+  -fx-text-fill: -canopy-bg;
   -fx-font-weight: 900;
   -fx-background-radius: 999;
 }
 .button.start:hover,
 .button:default:hover {
   -fx-background-color:
-      linear-gradient(to bottom, -canopy-accent, #1d8756);
+      linear-gradient(to bottom,
+        derive(-canopy-accent, 15%),
+        -canopy-accent);
 }
 
 /* Bottoni secondari */
 .button {
-  -fx-background-color: rgba(255,255,255,0.06);
+  -fx-background-color: rgba(255,255,255,0.06); /* neutro, ok tenerlo */
   -fx-background-radius: 999;
 }
 .button:hover {
@@ -304,7 +311,7 @@
   -fx-padding: 4 6;
 }
 .ghost-icon-button:hover {
-  -fx-background-color: rgba(164, 230, 139, 0.12);
+  -fx-background-color: -canopy-accent-soft;
 }
 
 /* TextField / ChoiceBox / ComboBox */
@@ -315,13 +322,13 @@
   -fx-text-fill: -canopy-text;
   -fx-background-radius: 12;
   -fx-border-radius: 12;
-  -fx-border-color: rgba(164, 230, 139, 0.25);
+  -fx-border-color: -canopy-border-subtle;
   -fx-padding: 8 10;
 }
 .text-field:focused,
 .choice-box:focused,
 .combo-box-base:focused {
-  -fx-border-color: rgba(164, 230, 139, 0.80);
+  -fx-border-color: -canopy-border-strong;
   -fx-effect: dropshadow(gaussian, -canopy-focus-soft, 14, 0.5, 0, 0);
 }
 
@@ -337,19 +344,21 @@
   -fx-text-fill: -canopy-text;
   -fx-padding: 8 10;
   -fx-background-radius: 12;
-  -fx-border-color: rgba(164, 230, 139, 0.12);
+  -fx-border-color: -canopy-border-subtle;
   -fx-border-width: 0 0 1 0;
 }
 .list-cell:hover {
-  -fx-background-color: rgba(164, 230, 139, 0.10);
+  -fx-background-color: -canopy-accent-soft;
 }
+
+/* selezione lista: token-based base (overridato sotto per tema) */
 .list-cell:selected,
 .list-cell:filled:selected:hover {
   -fx-background-color:
       linear-gradient(to right,
-        rgba(164, 230, 139, 0.24),
-        rgba(38, 183, 89, 0.18));
-  -fx-text-fill: #03130c;
+        derive(-canopy-accent-2, 5%),
+        -canopy-accent-2);
+  -fx-text-fill: -canopy-card;
 }
 
 /* ProgressBar “linfa” */
@@ -371,9 +380,8 @@
 .scroll-bar .thumb {
   -fx-background-color: -canopy-accent;
 }
-
 .scroll-bar .thumb:hover {
-  -fx-background-color: rgba(164, 230, 139, 0.65);
+  -fx-background-color: derive(-canopy-accent, 15%);
 }
 
 /* ScrollPane pulito */
@@ -407,7 +415,7 @@
       linear-gradient(to bottom, -canopy-surface-2, -canopy-surface);
   -fx-background-radius: 18;
   -fx-padding: 12;
-  -fx-border-color: -canopy-accent-2;
+  -fx-border-color: -canopy-border-strong;
   -fx-border-radius: 18;
 }
 
@@ -422,21 +430,21 @@
      linear-gradient(to bottom, -canopy-surface-2, -canopy-surface);
   -fx-background-radius: 12;
   -fx-border-radius: 12;
-  -fx-border-color: rgba(164, 230, 139, 0.18);
+  -fx-border-color: -canopy-border-subtle;
   -fx-padding: 4;
 }
 .day-cell:hover {
   -fx-background-color:
     linear-gradient(to bottom,
-      rgba(38, 183, 89, 0.14),
+      -canopy-accent-soft,
       -canopy-surface);
 }
 .day-cell-out {
   -fx-opacity: 0.55;
 }
 .day-cell-today {
-  -fx-border-color: rgba(164, 230, 139, 0.75);
-  -fx-effect: dropshadow(gaussian, rgba(164, 230, 139, 0.32), 12, 0.45, 0, 0);
+  -fx-border-color: -canopy-border-strong;
+  -fx-effect: dropshadow(gaussian, -canopy-focus-soft, 12, 0.45, 0, 0);
 }
 
 .day-number {
@@ -468,7 +476,7 @@
 .achievements-root {
   -fx-background-color:
     radial-gradient(center 15% 0%, radius 120%,
-        rgba(73, 218, 124, 0.16),
+        -canopy-accent-soft,
         transparent 60%),
     -canopy-bg;
   -fx-background-radius: 22;
@@ -490,7 +498,7 @@
   -fx-background-radius: 20;
   -fx-padding: 16;
   -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.55), 18, 0.4, 0, 5);
-  -fx-border-color: rgba(164, 230, 139, 0.22);
+  -fx-border-color: -canopy-border-subtle;
   -fx-border-radius: 20;
 }
 
@@ -537,7 +545,7 @@
   -fx-font-weight: 800;
 }
 
-/* badge stato (se usi label con queste styleClass) */
+/* badge stato */
 .badge {
   -fx-font-size: 10px;
   -fx-font-weight: 800;
@@ -546,12 +554,12 @@
   -fx-letter-spacing: 1.1px;
 }
 .badge-achieved {
-  -fx-background-color: rgba(38, 183, 89, 0.32);
+  -fx-background-color: -canopy-accent-soft;
   -fx-text-fill: -canopy-text;
 }
 .badge-locked {
   -fx-background-color: rgba(255,255,255,0.10);
-  -fx-text-fill: #bbbbbb;
+  -fx-text-fill: -canopy-muted;
 }
 
 /* ----- Card obiettivi centrali ----- */
@@ -563,7 +571,7 @@
         -canopy-card);
   -fx-background-radius: 18;
   -fx-padding: 10 12;
-  -fx-border-color: rgba(164, 230, 139, 0.18);
+  -fx-border-color: -canopy-border-subtle;
   -fx-border-radius: 18;
   -fx-border-width: 1;
   -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.55), 14, 0.38, 0, 3);
@@ -574,9 +582,9 @@
 .card:hover {
   -fx-background-color:
     linear-gradient(to bottom,
-        derive(-canopy-card, 20%),
+        derive(-canopy-card, 10%),
         -canopy-card);
-  -fx-border-color: rgba(164, 230, 139, 0.32);
+  -fx-border-color: -canopy-border-strong;
 }
 
 .card-selected {
@@ -584,9 +592,9 @@
     linear-gradient(to bottom,
         derive(-canopy-accent, 35%),
         -canopy-card-soft);
-  -fx-border-color: rgba(164, 230, 139, 0.80);
+  -fx-border-color: -canopy-accent-2;
   -fx-border-width: 2;
-  -fx-effect: dropshadow(gaussian, rgba(164, 230, 139, 0.45), 16, 0.55, 0, 3);
+  -fx-effect: dropshadow(gaussian, -canopy-focus, 16, 0.55, 0, 3);
 }
 
 .card-achieved {
@@ -603,7 +611,7 @@
     linear-gradient(to bottom,
       -canopy-soil,
       derive(-canopy-soil, -25%));
-  -fx-border-color: rgba(164, 230, 139, 0.10);
+  -fx-border-color: -canopy-border-subtle;
 }
 
 /* titolo e descrizione interno card */
@@ -619,21 +627,21 @@
   -fx-opacity: 0.96;
 }
 
-/* mini-pill di progresso (se usi Label con questa classe) */
+/* mini-pill di progresso */
 .card-progress-pill {
   -fx-font-size: 10px;
   -fx-font-weight: 700;
   -fx-text-fill: -canopy-text;
-  -fx-background-color: rgba(164, 230, 139, 0.16);
+  -fx-background-color: -canopy-accent-soft;
   -fx-background-radius: 999;
   -fx-padding: 2 6;
 }
 .card-achieved .card-progress-pill {
-  -fx-background-color: rgba(38, 183, 89, 0.40);
+  -fx-background-color: derive(-canopy-accent, 20%);
 }
 .card-locked .card-progress-pill {
   -fx-background-color: rgba(255,255,255,0.12);
-  -fx-text-fill: #b1b1b1;
+  -fx-text-fill: -canopy-muted;
 }
 
 /* ---------- ERBARIO (HERBARIUM) ---------- */
@@ -643,10 +651,10 @@
   -fx-padding: 22;
   -fx-background-color:
      linear-gradient(to bottom,
-        rgba(73, 218, 124, 0.08),
+        -canopy-accent-soft,
         -canopy-bg);
   -fx-background-radius: 20;
-  -fx-border-color: -canopy-accent-2;
+  -fx-border-color: -canopy-border-strong;
   -fx-border-radius: 20;
 }
 
@@ -687,7 +695,7 @@
   -fx-padding: 16;
   -fx-background-color:
     linear-gradient(to bottom, -canopy-surface-2, -canopy-surface);
-  -fx-border-color: -canopy-accent-2;
+  -fx-border-color: -canopy-border-strong;
   -fx-border-width: 0 0 0 1;
 }
 
@@ -699,7 +707,7 @@
   -fx-background-color: -canopy-surface-2;
   -fx-prompt-text-fill: -canopy-muted;
   -fx-text-fill: -canopy-text;
-  -fx-border-color: rgba(164, 230, 139, 0.25);
+  -fx-border-color: -canopy-border-subtle;
   -fx-border-radius: 999;
   -fx-focus-color: transparent;
   -fx-faint-focus-color: transparent;
@@ -707,28 +715,30 @@
 
 /* filtri chip */
 .chip {
-  -fx-background-color: rgba(164, 230, 139, 0.10);
+  -fx-background-color: -canopy-accent-soft;
   -fx-text-fill: -canopy-text;
   -fx-background-radius: 999;
   -fx-padding: 6 12;
   -fx-cursor: hand;
-  -fx-border-color: rgba(164, 230, 139, 0.22);
+  -fx-border-color: -canopy-border-subtle;
   -fx-border-radius: 999;
   -fx-focus-color: transparent;
   -fx-faint-focus-color: transparent;
 }
 .chip:hover {
-  -fx-background-color: rgba(164, 230, 139, 0.18);
+  -fx-background-color: derive(-canopy-accent-soft, 10%);
 }
 .chip:selected {
   -fx-background-color:
-    linear-gradient(to right, -canopy-accent, -canopy-accent-2);
-  -fx-text-fill: #03130c;
+    linear-gradient(to right, -canopy-accent-2, -canopy-accent);
+  -fx-text-fill: -canopy-card;
   -fx-border-color: transparent;
 }
 .chip:selected:hover {
   -fx-background-color:
-    linear-gradient(to right, -canopy-accent-2, #1d8756);
+    linear-gradient(to right,
+      derive(-canopy-accent-2, 10%),
+      -canopy-accent);
 }
 
 /* scroll lista erbario */
@@ -771,7 +781,7 @@
   -fx-background-color: -canopy-card-soft;
   -fx-background-radius: 16;
   -fx-padding: 12 14;
-  -fx-border-color: rgba(164, 230, 139, 0.18);
+  -fx-border-color: -canopy-border-subtle;
   -fx-border-radius: 16;
 }
 
@@ -800,7 +810,7 @@
 /* classi applicate da FontManager */
 
 .root.font-atkinson {
-  -fx-font-family: "Atkinson Hyperlegible";
+  -fx-font-family: "AtkinsonHyperlegible";
 }
 
 .root.font-comicneue {
@@ -809,4 +819,127 @@
 
 .root.font-robotomono {
   -fx-font-family: "Roboto Mono";
+}
+
+/* ---------- OVERRIDE SELEZIONI PER TEMA ---------- */
+/* qui rendiamo le selezioni più simili all'hover, per entrambi i temi */
+
+/* LIGHT MODE – selezioni più soft, simili all'hover */
+.root.theme-light .toggle-button:selected {
+  -fx-background-color:
+      linear-gradient(to right,
+        -canopy-accent-soft,
+        derive(-canopy-accent-soft, 15%));
+  -fx-text-fill: -canopy-text;
+  -fx-font-weight: 900;
+  -fx-border-color: -canopy-border-strong;
+  -fx-border-width: 1.3;
+}
+
+.root.theme-light .list-cell:selected,
+.root.theme-light .list-cell:filled:selected:hover {
+  -fx-background-color:
+      linear-gradient(to right,
+        -canopy-accent-soft,
+        derive(-canopy-accent-soft, 10%));
+  -fx-text-fill: -canopy-text;
+}
+
+.root.theme-light .chip:selected {
+  -fx-background-color:
+      linear-gradient(to right,
+        -canopy-accent-soft,
+        derive(-canopy-accent-soft, 12%));
+  -fx-text-fill: -canopy-text;
+  -fx-border-color: transparent;
+}
+
+/* DARK MODE – selezioni più leggere, non nerissime, ma sempre deep forest */
+.root.theme-dark .toggle-button:selected {
+  -fx-background-color:
+      linear-gradient(to right,
+        -canopy-accent-soft,
+        derive(-canopy-accent-soft, 8%));
+  -fx-text-fill: -canopy-text;
+  -fx-font-weight: 900;
+  -fx-border-color: -canopy-border-strong;
+  -fx-border-width: 1.3;
+}
+
+.root.theme-dark .list-cell:selected,
+.root.theme-dark .list-cell:filled:selected:hover {
+  -fx-background-color:
+      linear-gradient(to right,
+        -canopy-accent-soft,
+        derive(-canopy-accent-soft, 5%));
+  -fx-text-fill: -canopy-text;
+}
+
+.root.theme-dark .chip:selected {
+  -fx-background-color:
+      linear-gradient(to right,
+        -canopy-accent-soft,
+        derive(-canopy-accent-soft, 10%));
+  -fx-text-fill: -canopy-text;
+  -fx-border-color: transparent;
+}
+
+/* ---------- SELEZIONE PIANTE CON GLOW SOFT (simile nav, ma senza sfocare il contenuto) ---------- */
+
+.sidebar-right .list-view:focused .list-cell:filled:selected,
+.sidebar-right .list-view .list-cell:filled:selected:hover,
+.sidebar-right .list-cell:selected {
+  -fx-effect: none; /* niente blur su contenuti */
+
+  /* bordo principale (più chiaro, “glow core”) */
+  -fx-border-color: -canopy-focus;
+  -fx-border-width: 1.2;
+  -fx-border-radius: 14;
+
+  /* secondo “alone” simulato tramite background sheath leggero */
+  -fx-background-radius: 14;
+  -fx-background-color:
+      radial-gradient(radius 140%,
+          -canopy-focus-soft,
+          transparent 70%),
+      linear-gradient(to right,
+          -canopy-accent-soft,
+          derive(-canopy-accent-soft, 8%));
+}
+
+/* ================================
+   COMBOBOX POPUP (menu a tendina)
+   ================================ */
+
+/* Contenitore popup: sfondo solido */
+.combo-box-popup > .list-view {
+    -fx-background-color: -canopy-surface-2;
+    -fx-control-inner-background: -canopy-surface-2;
+    -fx-background-insets: 0;
+    -fx-padding: 4;
+    -fx-effect: dropshadow(gaussian, -canopy-focus-soft, 16, 0.35, 0, 2);
+    -fx-background-radius: 8;
+}
+
+/* Celle del menu */
+.combo-box-popup .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: -canopy-text;
+    -fx-padding: 8 10;
+    -fx-background-radius: 6;
+}
+
+/* Hover nel popup */
+.combo-box-popup .list-cell:hover {
+    -fx-background-color: -canopy-accent-soft;
+}
+
+/* Selezione nel popup */
+.combo-box-popup .list-cell:selected,
+.combo-box-popup .list-cell:filled:selected:hover {
+    -fx-background-color:
+        linear-gradient(to right,
+            -canopy-accent-soft,
+            derive(-canopy-accent-soft, 10%));
+    -fx-text-fill: -canopy-text;
 }

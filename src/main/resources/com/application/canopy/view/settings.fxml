@@ -30,6 +30,7 @@
 
                 <Separator/>
 
+                <!-- FONT -->
                 <Label text="Aspetto" styleClass="h3"/>
 
                 <HBox spacing="10" alignment="CENTER_LEFT">
@@ -39,6 +40,20 @@
 
                 <Label text="Il font predefinito è Atkinson Hyperlegible, pensato per l'accessibilità."
                        styleClass="muted"/>
+
+                <Separator/>
+
+                <!-- TEMA -->
+                <Label text="Tema" styleClass="h3"/>
+
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Tema dell'interfaccia" styleClass="muted"/>
+                    <ComboBox fx:id="themeCombo" prefWidth="230"/>
+                </HBox>
+
+                <Label text="Puoi scegliere il tema chiaro o scuro. La scelta verrà ricordata."
+                       styleClass="muted"/>
+
             </VBox>
 
         </StackPane>

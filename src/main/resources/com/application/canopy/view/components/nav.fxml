@@ -58,7 +58,6 @@
                            fitWidth="30" fitHeight="30"
                            preserveRatio="true"
                            styleClass="nav-icon">
-                    <!-- di default dark, poi il controller li sostituisce in base al tema -->
                     <image><Image url="@images/home-dark.png"/></image>
                 </ImageView>
             </graphic>
@@ -124,40 +123,31 @@
             </graphic>
         </ToggleButton>
 
+        <!-- Impostazioni -->
+        <ToggleButton fx:id="btnSettings"
+                      text="Impostazioni"
+                      toggleGroup="$pagesGroup"
+                      contentDisplay="LEFT"
+                      graphicTextGap="10"
+                      maxWidth="Infinity"
+                      styleClass="nav-button"
+                      accessibleText="Apri le impostazioni"
+                      onAction="#goSettings">
+            <graphic>
+                <ImageView fx:id="settingsIcon"
+                           fitWidth="30" fitHeight="30"
+                           preserveRatio="true"
+                           styleClass="nav-icon">
+                    <image><Image url="@images/settings-dark.png"/></image>
+                </ImageView>
+            </graphic>
+        </ToggleButton>
+
     </VBox>
 
-    <!-- Impostazioni -->
-    <ToggleButton fx:id="btnSettings"
-                  text="Impostazioni"
-                  toggleGroup="$pagesGroup"
-                  contentDisplay="LEFT"
-                  graphicTextGap="10"
-                  maxWidth="Infinity"
-                  styleClass="nav-button"
-                  accessibleText="Apri le impostazioni"
-                  onAction="#goSettings">
-        <graphic>
-            <ImageView fx:id="settingsIcon"
-                       fitWidth="30" fitHeight="30"
-                       preserveRatio="true"
-                       styleClass="nav-icon">
-                <!-- di default dark, poi il controller li sostituisce in base al tema -->
-                <image><Image url="@images/settings-dark.png"/></image>
-            </ImageView>
-        </graphic>
-    </ToggleButton>
-
+    <!-- Fondo: solo logout -->
     <VBox alignment="BOTTOM_CENTER" spacing="8" styleClass="logout-section" VBox.vgrow="ALWAYS">
         <Separator prefWidth="150"/>
-
-        <!-- Pulsante tema -->
-        <Button fx:id="btnTheme"
-                text="🌞"
-                contentDisplay="LEFT"
-                graphicTextGap="10"
-                maxWidth="Infinity"
-                styleClass="nav-button theme-toggle-button"
-                onAction="#toggleTheme"/>
 
         <Button fx:id="btnLogout"
                 text="Logout"
