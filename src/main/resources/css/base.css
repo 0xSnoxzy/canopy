@@ -1,214 +1,742 @@
-/* ==========================================
-   Canopy - base.css
-   ========================================== */
+/* ------------------------------------------------------------
+   0. BASE ROOT (font + aggancio ai token di tema)
+   ------------------------------------------------------------ */
 
 .root {
-  /* Palette */
-  -canopy-bg:           linear-gradient(to bottom, #0b1a12, #0a1410); /* selva scura */
-  -canopy-surface:      #11231a;  /* foglie in ombra */
-  -canopy-surface-2:    #142a20;  /* foglie medio scure */
-  -canopy-card:         #183226;  /* lamina foglia */
-  -canopy-text:         #e7f6ef;  /* chiarore */
-  -canopy-muted:        #a6c8b8;  /* licheni */
-  -canopy-accent:       #4cc38a;  /* linfa viva */
-  -canopy-accent-2:     #7ad9a9;  /* muschio chiaro */
-  -canopy-bark:         #5a3f2e;  /* corteccia */
-  -canopy-soil:         #2b1f19;  /* terreno */
-
-  /* Focus / stati */
-  -canopy-focus:        rgba(122, 217, 169, 0.7);
-  -canopy-focus-soft:   rgba(122, 217, 169, 0.18);
-  -canopy-danger:       #ff6b6b;
-
-  -fx-font-size: 14px;
+  /* font di default, poi possono arrivare le classi .font-* */
   -fx-font-family: "AtkinsonHyperlegible";
   -fx-font-size: 14px;
+
+  /* i colori reali vengono da .root.theme-* */
   -fx-text-fill: -canopy-text;
-  -fx-base: -canopy-surface;
+  -fx-base:   -canopy-surface;
+  -fx-accent: -canopy-accent;
 }
 
-/* ---------- Elementi generali ---------- */
 
-.label { -fx-text-fill: -canopy-text; }
-.subtle { -fx-text-fill: -canopy-muted; }
+/* ============================================================
+   1. PALETTE TEMI (SOLO TOKEN, NESSUN LAYOUT)
+   ============================================================ */
 
+/* ---------- 1.1 Evergreen Core (dark / light) ---------- */
+
+/* Tema DARK – Evergreen Deep Forest 2.0 */
+.root.theme-dark {
+  /* BACKGROUND */
+  -canopy-bg:       linear-gradient(to bottom, #0D130C, #151F12);
+
+  /* SUPERFICI */
+  -canopy-surface:    #233021;
+  -canopy-surface-2:  #161F15;
+  -canopy-card:       #313F2E;
+  -canopy-card-soft:  rgba(49, 63, 46, 0.96);
+
+  /* TESTO */
+  -canopy-text:   #E3F1D8;
+  -canopy-muted:  #AEBFA3;
+
+  /* ACCENTI */
+  -canopy-accent:   #75B548;
+  -canopy-accent-2: #C7E39A;
+  -canopy-bark:     #8B6E4E;
+  -canopy-soil:     #10160F;
+
+  /* FOCUS / DANGER / BORDI */
+  -canopy-focus:        rgba(199, 227, 154, 0.65);
+  -canopy-focus-soft:   rgba(199, 227, 154, 0.20);
+  -canopy-danger:       #FF7D7D;
+  -canopy-border-subtle: rgba(227, 241, 216, 0.12);
+  -canopy-border-strong: rgba(227, 241, 216, 0.28);
+  -canopy-accent-soft:   rgba(152, 206, 115, 0.26);
+}
+
+/* Tema LIGHT – Evergreen Garden 2.0 */
+.root.theme-light {
+  /* BACKGROUND */
+  -canopy-bg:       linear-gradient(to bottom, #E6F2DC, #D3E4C6);
+
+  /* SUPERFICI */
+  -canopy-surface:    #D3E4C6;
+  -canopy-surface-2:  #C3D5B5;
+  -canopy-card:       #E6F2DC;
+  -canopy-card-soft:  rgba(230, 242, 220, 0.96);
+
+  /* TESTO */
+  -canopy-text:   #1B2616;
+  -canopy-muted:  #4F6445;
+
+  /* ACCENTI */
+  -canopy-accent:   #4D8F2F;
+  -canopy-accent-2: #31581D;
+  -canopy-bark:     #7B9C54;
+  -canopy-soil:     #8AA36C;
+
+  /* FOCUS / DANGER / BORDI */
+  -canopy-focus:        rgba(77, 143, 47, 0.32);
+  -canopy-focus-soft:   rgba(77, 143, 47, 0.16);
+  -canopy-danger:       #E04D4D;
+  -canopy-border-subtle: rgba(27, 38, 22, 0.09);
+  -canopy-border-strong: rgba(27, 38, 22, 0.20);
+  -canopy-accent-soft:   rgba(77, 143, 47, 0.20);
+}
+
+
+/* ---------- 1.2 Sakura ---------- */
+
+.root.theme-sakura-light {
+  -canopy-bg:          linear-gradient(to bottom, #FFEAF3, #FFD6E8);
+  -canopy-surface:     #F9CADA;
+  -canopy-surface-2:   #F4B5CA;
+  -canopy-card:        #FFD6E8;
+  -canopy-card-soft:   rgba(255, 214, 232, 0.92);
+
+  -canopy-text:        #5A2D3E;
+  -canopy-muted:       #8A5065;
+
+  -canopy-accent:      #E7639E;
+  -canopy-accent-2:    #C23F78;
+  -canopy-bark:        #A75C6F;
+  -canopy-soil:        #E1A2B8;
+
+  -canopy-focus:        rgba(231, 99, 158, 0.45);
+  -canopy-focus-soft:   rgba(231, 99, 158, 0.18);
+  -canopy-border-subtle: rgba(90, 45, 62, 0.10);
+  -canopy-border-strong: rgba(90, 45, 62, 0.20);
+  -canopy-accent-soft:   rgba(231, 99, 158, 0.22);
+}
+
+.root.theme-sakura-dark {
+  -canopy-bg:          linear-gradient(to bottom, #1C0E14, #26101B);
+  -canopy-surface:     #3A1C2A;
+  -canopy-surface-2:   #2B1521;
+  -canopy-card:        #4A2334;
+  -canopy-card-soft:   rgba(74, 35, 52, 0.96);
+
+  -canopy-text:        #FDE8F0;
+  -canopy-muted:       #E7B4CB;
+
+  -canopy-accent:      #E7639E;
+  -canopy-accent-2:    #FF9BC5;
+  -canopy-bark:        #B96A8C;
+  -canopy-soil:        #42202F;
+
+  -canopy-focus:        rgba(231, 99, 158, 0.55);
+  -canopy-focus-soft:   rgba(231, 99, 158, 0.20);
+  -canopy-border-subtle: rgba(253, 232, 240, 0.12);
+  -canopy-border-strong: rgba(253, 232, 240, 0.26);
+  -canopy-accent-soft:   rgba(231, 99, 158, 0.28);
+}
+
+
+/* ---------- 1.3 Quercia ---------- */
+
+.root.theme-quercia-light {
+  -canopy-bg:          linear-gradient(to bottom, #E8EFE3, #D9E5D1);
+  -canopy-surface:     #C9D7BC;
+  -canopy-surface-2:   #B7C8A8;
+  -canopy-card:        #D9E5D1;
+  -canopy-card-soft:   rgba(217, 229, 209, 0.94);
+
+  -canopy-text:        #2F3C25;
+  -canopy-muted:       #56694A;
+
+  -canopy-accent:      #6F8E54;
+  -canopy-accent-2:    #4D623C;
+  -canopy-bark:        #7B5A40;
+  -canopy-soil:        #A87D55;
+
+  -canopy-focus:        rgba(111, 142, 84, 0.45);
+  -canopy-focus-soft:   rgba(111, 142, 84, 0.18);
+  -canopy-border-subtle: rgba(47, 60, 37, 0.10);
+  -canopy-border-strong: rgba(47, 60, 37, 0.20);
+  -canopy-accent-soft:   rgba(111, 142, 84, 0.22);
+}
+
+.root.theme-quercia-dark {
+  -canopy-bg:          linear-gradient(to bottom, #11150E, #161C11);
+  -canopy-surface:     #222A1B;
+  -canopy-surface-2:   #171E13;
+  -canopy-card:        #2E3823;
+  -canopy-card-soft:   rgba(46, 56, 35, 0.96);
+
+  -canopy-text:        #E4F0D9;
+  -canopy-muted:       #B7C7A6;
+
+  -canopy-accent:      #6F8E54;
+  -canopy-accent-2:    #94B06E;
+  -canopy-bark:        #8C6944;
+  -canopy-soil:        #3A2A1A;
+
+  -canopy-focus:        rgba(148, 176, 110, 0.55);
+  -canopy-focus-soft:   rgba(148, 176, 110, 0.22);
+  -canopy-border-subtle: rgba(228, 240, 217, 0.10);
+  -canopy-border-strong: rgba(228, 240, 217, 0.22);
+  -canopy-accent-soft:   rgba(148, 176, 110, 0.26);
+}
+
+
+/* ---------- 1.4 Menta ---------- */
+
+.root.theme-menta-light {
+  -canopy-bg:          linear-gradient(to bottom, #DAFFF1, #C4F7E4);
+  -canopy-surface:     #B3ECDC;
+  -canopy-surface-2:   #A0E3D0;
+  -canopy-card:        #D0F7EC;
+  -canopy-card-soft:   rgba(208, 247, 236, 0.92);
+
+  -canopy-text:        #1E3F38;
+  -canopy-muted:       #41756B;
+
+  -canopy-accent:      #4AC9A6;
+  -canopy-accent-2:    #2EA487;
+  -canopy-bark:        #63B29A;
+  -canopy-soil:        #4F8F7F;
+
+  -canopy-focus:        rgba(74, 201, 166, 0.45);
+  -canopy-focus-soft:   rgba(74, 201, 166, 0.18);
+  -canopy-border-subtle: rgba(30, 63, 56, 0.10);
+  -canopy-border-strong: rgba(30, 63, 56, 0.20);
+  -canopy-accent-soft:   rgba(74, 201, 166, 0.22);
+}
+
+.root.theme-menta-dark {
+  -canopy-bg:          linear-gradient(to bottom, #071814, #0C221D);
+  -canopy-surface:     #12332A;
+  -canopy-surface-2:   #0D2520;
+  -canopy-card:        #164036;
+  -canopy-card-soft:   rgba(22, 64, 54, 0.96);
+
+  -canopy-text:        #D5FFF3;
+  -canopy-muted:       #9DD7C6;
+
+  -canopy-accent:      #4AC9A6;
+  -canopy-accent-2:    #7AE0BF;
+  -canopy-bark:        #4D9B84;
+  -canopy-soil:        #193730;
+
+  -canopy-focus:        rgba(74, 201, 166, 0.55);
+  -canopy-focus-soft:   rgba(74, 201, 166, 0.22);
+  -canopy-border-subtle: rgba(213, 255, 243, 0.10);
+  -canopy-border-strong: rgba(213, 255, 243, 0.22);
+  -canopy-accent-soft:   rgba(74, 201, 166, 0.26);
+}
+
+
+/* ---------- 1.5 Peperoncino ---------- */
+
+.root.theme-peperoncino-light {
+  -canopy-bg:          linear-gradient(to bottom, #FFE1E1, #FFCBCB);
+  -canopy-surface:     #FFB4B4;
+  -canopy-surface-2:   #FF9B9B;
+  -canopy-card:        #FFC7C7;
+  -canopy-card-soft:   rgba(255, 199, 199, 0.92);
+
+  -canopy-text:        #4A2020;
+  -canopy-muted:       #824646;
+
+  -canopy-accent:      #E03E3E;
+  -canopy-accent-2:    #B52D2D;
+  -canopy-bark:        #A44747;
+  -canopy-soil:        #CE6464;
+
+  -canopy-focus:        rgba(224, 62, 62, 0.50);
+  -canopy-focus-soft:   rgba(224, 62, 62, 0.20);
+  -canopy-border-subtle: rgba(74, 32, 32, 0.10);
+  -canopy-border-strong: rgba(74, 32, 32, 0.20);
+  -canopy-accent-soft:   rgba(224, 62, 62, 0.22);
+}
+
+.root.theme-peperoncino-dark {
+  -canopy-bg:          linear-gradient(to bottom, #190707, #210909);
+  -canopy-surface:     #311012;
+  -canopy-surface-2:   #240A0C;
+  -canopy-card:        #3F1719;
+  -canopy-card-soft:   rgba(63, 23, 25, 0.96);
+
+  -canopy-text:        #FFE5E5;
+  -canopy-muted:       #F0A3A3;
+
+  -canopy-accent:      #E03E3E;
+  -canopy-accent-2:    #FF6B6B;
+  -canopy-bark:        #B35353;
+  -canopy-soil:        #361212;
+
+  -canopy-focus:        rgba(255, 107, 107, 0.54);
+  -canopy-focus-soft:   rgba(255, 107, 107, 0.22);
+  -canopy-border-subtle: rgba(255, 229, 229, 0.10);
+  -canopy-border-strong: rgba(255, 229, 229, 0.22);
+  -canopy-accent-soft:   rgba(224, 62, 62, 0.28);
+}
+
+
+/* ---------- 1.6 Lavanda ---------- */
+
+.root.theme-lavanda-light {
+  -canopy-bg:          linear-gradient(to bottom, #F1E7FF, #E3D6FF);
+  -canopy-surface:     #D6C5FF;
+  -canopy-surface-2:   #C7B1FA;
+  -canopy-card:        #E4D8FF;
+  -canopy-card-soft:   rgba(228, 216, 255, 0.92);
+
+  -canopy-text:        #3B2A5A;
+  -canopy-muted:       #675A89;
+
+  -canopy-accent:      #8C6FE8;
+  -canopy-accent-2:    #6B4EC6;
+  -canopy-bark:        #7C66B8;
+  -canopy-soil:        #A594D6;
+
+  -canopy-focus:        rgba(140, 111, 232, 0.42);
+  -canopy-focus-soft:   rgba(140, 111, 232, 0.18);
+  -canopy-border-subtle: rgba(59, 42, 90, 0.10);
+  -canopy-border-strong: rgba(59, 42, 90, 0.20);
+  -canopy-accent-soft:   rgba(140, 111, 232, 0.22);
+}
+
+.root.theme-lavanda-dark {
+  -canopy-bg:          linear-gradient(to bottom, #150F22, #1C142E);
+  -canopy-surface:     #261A3C;
+  -canopy-surface-2:   #1D1430;
+  -canopy-card:        #302149;
+  -canopy-card-soft:   rgba(48, 33, 73, 0.96);
+
+  -canopy-text:        #F2E8FF;
+  -canopy-muted:       #C1ACF1;
+
+  -canopy-accent:      #8C6FE8;
+  -canopy-accent-2:    #B396FF;
+  -canopy-bark:        #7359C5;
+  -canopy-soil:        #241736;
+
+  -canopy-focus:        rgba(179, 150, 255, 0.50);
+  -canopy-focus-soft:   rgba(179, 150, 255, 0.22);
+  -canopy-border-subtle: rgba(242, 232, 255, 0.10);
+  -canopy-border-strong: rgba(242, 232, 255, 0.22);
+  -canopy-accent-soft:   rgba(140, 111, 232, 0.28);
+}
+
+
+/* ---------- 1.7 Orchidea ---------- */
+
+.root.theme-orchidea-light {
+  -canopy-bg:          linear-gradient(to bottom, #F3E6FF, #EDD7FF);
+  -canopy-surface:     #E0C7FF;
+  -canopy-surface-2:   #D1AFFF;
+  -canopy-card:        #E9D6FF;
+  -canopy-card-soft:   rgba(233, 214, 255, 0.92);
+
+  -canopy-text:        #402856;
+  -canopy-muted:       #6C5687;
+
+  -canopy-accent:      #B375FF;
+  -canopy-accent-2:    #8A52D4;
+  -canopy-bark:        #9864C6;
+  -canopy-soil:        #B58CE0;
+
+  -canopy-focus:        rgba(179, 117, 255, 0.45);
+  -canopy-focus-soft:   rgba(179, 117, 255, 0.18);
+  -canopy-border-subtle: rgba(64, 40, 86, 0.10);
+  -canopy-border-strong: rgba(64, 40, 86, 0.20);
+  -canopy-accent-soft:   rgba(179, 117, 255, 0.23);
+}
+
+.root.theme-orchidea-dark {
+  -canopy-bg:          linear-gradient(to bottom, #160D26, #1C1030);
+  -canopy-surface:     #28143E;
+  -canopy-surface-2:   #1F0F32;
+  -canopy-card:        #341A4E;
+  -canopy-card-soft:   rgba(52, 26, 78, 0.96);
+
+  -canopy-text:        #F7EBFF;
+  -canopy-muted:       #D0B2F5;
+
+  -canopy-accent:      #B375FF;
+  -canopy-accent-2:    #D3A4FF;
+  -canopy-bark:        #8F5DD3;
+  -canopy-soil:        #261337;
+
+  -canopy-focus:        rgba(211, 164, 255, 0.50);
+  -canopy-focus-soft:   rgba(211, 164, 255, 0.22);
+  -canopy-border-subtle: rgba(247, 235, 255, 0.10);
+  -canopy-border-strong: rgba(247, 235, 255, 0.22);
+  -canopy-accent-soft:   rgba(179, 117, 255, 0.28);
+}
+
+
+/* ============================================================
+   2. OVERRIDE SELEZIONI PER TEMA
+   ============================================================ */
+
+/* LIGHT MODE – selezioni più soft, simili all'hover */
+.root.theme-light .toggle-button:selected {
+  -fx-background-color:
+      linear-gradient(to right,
+        -canopy-accent-soft,
+        derive(-canopy-accent-soft, 15%));
+  -fx-text-fill: -canopy-text;
+  -fx-font-weight: 900;
+  -fx-border-color: -canopy-border-strong;
+  -fx-border-width: 1.3;
+}
+
+.root.theme-light .list-cell:selected,
+.root.theme-light .list-cell:filled:selected:hover {
+  -fx-background-color:
+      linear-gradient(to right,
+        -canopy-accent-soft,
+        derive(-canopy-accent-soft, 10%));
+  -fx-text-fill: -canopy-text;
+}
+
+.root.theme-light .chip:selected {
+  -fx-background-color:
+      linear-gradient(to right,
+        -canopy-accent-soft,
+        derive(-canopy-accent-soft, 12%));
+  -fx-text-fill: -canopy-text;
+  -fx-border-color: transparent;
+}
+
+/* DARK MODE – selezioni più leggere ma “deep forest” */
+.root.theme-dark .toggle-button:selected {
+  -fx-background-color:
+      linear-gradient(to right,
+        -canopy-accent-soft,
+        derive(-canopy-accent-soft, 8%));
+  -fx-text-fill: -canopy-text;
+  -fx-font-weight: 900;
+  -fx-border-color: -canopy-border-strong;
+  -fx-border-width: 1.3;
+}
+
+.root.theme-dark .list-cell:selected,
+.root.theme-dark .list-cell:filled:selected:hover {
+  -fx-background-color:
+      linear-gradient(to right,
+        -canopy-accent-soft,
+        derive(-canopy-accent-soft, 5%));
+  -fx-text-fill: -canopy-text;
+}
+
+.root.theme-dark .chip:selected {
+  -fx-background-color:
+      linear-gradient(to right,
+        -canopy-accent-soft,
+        derive(-canopy-accent-soft, 10%));
+  -fx-text-fill: -canopy-text;
+  -fx-border-color: transparent;
+}
+
+/* NB: gli altri temi usano ancora le regole di base (.toggle-button:selected, ecc.) */
+
+
+/* ============================================================
+   3. TIPOGRAFIA GENERALE
+   ============================================================ */
+
+.label {
+  -fx-text-fill: -canopy-text;
+}
+
+/* testo attenuato, riusato un po’ ovunque */
+.subtle,
+.muted {
+  -fx-text-fill: -canopy-muted;
+}
+
+/* titolo app in nav */
 .app-title {
-  -fx-font-size: 18px;
-  -fx-font-weight: 800;
+  -fx-font-size: 20px;
+  -fx-font-weight: 900;
   -fx-text-fill: -canopy-accent-2;
-  -fx-effect: dropshadow(gaussian, rgba(122,217,169,0.25), 8, 0.2, 0, 2);
+  -fx-effect: dropshadow(gaussian, -canopy-focus-soft, 16, 0.3, 0, 3);
 }
 
-/* separatore */
-.separator *.line {
-  -fx-background-color: rgba(122,217,169,0.35);
-  -fx-opacity: 0.9;
-}
-
-/* ---------- Stile Nav ---------- */
-
-.sidebar {
-  -fx-background-color: -canopy-surface;
-  -fx-padding: 16 12;
-  -fx-spacing: 12;
-  -fx-border-color: rgba(122,217,169,0.18);
-  -fx-border-width: 0 1 0 0;
-  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 12, 0.2, 0, 2);
-}
-
-.points-label {
-  -fx-background-color: linear-gradient(to bottom, -canopy-card, -canopy-surface-2);
-  -fx-text-fill: -canopy-accent-2;
-  -fx-padding: 6 10;
-  -fx-background-radius: 999; /* “seme” tondo */
+/* mini heading tipo “IMPOSTAZIONI” */
+.heading-chip {
+  -fx-font-size: 11px;
   -fx-font-weight: 700;
-  -fx-border-color: rgba(122,217,169,0.35);
+  -fx-text-fill: -canopy-muted;
+  -fx-background-color: -canopy-accent-soft;
+  -fx-background-radius: 999;
+  -fx-padding: 3 8;
+  -fx-border-color: -canopy-border-subtle;
   -fx-border-radius: 999;
 }
 
-/* Sezioni Nav (menu/footer) */
+/* separatori orizzontali */
+.separator *.line {
+  -fx-background-color: -canopy-border-strong;
+  -fx-opacity: 0.9;
+}
+
+
+/* ============================================================
+   4. NAVIGAZIONE LATERALE
+   ============================================================ */
+
+.sidebar {
+  -fx-background-color:
+    linear-gradient(to bottom, -canopy-surface-2, -canopy-surface);
+  -fx-padding: 18 14;
+  -fx-spacing: 12;
+  -fx-border-color: -canopy-border-strong;
+  -fx-border-width: 0 1 0 0;
+  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.45), 18, 0.35, 0, 0);
+}
+
+/* etichetta punteggio monete */
+.points-label {
+  -fx-background-color:
+    linear-gradient(to bottom, -canopy-card, -canopy-surface-2);
+  -fx-text-fill: -canopy-accent-2;
+  -fx-padding: 6 12;
+  -fx-background-radius: 999;
+  -fx-font-weight: 800;
+  -fx-border-color: -canopy-border-strong;
+  -fx-border-radius: 999;
+  -fx-effect: dropshadow(gaussian, -canopy-focus-soft, 10, 0.35, 0, 2);
+}
+
 .menu-section  { -fx-spacing: 10; }
 .logout-section{ -fx-spacing: 10; }
 
-/* Bottoni nav: icona + testo */
-.nav-button, .logout-button, .button, .toggle-button {
+/* bottoni nav generici + bottoni base */
+.nav-button,
+.logout-button,
+.button,
+.toggle-button {
   -fx-alignment: CENTER_LEFT;
   -fx-graphic-text-gap: 10;
   -fx-padding: 9 14;
-  -fx-background-radius: 14;   /* sagoma foglia */
+  -fx-background-radius: 999;
   -fx-background-insets: 0;
   -fx-text-fill: -canopy-text;
   -fx-cursor: hand;
   -fx-border-color: transparent;
-  -fx-border-radius: 14;
+  -fx-border-radius: 999;
 }
 
-/* Stato base nav */
-.nav-button, .toggle-button {
+/* nav di default trasparente */
+.nav-button,
+.toggle-button {
   -fx-background-color: transparent;
 }
 
-/* Hover */
-.nav-button:hover, .toggle-button:hover {
-  -fx-background-color: rgba(122,217,169,0.10);
+/* hover nav: soft highlight */
+.nav-button:hover,
+.toggle-button:hover {
+  -fx-background-color: -canopy-accent-soft;
 }
 
-/* Attivo (pagina selezionata) */
+/* fallback per selected (poi i temi possono overridare) */
 .toggle-button:selected {
   -fx-background-color:
-      linear-gradient(to bottom, rgba(122,217,169,0.25), rgba(122,217,169,0.18)),
-      linear-gradient(to bottom, -canopy-card, -canopy-surface-2);
-  -fx-text-fill: -canopy-text;
-  -fx-font-weight: 800;
-  -fx-border-color: rgba(122,217,169,0.55);
+      linear-gradient(to right,
+        derive(-canopy-accent-2, 10%),
+        -canopy-accent-2);
+  -fx-text-fill: -canopy-card;
+  -fx-font-weight: 900;
+  -fx-border-color: -canopy-border-strong;
+  -fx-border-width: 1.3;
 }
 
-/* Glow Selezionato (focused) */
-.nav-button:focused, .toggle-button:focused, .logout-button:focused, .button:focused {
-  -fx-effect: dropshadow(gaussian, -canopy-focus, 12, 0.35, 0, 0);
+/* stato focus comune */
+.nav-button:focused,
+.toggle-button:focused,
+.logout-button:focused,
+.button:focused {
+  -fx-effect: dropshadow(gaussian, -canopy-focus, 14, 0.45, 0, 0);
 }
 
-/* Logout */
+/* logout evidenziato in rosso */
 .logout-button {
   -fx-background-color: transparent;
   -fx-text-fill: -canopy-danger;
 }
 .logout-button:hover {
-  -fx-background-color: rgba(255,107,107,0.10);
+  -fx-background-color: rgba(255,107,107,0.12);
 }
 
-/* ---------- Aree contenuto ---------- */
+/* icone nav */
+.nav-icon {
+  -fx-opacity: 0.92;
+}
+.toggle-button:hover .nav-icon,
+.button:hover .nav-icon {
+  -fx-opacity: 1.0;
+}
 
+/* icona moneta */
+.coin-icon {
+  -fx-opacity: 1.0;
+  -fx-effect: dropshadow(gaussian, -canopy-focus-soft, 8, 0.30, 0, 0);
+}
+
+
+/* ============================================================
+   5. LAYOUT CONTENUTO GENERALE
+   ============================================================ */
+
+/* area centrale dietro ai pannelli */
 .center-area {
-  -fx-background-color: -canopy-bg;
-  -fx-background-radius: 18;
-  -fx-padding: 8;
+  -fx-background-color:
+    radial-gradient(center 18% 0%, radius 110%,
+        -canopy-accent-soft,
+        transparent 55%),
+    -canopy-bg;
+  -fx-background-radius: 22;
+  -fx-padding: 16;
 }
 
+/* pannello principale “card grande” */
+.main-panel {
+  -fx-background-color:
+    linear-gradient(to bottom, -canopy-surface-2, -canopy-surface);
+  -fx-background-radius: 20;
+  -fx-padding: 16;
+  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.45), 18, 0.32, 0, 6);
+  -fx-border-color: -canopy-border-subtle;
+  -fx-border-radius: 20;
+}
+
+/* pannello laterale tipo colonna destra */
 .side-panel {
-  -fx-background-color: linear-gradient(to bottom, -canopy-surface, -canopy-soil);
-  -fx-padding: 12;
+  -fx-background-color:
+    linear-gradient(to bottom, -canopy-surface-2, -canopy-surface);
+  -fx-padding: 14;
   -fx-spacing: 10;
-  -fx-border-color: rgba(122,217,169,0.18);
+  -fx-border-color: -canopy-border-strong;
   -fx-border-width: 0 0 0 1;
 }
 
+/* titoli pannelli */
 .panel-title {
-  -fx-font-size: 14px;
+  -fx-font-size: 15px;
   -fx-font-weight: 800;
   -fx-text-fill: -canopy-accent-2;
-  -fx-effect: dropshadow(gaussian, rgba(122,217,169,0.25), 8, 0.2, 0, 1);
+  -fx-effect: dropshadow(gaussian, -canopy-focus-soft, 10, 0.4, 0, 2);
 }
 
-/* Palco della pianta */
+/* box crescita pianta in home */
 .plant-stage {
-  -fx-background-color: transparent;
-  -fx-border-color: rgba(90,63,46,0.35);
-  -fx-border-width: 2;
-  -fx-border-radius: 18;
+  -fx-background-color:
+    linear-gradient(to bottom,
+        derive(-canopy-accent, 40%),
+        -canopy-surface);
+  -fx-border-color: -canopy-accent;
+  -fx-border-width: 1.5;
+  -fx-border-radius: 20;
+  -fx-background-radius: 20;
 }
 
-/* Timer grande con “goccia” */
+/* timer grande in home */
 .timer-large {
-  -fx-font-size: 44px;
+  -fx-font-size: 46px;
   -fx-font-weight: 900;
   -fx-text-fill: -canopy-accent-2;
-  -fx-effect: dropshadow(gaussian, rgba(122,217,169,0.25), 14, 0.3, 0, 3);
+  -fx-effect: dropshadow(gaussian, -canopy-focus-soft, 16, 0.4, 0, 4);
 }
 
-/* ---------- Controlli generici ---------- */
 
-/* Bottoni primari (es. Start) */
-.button.start, .button:default {
-  -fx-background-color: linear-gradient(to bottom, -canopy-accent-2, -canopy-accent);
-  -fx-text-fill: #08140f;
-  -fx-font-weight: 800;
-}
-.button.start:hover, .button:default:hover {
-  -fx-background-color: linear-gradient(to bottom, -canopy-accent, #39b97f);
+/* ============================================================
+   6. CONTROLLI GENERICI (BUTTON, TEXTFIELD, ecc.)
+   ============================================================ */
+
+/* Bottoni primari (START / default) */
+.button.start,
+.button:default {
+  -fx-background-color:
+      linear-gradient(to bottom, -canopy-bark, -canopy-accent);
+  -fx-text-fill: -canopy-bg;
+  -fx-font-weight: 900;
+  -fx-background-radius: 999;
 }
 
-/* Bottoni secondari (Pausa/Reset) */
+.button.start:hover,
+.button:default:hover {
+  -fx-background-color:
+      linear-gradient(to bottom,
+        derive(-canopy-accent, 15%),
+        -canopy-accent);
+}
+
+/* Bottoni secondari (normali) */
 .button {
   -fx-background-color: rgba(255,255,255,0.06);
+  -fx-background-radius: 999;
+  -fx-focus-color: transparent;
+  -fx-faint-focus-color: transparent;
 }
 .button:hover {
   -fx-background-color: rgba(255,255,255,0.10);
 }
 
-/* TextField / ChoiceBox in stile “vaso” */
-.text-field, .choice-box, .combo-box-base {
+/* Ghost icon button (es. frecce calendario) */
+.ghost-icon-button {
+  -fx-background-color: transparent;
+  -fx-text-fill: -canopy-text;
+  -fx-font-weight: 800;
+  -fx-background-radius: 999;
+  -fx-padding: 4 6;
+}
+.ghost-icon-button:hover {
+  -fx-background-color: -canopy-accent-soft;
+}
+
+/* TextField / ChoiceBox / ComboBox base */
+.text-field,
+.choice-box,
+.combo-box-base {
   -fx-background-color: -canopy-surface-2;
   -fx-text-fill: -canopy-text;
   -fx-background-radius: 12;
   -fx-border-radius: 12;
-  -fx-border-color: rgba(122,217,169,0.20);
+  -fx-border-color: -canopy-border-subtle;
   -fx-padding: 8 10;
 }
-.text-field:focused, .choice-box:focused, .combo-box-base:focused {
-  -fx-border-color: rgba(122,217,169,0.45);
-  -fx-effect: dropshadow(gaussian, -canopy-focus-soft, 10, 0.3, 0, 0);
+
+.text-field:focused,
+.choice-box:focused,
+.combo-box-base:focused {
+  -fx-border-color: -canopy-border-strong;
+  -fx-effect: dropshadow(gaussian, -canopy-focus-soft, 14, 0.5, 0, 0);
 }
 
-/* ListView “foglia” */
+
+/* ============================================================
+   7. LISTE, PROGRESS BAR, SCROLL
+   ============================================================ */
+
+/* ListView base */
 .list-view {
   -fx-background-color: transparent;
   -fx-control-inner-background: transparent;
   -fx-background-insets: 0;
   -fx-padding: 4;
 }
+
 .list-cell {
   -fx-background-color: transparent;
   -fx-text-fill: -canopy-text;
   -fx-padding: 8 10;
   -fx-background-radius: 12;
+  -fx-border-color: -canopy-border-subtle;
+  -fx-border-width: 0 0 1 0;
 }
+
 .list-cell:hover {
-  -fx-background-color: rgba(122,217,169,0.08);
+  -fx-background-color: -canopy-accent-soft;
 }
-.list-cell:selected {
-  -fx-background-color: linear-gradient(to bottom, rgba(122,217,169,0.22), rgba(122,217,169,0.16));
-  -fx-text-fill: -canopy-text;
+
+/* fallback selezione (poi temi dark/light la modificano) */
+.list-cell:selected,
+.list-cell:filled:selected:hover {
+  -fx-background-color:
+      linear-gradient(to right,
+        derive(-canopy-accent-2, 5%),
+        -canopy-accent-2);
+  -fx-text-fill: -canopy-card;
 }
 
 /* ProgressBar “linfa” */
@@ -222,14 +750,83 @@
   -fx-background-radius: 999;
 }
 
-/* ScrollBar tono muschio */
-.scroll-bar:vertical, .scroll-bar:horizontal {
+/* ScrollBar */
+.scroll-bar:vertical,
+.scroll-bar:horizontal {
   -fx-background-color: transparent;
 }
 .scroll-bar .thumb {
-  -fx-background-color: rgba(122,217,169,0.35);
-  -fx-background-radius: 999;
+  -fx-background-color: -canopy-accent;
 }
 .scroll-bar .thumb:hover {
-  -fx-background-color: rgba(122,217,169,0.50);
+  -fx-background-color: derive(-canopy-accent, 15%);
+}
+
+/* ScrollPane pulito */
+.scrollpane-clean > .viewport {
+  -fx-background-color: transparent;
+}
+.scrollpane-clean {
+  -fx-background-color: transparent;
+}
+
+
+/* ============================================================
+   8. FONT SWITCHER (classi impostate dal FontManager)
+   ============================================================ */
+
+.root.font-atkinson {
+  -fx-font-family: "AtkinsonHyperlegible";
+}
+
+.root.font-comicneue {
+  -fx-font-family: "Comic Neue";
+}
+
+.root.font-robotomono {
+  -fx-font-family: "Roboto Mono";
+}
+
+/* stile per il bottone di cambio tema nei settings */
+.theme-toggle-button {
+  -fx-font-size: 14px;
+  -fx-font-weight: 800;
+}
+
+
+/* ============================================================
+   9. COMBOBOX POPUP (menu a tendina)
+   ============================================================ */
+
+/* Contenitore popup */
+.combo-box-popup > .list-view {
+    -fx-background-color: -canopy-surface-2;
+    -fx-control-inner-background: -canopy-surface-2;
+    -fx-background-insets: 0;
+    -fx-padding: 4;
+    -fx-effect: dropshadow(gaussian, -canopy-focus-soft, 16, 0.35, 0, 2);
+    -fx-background-radius: 8;
+}
+
+/* Celle menu */
+.combo-box-popup .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: -canopy-text;
+    -fx-padding: 8 10;
+    -fx-background-radius: 6;
+}
+
+/* Hover menu */
+.combo-box-popup .list-cell:hover {
+    -fx-background-color: -canopy-accent-soft;
+}
+
+/* Selezione menu */
+.combo-box-popup .list-cell:selected,
+.combo-box-popup .list-cell:filled:selected:hover {
+    -fx-background-color:
+        linear-gradient(to right,
+            -canopy-accent-soft,
+            derive(-canopy-accent-soft, 10%));
+    -fx-text-fill: -canopy-text;
 }

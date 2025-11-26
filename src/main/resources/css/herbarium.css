@@ -1,177 +1,178 @@
-/* ----- Stile Erbario ----- */
+/* ---------- ERBARIO (HERBARIUM) ---------- */
+
+/* ERBARIO wrapper */
 .content-root {
-    -fx-padding: 24;
+  -fx-padding: 22;
+  -fx-background-color:
+     linear-gradient(to bottom,
+        -canopy-accent-soft,
+        -canopy-bg);
+  -fx-background-radius: 20;
+  -fx-border-color: -canopy-border-strong;
+  -fx-border-radius: 20;
 }
 
-/* Titoli e testi (leggeri, leggibili) */
+/* Titoli & testi */
 .h2 {
-    -fx-font-size: 20px;
-    -fx-font-weight: bold;
+  -fx-font-size: 22px;
+  -fx-font-weight: 900;
+  -fx-text-fill: -canopy-text;
 }
 .h3 {
-    -fx-font-size: 14px;
-    -fx-font-weight: bold;
-    -fx-opacity: 0.9;
+  -fx-font-size: 14px;
+  -fx-font-weight: 800;
+  -fx-text-fill: -canopy-text;
 }
 .muted {
-    /* Text e Label usano proprietà diverse */
-    -fx-fill: #6a6a6a;
-    -fx-text-fill: #6a6a6a;
-    -fx-opacity: 0.95;
+  -fx-fill: -canopy-muted;
+  -fx-text-fill: -canopy-muted;
+  -fx-opacity: 0.96;
 }
 
-/* Suggerimento quando non c'è selezione */
+/* messaggio “nessuna pianta selezionata” */
 .hint {
-    -fx-text-fill: #7a7a7a;
-    -fx-font-size: 12px;
-    -fx-background-color: rgba(0,0,0,0.03);
-    -fx-padding: 8 12;
-    -fx-background-radius: 8;
+  -fx-text-fill: -canopy-muted;
+  -fx-font-size: 12px;
+  -fx-background-color: rgba(0,0,0,0.35);
+  -fx-padding: 8 12;
+  -fx-background-radius: 10;
 }
 
-/* Immagine grande: leggero sollevamento */
+/* immagine grande pianta */
 .plant-hero {
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 16, 0.2, 0, 4);
+  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.55), 22, 0.4, 0, 6);
+  -fx-smooth: true;
 }
 
-/* Colonna destra (ricerca + lista) */
+/* colonna destra erbario (search + lista) */
 .sidebar-right {
-    -fx-padding: 16;
-    -fx-background-color: rgba(0,0,0,0.02);
-    -fx-border-color: rgba(0,0,0,0.06);
-    -fx-border-width: 0 0 0 1;
+  -fx-padding: 16;
+  -fx-background-color:
+    linear-gradient(to bottom, -canopy-surface-2, -canopy-surface);
+  -fx-border-color: -canopy-border-strong;
+  -fx-border-width: 0 0 0 1;
 }
 
-/* Barra di ricerca */
+/* barra di ricerca */
 .search-bar {
-    -fx-background-radius: 10;
-    -fx-padding: 8 10 8 12;
-    -fx-prompt-text-fill: #8a8a8a;
-    -fx-background-insets: 0;
-    -fx-focus-color: transparent;
-    -fx-faint-focus-color: transparent;
+  -fx-background-radius: 999;
+  -fx-padding: 8 10 8 14;
+  -fx-background-insets: 0;
+  -fx-background-color: -canopy-surface-2;
+  -fx-prompt-text-fill: -canopy-muted;
+  -fx-text-fill: -canopy-text;
+  -fx-border-color: -canopy-border-subtle;
+  -fx-border-radius: 999;
+  -fx-focus-color: transparent;
+  -fx-faint-focus-color: transparent;
 }
 
-/* filtri (ToggleButton) */
+/* filtri chip */
 .chip {
-    -fx-background-color: rgba(0,0,0,0.04);
-    -fx-text-fill: -fx-text-base-color;
-    -fx-background-radius: 999;
-    -fx-padding: 6 12;
-    -fx-cursor: hand;
-    -fx-border-color: transparent;
-    -fx-border-radius: 999;
-    -fx-focus-color: transparent;
-    -fx-faint-focus-color: transparent;
+  -fx-background-color: -canopy-accent-soft;
+  -fx-text-fill: -canopy-text;
+  -fx-background-radius: 999;
+  -fx-padding: 6 12;
+  -fx-cursor: hand;
+  -fx-border-color: -canopy-border-subtle;
+  -fx-border-radius: 999;
+  -fx-focus-color: transparent;
+  -fx-faint-focus-color: transparent;
 }
 .chip:hover {
-    -fx-background-color: rgba(0,0,0,0.07);
+  -fx-background-color: derive(-canopy-accent-soft, 10%);
 }
 .chip:selected {
-    -fx-background-color: rgba(0,0,0,0.12);
-    -fx-text-fill: -fx-text-base-color;
+  -fx-background-color:
+    linear-gradient(to right, -canopy-accent-2, -canopy-accent);
+  -fx-text-fill: -canopy-card;
+  -fx-border-color: transparent;
 }
 .chip:selected:hover {
-    -fx-background-color: rgba(0,0,0,0.15);
+  -fx-background-color:
+    linear-gradient(to right,
+      derive(-canopy-accent-2, 10%),
+      -canopy-accent);
 }
 
-/* ScrollPane della lista */
+/* scroll lista erbario */
 .list-scroll {
-    -fx-background-color: transparent;
-    -fx-padding: 0;
+  -fx-background-color: transparent;
+  -fx-padding: 0;
 }
 .list-scroll .viewport {
-    -fx-background-color: transparent;
-}
-.scroll-bar:vertical .thumb {
-    -fx-background-color: rgba(0,0,0,0.25);
-    -fx-background-radius: 8;
-}
-.scroll-bar:vertical .track {
-    -fx-background-color: transparent;
+  -fx-background-color: transparent;
 }
 
-/* Lista piante (ListView) */
-.list-view {
-    -fx-background-insets: 0;
-    -fx-background-color: transparent;
-}
-.list-cell {
-    -fx-background-color: transparent;
-    -fx-padding: 10 12;
-    -fx-border-color: rgba(0,0,0,0.06);
-    -fx-border-width: 0 0 1 0;
-}
-.list-cell:hover {
-    -fx-background-color: rgba(0,0,0,0.04);
-}
-.list-cell:filled:selected, .list-cell:filled:selected:hover {
-    -fx-background-color: rgba(0,0,0,0.08);
-}
-
-/* Button "×" cancella ricerca */
-.button {
-    -fx-focus-color: transparent;
-    -fx-faint-focus-color: transparent;
-}
-
-
-/* herbarium aggiunta */
-.plant-hero {
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 20, 0.3, 0, 4);
-    -fx-smooth: true;
-}
-
+/* card nella lista piante (si appoggia a .list-cell) */
 .plant-card {
-    -fx-background-radius: 14;
-    -fx-padding: 8 10 8 10;
+  -fx-background-radius: 14;
+  -fx-padding: 8 10 8 10;
 }
 
-.list-scroll .viewport {
-    -fx-background-color: transparent;
-}
-
-/* Contenitore testo dettaglio */
+/* contenitore testo dettaglio pianta */
 .detail-text {
-    -fx-padding: 8 0 0 0;
+  -fx-padding: 10 0 0 0;
 }
 
-/* Header con nome pianta */
+/* titolo pianta */
 .plant-title {
-    -fx-font-size: 26px;
-    -fx-font-weight: 800;
-    -fx-text-fill: -fx-text-base-color;
-    /* leggero gradiente fake usando effetto */
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 12, 0.2, 0, 2);
+  -fx-font-size: 24px;
+  -fx-font-weight: 900;
+  -fx-text-fill: -canopy-text;
+  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.55), 14, 0.45, 0, 2);
 }
 
+/* curiosità */
 .plant-curiosity {
-    -fx-fill: #8e8e8e;
-    -fx-font-size: 12px;
-    -fx-font-style: italic;
+  -fx-fill: -canopy-muted;
+  -fx-font-size: 12px;
+  -fx-font-style: italic;
 }
 
-/* Card per descrizione / cura */
+/* card per descrizione/cura */
 .detail-section {
-    -fx-background-color: rgba(255, 255, 255, 0.03);
-    -fx-background-radius: 14;
-    -fx-padding: 12 14 12 14;
-    -fx-border-color: rgba(255, 255, 255, 0.06);
-    -fx-border-radius: 14;
+  -fx-background-color: -canopy-card-soft;
+  -fx-background-radius: 16;
+  -fx-padding: 12 14;
+  -fx-border-color: -canopy-border-subtle;
+  -fx-border-radius: 16;
 }
 
-/* Titolo sezione ("Descrizione", "Cura") */
-.section-title {
-    -fx-font-size: 11px;
-    -fx-font-weight: 700;
-    -fx-text-fill: #a0a0a0;
-    -fx-text-transform: uppercase;        /* alcuni engine ignorano, ma ci proviamo */
-    -fx-letter-spacing: 1.5px;
+/* titolo sezione (Descrizione/Cura) */
+.section-title-herb {
+  -fx-font-size: 11px;
+  -fx-font-weight: 800;
+  -fx-text-fill: -canopy-muted;
+  -fx-letter-spacing: 1.4px;
 }
 
-/* Testo dentro le card */
+/* testo dentro le card */
 .section-body {
-    -fx-fill: -fx-text-base-color;
-    -fx-font-size: 13px;
-    -fx-line-spacing: 3px;
+  -fx-fill: -canopy-text;
+  -fx-font-size: 13px;
+  -fx-line-spacing: 3px;
+}
+
+/* ---------- SELEZIONE PIANTE CON GLOW SOFT (simile nav, ma senza sfocare il contenuto) ---------- */
+
+.sidebar-right .list-view:focused .list-cell:filled:selected,
+.sidebar-right .list-view .list-cell:filled:selected:hover,
+.sidebar-right .list-cell:selected {
+  -fx-effect: none; /* niente blur su contenuti */
+
+  /* bordo principale (più chiaro, “glow core”) */
+  -fx-border-color: -canopy-focus;
+  -fx-border-width: 1.2;
+  -fx-border-radius: 14;
+
+  /* secondo “alone” simulato tramite background sheath leggero */
+  -fx-background-radius: 14;
+  -fx-background-color:
+      radial-gradient(radius 140%,
+          -canopy-focus-soft,
+          transparent 70%),
+      linear-gradient(to right,
+          -canopy-accent-soft,
+          derive(-canopy-accent-soft, 8%));
 }

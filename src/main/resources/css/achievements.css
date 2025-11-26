@@ -1,79 +1,173 @@
+/* ---------- ACHIEVEMENTS ---------- */
 
-/* ----- Stile Achievements ----- */
+/* wrapper achievements */
+.achievements-root {
+  -fx-background-color:
+    radial-gradient(center 15% 0%, radius 120%,
+        -canopy-accent-soft,
+        transparent 60%),
+    -canopy-bg;
+  -fx-background-radius: 22;
+  -fx-padding: 18;
+}
 
-/* Pannello dettaglio (destra) */
+/* FlowPane centrale della griglia */
+.achievements-grid {
+  -fx-hgap: 12;
+  -fx-vgap: 12;
+  -fx-padding: 4 0 0 0;
+}
+
 .detail-pane {
-    -fx-background-color: -fx-base;            /* usa la palette che hai già */
-    -fx-background-radius: 16;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 12, 0.2, 0, 2);
+  -fx-background-color:
+      linear-gradient(to bottom,
+          -canopy-card-soft,
+          -canopy-card);
+  -fx-background-radius: 20;
+  -fx-padding: 16;
+  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.55), 18, 0.4, 0, 5);
+  -fx-border-color: -canopy-border-subtle;
+  -fx-border-radius: 20;
 }
+
 .detail-pane.detail-achieved {
-    -fx-background-color: linear-gradient(to bottom, derive(-fx-base, 8%), derive(-fx-base, -2%));
+  -fx-background-color:
+      linear-gradient(to bottom,
+          derive(-canopy-accent, 40%),
+          -canopy-card);
 }
+
 .detail-pane.detail-locked {
-    -fx-background-color: linear-gradient(to bottom, derive(-fx-base, -2%), derive(-fx-base, -6%));
+  -fx-background-color:
+      linear-gradient(to bottom,
+          -canopy-soil,
+          derive(-canopy-soil, -20%));
+  -fx-opacity: 0.95;
 }
+
+/* micro-sezione tipo “PROGRESSO” / “DETTAGLI” */
 .section-title {
-    -fx-font-size: 14px;
-    -fx-font-weight: bold;
+  -fx-font-size: 11px;
+  -fx-font-weight: 700;
+  -fx-text-fill: -canopy-muted;
+  -fx-letter-spacing: 1.2px;
 }
+
+/* titolo obiettivo selezionato */
 .detail-title {
-    -fx-font-size: 16px;
-    -fx-font-weight: 700;
+  -fx-font-size: 18px;
+  -fx-font-weight: 900;
+  -fx-text-fill: -canopy-text;
+  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.45), 12, 0.4, 0, 2);
 }
+
+/* sottotitolo / descrizione breve */
 .detail-subtitle {
-    -fx-text-fill: -fx-text-inner-color;
-    -fx-opacity: 0.85;
+  -fx-text-fill: -canopy-muted;
+  -fx-opacity: 0.98;
 }
+
+/* testo progresso numerico */
 .detail-progress {
-    -fx-text-fill: -fx-text-inner-color;
+  -fx-text-fill: -canopy-accent-2;
+  -fx-font-weight: 800;
 }
 
-/* ScrollPane */
-.scrollpane-clean > .viewport {
-    -fx-background-color: transparent;
+/* badge stato */
+.badge {
+  -fx-font-size: 10px;
+  -fx-font-weight: 800;
+  -fx-background-radius: 999;
+  -fx-padding: 3 8;
+  -fx-letter-spacing: 1.1px;
 }
-.scrollpane-clean {
-    -fx-background-color: transparent;
+.badge-achieved {
+  -fx-background-color: -canopy-accent-soft;
+  -fx-text-fill: -canopy-text;
+}
+.badge-locked {
+  -fx-background-color: rgba(255,255,255,0.10);
+  -fx-text-fill: -canopy-muted;
 }
 
-/* Card Obiettivo (centro) */
+/* ----- Card obiettivi centrali ----- */
+
 .card {
-    -fx-background-color: derive(-fx-base, -4%);
-    -fx-background-radius: 12;
-    -fx-padding: 12;
-    -fx-border-color: transparent;
-    -fx-border-radius: 12;
-    -fx-border-width: 1;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 8, 0.2, 0, 1);
+  -fx-background-color:
+    linear-gradient(to bottom,
+        -canopy-card-soft,
+        -canopy-card);
+  -fx-background-radius: 18;
+  -fx-padding: 10 12;
+  -fx-border-color: -canopy-border-subtle;
+  -fx-border-radius: 18;
+  -fx-border-width: 1;
+  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.55), 14, 0.38, 0, 3);
+  -fx-cursor: hand;
+  -fx-opacity: 0.96;
 }
 
 .card:hover {
-    -fx-background-color: derive(-fx-base, 0%);
+  -fx-background-color:
+    linear-gradient(to bottom,
+        derive(-canopy-card, 10%),
+        -canopy-card);
+  -fx-border-color: -canopy-border-strong;
 }
 
 .card-selected {
-    -fx-border-color: -fx-accent;
-    -fx-border-width: 2;
+  -fx-background-color:
+    linear-gradient(to bottom,
+        derive(-canopy-accent, 35%),
+        -canopy-card-soft);
+  -fx-border-color: -canopy-accent-2;
+  -fx-border-width: 2;
+  -fx-effect: dropshadow(gaussian, -canopy-focus, 16, 0.55, 0, 3);
 }
 
 .card-achieved {
-    /* in chiaro */
-    -fx-opacity: 1.0;
+  -fx-opacity: 1.0;
+  -fx-background-color:
+    linear-gradient(to bottom,
+      derive(-canopy-accent-2, -10%),
+      -canopy-card);
 }
 
 .card-locked {
-    /* in scuro */
-    -fx-opacity: 0.6;
+  -fx-opacity: 0.55;
+  -fx-background-color:
+    linear-gradient(to bottom,
+      -canopy-soil,
+      derive(-canopy-soil, -25%));
+  -fx-border-color: -canopy-border-subtle;
 }
 
+/* titolo e descrizione interno card */
 .card-title {
-    -fx-font-weight: 700;
-    -fx-font-size: 13px;
+  -fx-font-weight: 800;
+  -fx-font-size: 13px;
+  -fx-text-fill: -canopy-text;
+  -fx-wrap-text: true;
+}
+.card-desc {
+  -fx-font-size: 11px;
+  -fx-text-fill: -canopy-muted;
+  -fx-opacity: 0.96;
 }
 
-.card-desc {
-    -fx-font-size: 12px;
-    -fx-text-fill: -fx-text-inner-color;
-    -fx-opacity: 0.9;
+/* mini-pill di progresso */
+.card-progress-pill {
+  -fx-font-size: 10px;
+  -fx-font-weight: 700;
+  -fx-text-fill: -canopy-text;
+  -fx-background-color: -canopy-accent-soft;
+  -fx-background-radius: 999;
+  -fx-padding: 2 6;
+}
+.card-achieved .card-progress-pill {
+  -fx-background-color: derive(-canopy-accent, 20%);
+}
+.card-locked .card-progress-pill {
+  -fx-background-color: rgba(255,255,255,0.12);
+  -fx-text-fill: -canopy-muted;
 }

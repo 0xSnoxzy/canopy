@@ -50,10 +50,22 @@ public class Main extends Application {
 
         Scene scene = new Scene(root, 1080, 620);
 
-        // Caricamento CSS
-        URL css = getClass().getResource("/css/base-old.css");
-        if (css == null) throw new IllegalStateException("File CSS non trovato.");
-        scene.getStylesheets().add(css.toExternalForm());
+        // Caricamento nuovi CSS
+        String[] styles = {
+                "/css/base.css",         // contiene temi + stile globale
+                "/css/achievements.css", // schermata achievements
+                "/css/calendar.css",     // calendario e dialog piante del giorno
+                "/css/herbarium.css"     // erbario + glow selezione piante
+        };
+
+        for (String style : styles) {
+            URL url = getClass().getResource(style);
+            if (url == null) {
+                throw new IllegalStateException("File CSS non trovato: " + style);
+            }
+            scene.getStylesheets().add(url.toExternalForm());
+        }
+
 
         ThemeManager.applyTheme(root);
         FontManager.applyCurrentFont(scene);
