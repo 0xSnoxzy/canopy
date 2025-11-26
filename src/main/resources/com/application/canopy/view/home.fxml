@@ -13,8 +13,6 @@
             fx:controller="com.application.canopy.controller.HomeController"
             prefWidth="1920" prefHeight="1080">
 
-    <!-- NIENTE NAV QUI -->
-
     <center>
         <VBox spacing="14" alignment="CENTER" styleClass="center-area">
 
@@ -44,20 +42,9 @@
             <!-- Controlli inferiori -->
             <HBox spacing="10" alignment="CENTER">
                 <Button fx:id="btnStartReset" text="Start" styleClass="start" defaultButton="true"/>
-                <Separator orientation="VERTICAL" prefHeight="20"/>
-                <Label text="Sessione:" styleClass="subtle"/>
-                <ComboBox fx:id="sessionCombo" promptText="Pomodoro">
-                    <items>
-                        <FXCollections fx:factory="observableArrayList">
-                            <String fx:value="Pomodoro (25)"/>
-                            <String fx:value="Pausa breve (5)"/>
-                            <String fx:value="Pausa lunga (15)"/>
-                        </FXCollections>
-                    </items>
-                </ComboBox>
-                <TextField fx:id="customMinutes" promptText="Timer custom" prefWidth="110"/>
                 <CheckBox fx:id="focusMode" text="Modalità focus"/>
             </HBox>
+
         </VBox>
     </center>
 

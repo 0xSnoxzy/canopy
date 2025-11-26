@@ -1,16 +1,21 @@
 package com.application.canopy.controller;
 
-import com.application.canopy.Navigator;
 import com.application.canopy.model.GameState;
 import com.application.canopy.model.Plant;
+import com.application.canopy.model.ThemeManager;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 import java.net.URL;
@@ -18,7 +23,6 @@ import java.net.URL;
 public class HomeController {
 
     @FXML private BorderPane root;
-    @FXML private NavController navController;
 
     @FXML private Canvas canvas;
     @FXML private ImageView img;
@@ -26,25 +30,40 @@ public class HomeController {
     @FXML private ProgressBar progress;
 
     @FXML private Button btnStartReset;
-    @FXML private ComboBox<String> sessionCombo;
-    @FXML private TextField customMinutes;
     @FXML private CheckBox focusMode;
 
     @FXML private ListView<Plant> list;
 
-    // timer
+    // ----------------- TIMER / STATO POMODORO -----------------
+
     private Timeline timeline;
-    private int totalSeconds = 25 * 60;
+
+    private int focusMinutes = 25;
+    private int shortBreakMinutes = 5;
+    private int longBreakMinutes = 15;
+    private int longBreakInterval = 4; // default, sovrascritto dal dialog
+
+    private int totalSeconds = focusMinutes * 60;
     private int remainingSeconds = totalSeconds;
 
     private enum TimerState { IDLE, RUNNING }
+    private enum Phase { FOCUS, BREAK }
+
     private TimerState state = TimerState.IDLE;
+    private Phase phase = Phase.FOCUS;
 
-    // modello / stato globale
+    private int totalCycles = 2;      // numero di blocchi di focus
+    private int completedCycles = 0;  // quanti blocchi di focus completati
+
+    private boolean breaksEnabled = true; // se false → solo timer, niente pause
+
+    // ----------------- MODELLO / GIOCO -----------------
+
     private final GameState gameState = GameState.getInstance();
-    private Plant currentPlant; // pianta attualmente selezionata nella home
+    private Plant currentPlant;
 
-    // path immagini
+    // ----------------- IMMAGINI PIANTE (provvisorio)  -----------------
+
     private static final String ROOT = "/com/application/canopy/view/components/images/";
     private static final String THUMBS_DIR = ROOT + "thumbs/";
     private static final String PLANTS_DIR = ROOT + "plants/";
@@ -54,11 +73,11 @@ public class HomeController {
     private final Image[] frames = new Image[4];
     private Image wiltFrame = null;
 
-    // path di default (verrà sovrascritto da setCurrentPlant)
     private String currentPlantBasePath = PLANTS_DIR + "Lavanda/";
 
     @FXML
     private void initialize() {
+
         // canvas disattivato
         if (canvas != null) {
             canvas.setVisible(false);
@@ -70,28 +89,28 @@ public class HomeController {
 
         setupPlantList();
 
-        // seleziona pianta di default (prima lista) e carica gli stage
+        // seleziona pianta di default
         if (!list.getItems().isEmpty()) {
             list.getSelectionModel().selectFirst();
             Plant sel = list.getSelectionModel().getSelectedItem();
             setCurrentPlant(sel);
         }
 
-        btnStartReset.setOnAction(e -> onStartReset());
+        // focus mode inizialmente nascosto
+        focusMode.setVisible(false);
+        focusMode.setManaged(false);
         focusMode.selectedProperty().addListener((o, was, is) -> toggleFocus(is));
 
-        // preset timer
-        sessionCombo.getSelectionModel().select(0);
-        sessionCombo.valueProperty().addListener((o, old, v) -> applyPreset(v));
-        applyPreset(sessionCombo.getValue());
+        btnStartReset.setOnAction(e -> onStartReset());
 
+        // stato iniziale: focus 25 min, timer fermo
+        setPhase(Phase.FOCUS, focusMinutes);
         showStage(0);
         updateUI();
         updateButtonUI();
     }
 
     private void setupPlantList() {
-        // usa il catalogo dal modello (coincide col GameState)
         list.getItems().setAll(Plant.samplePlants());
 
         list.setCellFactory(v -> new ListCell<>() {
@@ -124,39 +143,118 @@ public class HomeController {
             }
         });
 
-        // cambio pianta
         list.getSelectionModel().selectedItemProperty().addListener((obs, oldP, p) -> {
             if (p != null) setCurrentPlant(p);
         });
     }
 
-    // imposta base path in base alla pianta scelta e carica gli stage
     private void setCurrentPlant(Plant p) {
         this.currentPlant = p;
-        String folder = p.getFolderName(); // -> es: "Lavanda"
+        String folder = p.getFolderName();
         currentPlantBasePath = PLANTS_DIR + folder + "/";
         loadImages();
         showStage(0);
     }
 
-    // --- TIMER -------------------------------------------------------------
+    // ----------------- LOGICA BOTTONE START / RESET -----------------
 
     private void onStartReset() {
         if (state == TimerState.IDLE) {
+            boolean ok = showTimerPopup();
+            if (!ok) {
+                return;
+            }
             startTimer();
         } else {
-            resetAndWilt(); // interrompe → pianta "muore"
+            resetAndWilt();
+        }
+    }
+
+    private boolean showTimerPopup() {
+        try {
+            URL fxml = getClass().getResource("/com/application/canopy/view/timer-dialog.fxml");
+            if (fxml == null) {
+                System.err.println("[Canopy] timer-dialog.fxml NON trovato!");
+                return false;
+            }
+
+            FXMLLoader loader = new FXMLLoader(fxml);
+            Parent content = loader.load();
+            TimerDialogController controller = loader.getController();
+
+            Dialog<ButtonType> dialog = new Dialog<>();
+            dialog.setTitle("Configura timer");
+            if (root != null && root.getScene() != null) {
+                dialog.initOwner(root.getScene().getWindow());
+            }
+
+            DialogPane pane = dialog.getDialogPane();
+            pane.setContent(content);
+
+            // CSS + tema
+            URL css = getClass().getResource("/css/base.css");
+            if (css != null) {
+                String cssUrl = css.toExternalForm();
+                if (!pane.getStylesheets().contains(cssUrl)) {
+                    pane.getStylesheets().add(cssUrl);
+                }
+            }
+            if (!pane.getStyleClass().contains("root")) {
+                pane.getStyleClass().add("root");
+            }
+            ThemeManager.applyTheme(pane);
+            ThemeManager.addThemeListener(theme -> ThemeManager.applyTheme(pane));
+
+            ButtonType startType = new ButtonType("Avvia", ButtonBar.ButtonData.OK_DONE);
+            pane.getButtonTypes().addAll(startType, ButtonType.CANCEL);
+
+            var result = dialog.showAndWait();
+            if (result.isEmpty() || result.get() != startType) {
+                return false;
+            }
+
+            // Leggi scelta finale
+            TimerDialogController.Choice choice = controller.getResult();
+            if (choice == null) return false;
+
+            if (choice.getType() == TimerDialogController.Choice.Type.PRESET) {
+                var p = choice.getPreset();
+                if (p == null) return false;
+
+                int macroCycles = Math.max(1, choice.getCycles());
+                int focusPerMacro = Math.max(1, p.getRepeatBeforeLongBreak());
+
+                focusMinutes      = p.getFocusMinutes();
+                shortBreakMinutes = p.getShortBreakMinutes();
+                longBreakMinutes  = p.getLongBreakMinutes();
+
+                totalCycles       = macroCycles * focusPerMacro;
+                longBreakInterval = focusPerMacro;
+                breaksEnabled     = true;
+            } else {
+                int mins = choice.getSingleMinutes();
+                focusMinutes      = Math.max(1, mins);
+                shortBreakMinutes = 0;
+                longBreakMinutes  = 0;
+                totalCycles       = 1;
+                longBreakInterval = 0;
+                breaksEnabled     = false;
+            }
+
+            completedCycles = 0;
+            setPhase(Phase.FOCUS, focusMinutes);
+            updateUI();
+            showStage(0);
+
+            return true;
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
         }
     }
 
     private void startTimer() {
-        try {
-            if (!customMinutes.getText().isBlank()) {
-                int m = Integer.parseInt(customMinutes.getText().trim());
-                setDurationMinutes(m);
-            }
-        } catch (NumberFormatException ignored) {}
-
         if (timeline != null) timeline.stop();
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> tick()));
         timeline.setCycleCount(Timeline.INDEFINITE);
@@ -164,44 +262,104 @@ public class HomeController {
 
         state = TimerState.RUNNING;
         updateButtonUI();
-    }
 
-    private void tick() {
-        remainingSeconds = Math.max(0, remainingSeconds - 1);
-        updateUI();
-
-        if (remainingSeconds == 0) {
-            if (timeline != null) timeline.stop();
-            showStage(3); // forma finale
-
-            // QUI colleghiamo la home al modello di gioco -----------------
-            if (currentPlant != null) {
-                gameState.onPomodoroCompleted(currentPlant);
-            }
-
-            state = TimerState.IDLE;
-            updateButtonUI();
-        }
+        focusMode.setVisible(true);
+        focusMode.setManaged(true);
     }
 
     private void resetAndWilt() {
         if (timeline != null) timeline.stop();
 
-        // reset durante RUNNING = pomodoro interrotto → pianta "muore"
-        if (currentPlant != null) {
+        if (phase == Phase.FOCUS && remainingSeconds > 0 && currentPlant != null) {
             gameState.onPomodoroAborted(currentPlant);
         }
 
-        remainingSeconds = totalSeconds;
+        completedCycles = 0;
+        setPhase(Phase.FOCUS, focusMinutes);
         updateUI();
+
         if (wiltFrame != null) img.setImage(wiltFrame);
         else showStage(0);
 
         state = TimerState.IDLE;
         updateButtonUI();
+
+        if (focusMode.isSelected()) {
+            focusMode.setSelected(false);
+            toggleFocus(false);
+        }
+        focusMode.setVisible(false);
+        focusMode.setManaged(false);
     }
 
-    // --- UI helpers --------------------------------------------------------
+    // ----------------- CICLO DI TICK -----------------
+
+    private void tick() {
+        remainingSeconds = Math.max(0, remainingSeconds - 1);
+        updateUI();
+
+        if (remainingSeconds > 0) return;
+
+        if (phase == Phase.FOCUS) {
+            showStage(3);
+            if (currentPlant != null) {
+                gameState.onPomodoroCompleted(currentPlant);
+            }
+            completedCycles++;
+
+            if (!breaksEnabled) {
+                stopPomodoroSession();
+                return;
+            }
+
+            boolean hasMoreCycles = completedCycles < totalCycles;
+
+            if (!hasMoreCycles) {
+                stopPomodoroSession();
+            } else {
+                boolean longBreak = (completedCycles % longBreakInterval == 0);
+                int breakMinutes = longBreak ? longBreakMinutes : shortBreakMinutes;
+                setPhase(Phase.BREAK, breakMinutes);
+                updateUI();
+            }
+
+        } else { // BREAK
+            boolean hasMoreCycles = completedCycles < totalCycles;
+
+            if (!hasMoreCycles) {
+                stopPomodoroSession();
+            } else {
+                setPhase(Phase.FOCUS, focusMinutes);
+                showStage(0);
+                updateUI();
+            }
+        }
+    }
+
+    private void stopPomodoroSession() {
+        if (timeline != null) timeline.stop();
+        state = TimerState.IDLE;
+
+        completedCycles = 0;
+        setPhase(Phase.FOCUS, focusMinutes);
+
+        updateButtonUI();
+
+        if (focusMode.isSelected()) {
+            focusMode.setSelected(false);
+            toggleFocus(false);
+        }
+        focusMode.setVisible(false);
+        focusMode.setManaged(false);
+    }
+
+    private void setPhase(Phase newPhase, int minutes) {
+        phase = newPhase;
+        totalSeconds = Math.max(1, minutes) * 60;
+        remainingSeconds = totalSeconds;
+    }
+
+    // ----------------- UI HELPERS -----------------
 
     private void updateUI() {
         int m = remainingSeconds / 60;
@@ -211,7 +369,9 @@ public class HomeController {
         double p = (totalSeconds == 0) ? 0 : 1.0 - (remainingSeconds / (double) totalSeconds);
         progress.setProgress(p);
 
-        if (state == TimerState.RUNNING) updateGrowthFrame(p);
+        if (state == TimerState.RUNNING && phase == Phase.FOCUS) {
+            updateGrowthFrame(p);
+        }
     }
 
     private void updateButtonUI() {
@@ -224,42 +384,11 @@ public class HomeController {
             btnStartReset.getStyleClass().add("start");
         }
 
-        sessionCombo.setDisable(running || focusMode.isSelected());
-        customMinutes.setDisable(running || focusMode.isSelected());
-
-        // blocca cambio pianta mentre il timer è attivo
         list.setDisable(running);
         list.setOpacity(running ? 0.6 : 1.0);
     }
 
-    private void applyPreset(String label) {
-        int m = 25;
-        if (label != null) {
-            if (label.contains("Breve")) m = 5;
-            else if (label.contains("Lunga")) m = 15;
-        }
-        customMinutes.clear();
-        setDurationMinutes(m);
-        resetTimerOnly();
-    }
-
-    private void setDurationMinutes(int minutes) {
-        totalSeconds = Math.max(1, minutes) * 60;
-        remainingSeconds = totalSeconds;
-        showStage(0);
-        updateUI();
-    }
-
-    private void resetTimerOnly() {
-        if (timeline != null) timeline.stop();
-        remainingSeconds = totalSeconds;
-        showStage(0);
-        state = TimerState.IDLE;
-        updateUI();
-        updateButtonUI();
-    }
-
-    // --- growth / immagini -------------------------------------------------
+    // ----------------- IMMAGINI / CRESCITA -----------------
 
     private void loadImages() {
         for (int i = 0; i < STAGE_FILES.length; i++) {
@@ -303,33 +432,31 @@ public class HomeController {
         if (target != null) img.setImage(target);
     }
 
-    // --- focus mode --------------------------------------------------------
+    // ----------------- FOCUS MODE -----------------
 
     private void toggleFocus(boolean on) {
-        boolean running = (state == TimerState.RUNNING);
-        sessionCombo.setDisable(on || running);
-        customMinutes.setDisable(on || running);
-
         Runnable apply = () -> {
-            var side = img.getScene().lookup(".side-panel");
+            var side = root.getScene().lookup(".sidebar-right");
             if (side != null) {
                 side.setVisible(!on);
                 side.setManaged(!on);
             }
-            var nav = img.getScene().lookup("#navBar");
+
+            var nav = root.getScene().lookup("#navBar");
             if (nav != null) {
                 nav.setVisible(!on);
                 nav.setManaged(!on);
             }
         };
 
-        if (img.getScene() != null) apply.run();
-        else img.sceneProperty().addListener((obs, old, sc) -> apply.run());
+        if (root.getScene() != null) apply.run();
+        else root.sceneProperty().addListener((obs, old, sc) -> apply.run());
     }
 
-    // thumbs piante (ora usa Plant.getThumbFile)
+    // ----------------- THUMBNAIL PIANTE -----------------
+
     private Image loadThumbFor(Plant plant) {
-        String fileName = plant.getThumbFile(); // es: "Lavanda.png"
+        String fileName = plant.getThumbFile();
         String path = THUMBS_DIR + fileName;
         URL url = getClass().getResource(path);
         if (url == null) {
