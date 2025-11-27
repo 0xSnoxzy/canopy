@@ -5,7 +5,7 @@
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.application.canopy.controller.TimerDialogController"
             fx:id="root"
-            prefWidth="800" prefHeight="450">
+            prefWidth="850" prefHeight="450">
 
     <!-- Titolo in alto -->
     <top>
@@ -37,7 +37,16 @@
                     <Button fx:id="btnAddPreset" text="Aggiungi"/>
                     <Separator orientation="VERTICAL" prefHeight="20"/>
                     <Label text="Cicli:"/>
-                    <Spinner fx:id="cycleSpinner" prefWidth="80"/>
+                    <Spinner fx:id="cycleSpinner" prefWidth="80"
+                             focusTraversable="false"
+                             style="
+                            -fx-background-color: transparent;
+                            -fx-border-color: transparent;
+                            -fx-background-radius: 0;
+                            -fx-border-radius: 0;
+                            -fx-focus-color: transparent;
+                            -fx-faint-focus-color: transparent;
+                        "/>
                 </HBox>
             </VBox>
 
@@ -46,7 +55,7 @@
 
             <!-- SEZIONE DESTRA: ruota, oppure editor, oppure nuovo preset -->
             <StackPane fx:id="rightSection"
-                       prefWidth="320" prefHeight="320">
+                       prefWidth="380" prefHeight="320">
 
                 <!-- Ruota timer (default) -->
                 <StackPane fx:id="wheelContainer"/>

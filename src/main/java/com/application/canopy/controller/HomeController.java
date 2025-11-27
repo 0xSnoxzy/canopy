@@ -28,6 +28,7 @@ public class HomeController {
     @FXML private ImageView img;
     @FXML private Label lblTimer;
     @FXML private ProgressBar progress;
+    @FXML private ProgressBar sessionProgress;
 
     @FXML private Button btnStartReset;
     @FXML private CheckBox focusMode;
@@ -56,6 +57,11 @@ public class HomeController {
     private int completedCycles = 0;  // quanti blocchi di focus completati
 
     private boolean breaksEnabled = true; // se false → solo timer, niente pause
+
+    // durata complessiva della sessione (per la barra generale)
+    private int sessionTotalSeconds   = 0;
+    private int sessionElapsedSeconds = 0;
+
 
     // ----------------- MODELLO / GIOCO -----------------
 
@@ -184,9 +190,6 @@ public class HomeController {
 
             Dialog<ButtonType> dialog = new Dialog<>();
             dialog.setTitle("Configura timer");
-            if (root != null && root.getScene() != null) {
-                dialog.initOwner(root.getScene().getWindow());
-            }
 
             DialogPane pane = dialog.getDialogPane();
             pane.setContent(content);
@@ -221,17 +224,44 @@ public class HomeController {
                 var p = choice.getPreset();
                 if (p == null) return false;
 
-                int macroCycles = Math.max(1, choice.getCycles());
-                int focusPerMacro = Math.max(1, p.getRepeatBeforeLongBreak());
+                int macroCycles = Math.max(1, choice.getCycles());          // quante "routine"
+                int focusPerMacro = Math.max(1, p.getRepeatBeforeLongBreak()); // es. 3 = F-B-F-B-F-L
 
+                // durata blocchi in secondi
+                int focusSec = p.getFocusMinutes()      * 60;
+                int shortSec = p.getShortBreakMinutes() * 60;
+                int longSec  = p.getLongBreakMinutes()  * 60;
+
+                // salviamo la config per il timer “di blocco”
                 focusMinutes      = p.getFocusMinutes();
                 shortBreakMinutes = p.getShortBreakMinutes();
                 longBreakMinutes  = p.getLongBreakMinutes();
 
+                // totalCycles = numero totale di FOCUS (non di pause)
                 totalCycles       = macroCycles * focusPerMacro;
-                longBreakInterval = focusPerMacro;
+                longBreakInterval = focusPerMacro;  // ogni focusPerMacro focus → pausa lunga
                 breaksEnabled     = true;
-            } else {
+
+                // ---------- DURATA COMPLESSIVA SESSIONE ----------
+                // Ogni "macro" (routine) = F-B-F-B-...-F + longBreak
+                // = focusPerMacro * focusSec + (focusPerMacro - 1) * shortSec + longSec
+                // ---------- DURATA COMPLESSIVA SESSIONE ----------
+                // numero totale di blocchi di focus
+                int totalFocus = macroCycles * focusPerMacro;
+
+                // per ogni "macro" ci sono (focusPerMacro - 1) pause brevi
+                int totalShortBreaks = macroCycles * (focusPerMacro - 1);
+
+                // numero di pause lunghe = nCicli - 1
+                int totalLongBreaks = Math.max(0, macroCycles - 1);
+
+                sessionTotalSeconds =
+                        totalFocus       * focusSec +
+                                totalShortBreaks * shortSec +
+                                totalLongBreaks  * longSec;
+            }
+            else {
+                // timer singolo via ruota
                 int mins = choice.getSingleMinutes();
                 focusMinutes      = Math.max(1, mins);
                 shortBreakMinutes = 0;
@@ -239,7 +269,12 @@ public class HomeController {
                 totalCycles       = 1;
                 longBreakInterval = 0;
                 breaksEnabled     = false;
+
+                // durata totale = solo il blocco di focus
+                sessionTotalSeconds = focusMinutes * 60;
             }
+
+            sessionElapsedSeconds = 0;
 
             completedCycles = 0;
             setPhase(Phase.FOCUS, focusMinutes);
@@ -247,6 +282,7 @@ public class HomeController {
             showStage(0);
 
             return true;
+
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -274,7 +310,9 @@ public class HomeController {
             gameState.onPomodoroAborted(currentPlant);
         }
 
+        // reset sessione
         completedCycles = 0;
+        sessionElapsedSeconds = 0;
         setPhase(Phase.FOCUS, focusMinutes);
         updateUI();
 
@@ -296,6 +334,12 @@ public class HomeController {
 
     private void tick() {
         remainingSeconds = Math.max(0, remainingSeconds - 1);
+
+        // ogni secondo avanza anche il totale della sessione
+        if (sessionTotalSeconds > 0 && sessionElapsedSeconds < sessionTotalSeconds) {
+            sessionElapsedSeconds++;
+        }
+
         updateUI();
 
         if (remainingSeconds > 0) return;
@@ -369,8 +413,17 @@ public class HomeController {
         double p = (totalSeconds == 0) ? 0 : 1.0 - (remainingSeconds / (double) totalSeconds);
         progress.setProgress(p);
 
+        // barra complessiva della sessione
+        if (sessionProgress != null) {
+            double frac = (sessionTotalSeconds <= 0)
+                    ? 0.0
+                    : Math.min(1.0, sessionElapsedSeconds / (double) sessionTotalSeconds);
+
+            sessionProgress.setProgress(frac);
+        }
+
         if (state == TimerState.RUNNING && phase == Phase.FOCUS) {
-            updateGrowthFrame(p);
+            updateGrowthFrame(p); //la pianta non cresce fuori dai timer di focus
         }
     }
 
@@ -387,6 +440,7 @@ public class HomeController {
         list.setDisable(running);
         list.setOpacity(running ? 0.6 : 1.0);
     }
+
 
     // ----------------- IMMAGINI / CRESCITA -----------------
 

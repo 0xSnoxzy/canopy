@@ -73,7 +73,7 @@ public class TimerDialogController {
     private static final int MAX_MINUTES = 120;
 
     private int singleTimerMinutes = 0;
-    private double knobAngle = 0; // 0° in alto
+    private double knobAngle = 0;
 
     // --- Risultato per HomeController -------------------------------
 
@@ -223,9 +223,9 @@ public class TimerDialogController {
         wheelCanvas = new Canvas(300, 300);
 
         wheelField = new TextField();
-        wheelField.setText(String.valueOf(singleTimerMinutes));
+        wheelField.setText(singleTimerMinutes + ":00");
         wheelField.setAlignment(Pos.CENTER);
-        wheelField.setMaxWidth(100);
+        wheelField.setMaxWidth(110);
         wheelField.setStyle(
                 "-fx-background-color: transparent;" +
                         "-fx-border-color: transparent;" +
@@ -267,7 +267,7 @@ public class TimerDialogController {
             if (!inPresetEditor) {
                 setActiveMode(Mode.WHEEL);
             }
-            wheelField.setText(String.valueOf(singleTimerMinutes));
+            wheelField.setText(singleTimerMinutes + ":00");
         });
 
         wheelCanvas.setOnMousePressed(e -> {
@@ -275,7 +275,7 @@ public class TimerDialogController {
             if (!inPresetEditor) {
                 setActiveMode(Mode.WHEEL);
             }
-            wheelField.setText(String.valueOf(singleTimerMinutes));
+            wheelField.setText(singleTimerMinutes + ":00");
         });
     }
 
@@ -349,7 +349,7 @@ public class TimerDialogController {
         double tickOuterR = tickInnerR + 10;
 
         for (int i = 0; i < numTicks; i++) {
-            double angleDeg = -90 + (360.0 / numTicks) * i; // partiamo dall’alto
+            double angleDeg = -90 + (360.0 / numTicks) * i;
             double rad = Math.toRadians(angleDeg);
 
             double x1 = cx + Math.cos(rad) * tickInnerR;
@@ -362,7 +362,7 @@ public class TimerDialogController {
 
         // ---------- maniglia ----------
         double knobRadius = 12;
-        double knobRad = Math.toRadians(knobAngle - 90); // 0° = alto
+        double knobRad = Math.toRadians(knobAngle - 90);
         double knobX = cx + Math.cos(knobRad) * radiusOuter;
         double knobY = cy + Math.sin(knobRad) * radiusOuter;
 
@@ -372,7 +372,7 @@ public class TimerDialogController {
 
         // ---------- sincronizza il numero al centro ----------
         if (wheelField != null) {
-            String target = String.valueOf(singleTimerMinutes);
+            String target = singleTimerMinutes + ":00";
             if (!target.equals(wheelField.getText())) {
                 wheelField.setText(target);
             }

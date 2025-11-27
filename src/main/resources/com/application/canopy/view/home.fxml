@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.collections.FXCollections?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.Rectangle?>
-<?import java.lang.String?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:id="root"
@@ -14,7 +11,7 @@
             prefWidth="1920" prefHeight="1080">
 
     <center>
-        <VBox spacing="14" alignment="CENTER" styleClass="center-area">
+        <VBox spacing="12" alignment="CENTER" styleClass="center-area">
 
             <!-- Palco della pianta -->
             <StackPane alignment="CENTER" maxWidth="Infinity" VBox.vgrow="ALWAYS" styleClass="plant-stage">
@@ -34,10 +31,12 @@
             </StackPane>
 
             <!-- Timer -->
-            <Label fx:id="lblTimer" text="25:00" styleClass="timer-large"/>
+            <Label fx:id="lblTimer" text="0:00" styleClass="timer-large"/>
 
-            <!-- Barra progresso -->
+            <!-- Barre progresso -->
             <ProgressBar fx:id="progress" prefWidth="720" progress="0.0"/>
+
+            <ProgressBar fx:id="sessionProgress" prefWidth="720" prefHeight="5" progress="0.0"/>
 
             <!-- Controlli inferiori -->
             <HBox spacing="10" alignment="CENTER">
