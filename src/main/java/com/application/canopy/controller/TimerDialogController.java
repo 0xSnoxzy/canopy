@@ -1,5 +1,8 @@
 package com.application.canopy.controller;
 
+import com.application.canopy.model.FontManager;
+import com.application.canopy.model.ThemeManager;
+
 import com.application.canopy.db.DatabaseManager;
 import com.application.canopy.db.TimerPresetDao;
 import com.application.canopy.model.TimerPreset;
@@ -8,6 +11,7 @@ import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -20,6 +24,7 @@ import java.util.List;
 public class TimerDialogController {
 
     // --- FXML -------------------------------------------------------
+    @FXML private BorderPane root;
 
     @FXML private VBox leftSection;
     @FXML private VBox presetContainer;
@@ -103,6 +108,18 @@ public class TimerDialogController {
 
     @FXML
     private void initialize() {
+        // Quando il dialog ottiene una Scene, applica tema + font correnti
+        if (root != null) {
+            root.sceneProperty().addListener((obs, oldScene, newScene) -> {
+                if (newScene != null) {
+                    // tema (classi .root.theme-*)
+                    ThemeManager.applyTheme(root);
+                    // font (classi .root.font-*)
+                    FontManager.setFont(FontManager.getCurrentFont(), newScene);
+                }
+            });
+        }
+
         loadPresets();
         setupPresetButtons();
         setupWheel();
@@ -118,6 +135,7 @@ public class TimerDialogController {
             setActiveMode(Mode.PRESET);
         }
     }
+
 
     // --- Caricamento / lista routine --------------------------------
 

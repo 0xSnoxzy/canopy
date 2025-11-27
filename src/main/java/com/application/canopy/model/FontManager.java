@@ -1,6 +1,7 @@
 package com.application.canopy.model;
 
 import javafx.scene.Scene;
+import javafx.scene.Parent;
 import javafx.scene.text.Font;
 
 import java.util.Objects;
@@ -11,17 +12,20 @@ public final class FontManager {
     private FontManager() {}
 
     public enum AppFont {
-        ATKINSON("Atkinson Hyperlegible", "/css/fonts/AtkinsonHyperlegible-Regular.ttf"),
-        COMIC_NEUE("Comic Neue", "/css/fonts/ComicNeue-Regular.ttf"),
-        ROBOTO_MONO("Roboto Mono", "/css/fonts/RobotoMono-Regular.ttf");
+        ATKINSON("Atkinson Hyperlegible", "/css/fonts/AtkinsonHyperlegible-Regular.ttf", "font-atkinson"),
+        COMIC_NEUE("Comic Neue", "/css/fonts/ComicNeue-Regular.ttf", "font-comicneue"),
+        SPACE_MONO("Space Mono", "/css/fonts/SpaceMono-Regular.ttf", "font-spacemono"),
+        NOTO_SERIF("Noto Serif", "/css/fonts/NotoSerif_Condensed-Regular.ttf", "font-notoserif");
 
         private final String displayName;
         private final String resourcePath;
-        private String fxName; // nome effettivo del font in JavaFX
+        private final String cssClass;   // classe CSS da mettere sulla root
+        private String fxName;           // nome effettivo del font in JavaFX
 
-        AppFont(String displayName, String resourcePath) {
+        AppFont(String displayName, String resourcePath, String cssClass) {
             this.displayName = displayName;
             this.resourcePath = resourcePath;
+            this.cssClass = cssClass;
         }
 
         public String getDisplayName() {
@@ -32,11 +36,15 @@ public final class FontManager {
             return resourcePath;
         }
 
+        public String getCssClass() {
+            return cssClass;
+        }
+
         public String getFxName() {
             return fxName != null ? fxName : displayName;
         }
 
-        private void setFxName(String fxName) {
+        void setFxName(String fxName) {
             this.fxName = fxName;
         }
 
@@ -47,6 +55,7 @@ public final class FontManager {
             return ATKINSON;
         }
     }
+
 
     private static final String PREF_KEY = "canopy.font";
     private static final Preferences PREFS =
@@ -94,26 +103,38 @@ public final class FontManager {
     }
 
     // ========================================================
-    //  APPLICA FONT ALLA SCENA
+    //  APPLICA FONT ALLA SCENA (via classi CSS)
     // ========================================================
     public static void applyCurrentFont(Scene scene) {
         if (scene == null) return;
+        Parent root = scene.getRoot();
+        if (root == null) return;
 
+        // togliamo tutte le classi font-*
+        root.getStyleClass().removeAll(
+                "font-atkinson",
+                "font-comicneue",
+                "font-spacemono",
+                "font-notoserif"
+        );
+
+        // aggiungiamo quella corretta
         AppFont font = getCurrentFont();
-        String fxName = font.getFxName();
+        String cssClass = font.getCssClass();
+        if (!root.getStyleClass().contains(cssClass)) {
+            root.getStyleClass().add(cssClass);
+        }
 
-        String style = scene.getRoot().getStyle();
-        // sovrascriviamo solo il font-family, ignorando il resto
-        // per semplicità, qui rimpiazziamo tutto lo style root, tanto di solito è vuoto
-        scene.getRoot().setStyle("-fx-font-family: '" + fxName + "';");
-        System.out.println("Applicato font alla scena: " + fxName);
+        System.out.println("Applicato font alla scena via CSS class: " + font.getDisplayName());
     }
 
     public static void setFont(AppFont font, Scene scene) {
-        if (font == null || scene == null) return;
-
+        if (font == null) return;
         currentFont = font;
         PREFS.put(PREF_KEY, font.name());
-        applyCurrentFont(scene);
+
+        if (scene != null) {
+            applyCurrentFont(scene);
+        }
     }
 }

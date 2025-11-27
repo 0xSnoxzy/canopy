@@ -20,6 +20,7 @@ public class ThemeManager {
      *  - "peperoncino-light", "peperoncino-dark"
      *  - "lavanda-light", "lavanda-dark"
      *  - "orchidea-light", "orchidea-dark"
+     *  - "daltonici-light", "daltonici-dark"
      */
     private static final Set<String> SUPPORTED_THEMES = Set.of(
             "dark",
@@ -29,7 +30,8 @@ public class ThemeManager {
             "menta-light", "menta-dark",
             "peperoncino-light", "peperoncino-dark",
             "lavanda-light", "lavanda-dark",
-            "orchidea-light", "orchidea-dark"
+            "orchidea-light", "orchidea-dark",
+            "daltonici-light", "daltonici-dark"
     );
 
     // di default: evergreen dark
@@ -105,7 +107,8 @@ public class ThemeManager {
                 "theme-menta-light", "theme-menta-dark",
                 "theme-peperoncino-light", "theme-peperoncino-dark",
                 "theme-lavanda-light", "theme-lavanda-dark",
-                "theme-orchidea-light", "theme-orchidea-dark"
+                "theme-orchidea-light", "theme-orchidea-dark",
+                "theme-daltonici-light", "theme-daltonici-dark"
         );
 
         String cssClass = "theme-" + currentThemeId;
@@ -158,8 +161,16 @@ public class ThemeManager {
         palette = palette.toLowerCase(Locale.ROOT);
 
         // palette supportate
-        if (!Set.of("evergreen", "sakura", "quercia", "menta",
-                "peperoncino", "lavanda", "orchidea").contains(palette)) {
+        if (!Set.of(
+                "evergreen",
+                "sakura",
+                "quercia",
+                "menta",
+                "peperoncino",
+                "lavanda",
+                "orchidea",
+                "daltonici"
+        ).contains(palette)) {
             palette = "evergreen";
         }
 

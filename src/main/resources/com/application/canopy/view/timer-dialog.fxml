@@ -4,6 +4,7 @@
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.application.canopy.controller.TimerDialogController"
+            fx:id="root"
             prefWidth="800" prefHeight="450">
 
     <!-- Titolo in alto -->
@@ -23,7 +24,8 @@
                 <ScrollPane fitToWidth="true"
                             fitToHeight="true"
                             prefWidth="320"
-                            VBox.vgrow="ALWAYS">
+                            VBox.vgrow="ALWAYS"
+                            styleClass="scrollpane-clean">
 
                     <VBox fx:id="presetContainer" spacing="8">
                         <!-- i preset vengono aggiunti via codice -->

@@ -77,7 +77,8 @@ public class SettingsController {
         fontCombo.getItems().setAll(
                 AppFont.ATKINSON.getDisplayName(),
                 AppFont.COMIC_NEUE.getDisplayName(),
-                AppFont.ROBOTO_MONO.getDisplayName()
+                AppFont.SPACE_MONO.getDisplayName(),
+                AppFont.NOTO_SERIF.getDisplayName()
         );
 
         AppFont current = FontManager.getCurrentFont();
@@ -135,7 +136,8 @@ public class SettingsController {
                 "Menta",
                 "Peperoncino",
                 "Lavanda",
-                "Orchidea"
+                "Orchidea",
+                "Daltonici"
         );
 
         String currentPalette = ThemeManager.getCurrentPalette(); // evergreen / sakura / ...
@@ -146,6 +148,7 @@ public class SettingsController {
             case "peperoncino" -> "Peperoncino";
             case "lavanda"     -> "Lavanda";
             case "orchidea"    -> "Orchidea";
+            case "daltonici"   -> "Daltonici";
             default            -> "Evergreen";
         };
         themeCombo.getSelectionModel().select(label);
@@ -166,6 +169,7 @@ public class SettingsController {
                         case "Peperoncino" -> "peperoncino";
                         case "Lavanda"     -> "lavanda";
                         case "Orchidea"    -> "orchidea";
+                        case "Daltonici"   -> "daltonici";
                         default            -> "evergreen";
                     };
 

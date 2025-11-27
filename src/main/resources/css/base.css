@@ -362,6 +362,67 @@
   -canopy-accent-soft:   rgba(179, 117, 255, 0.28);
 }
 
+/* ---------- 1.8 Daltonici (Accessibile) ---------- */
+/* deuteranopia / protanopia */
+
+.root.theme-daltonici-light {
+  /* BACKGROUND neutro freddo */
+  -canopy-bg:          linear-gradient(to bottom, #F5F7FA, #E3E7EE);
+
+  /* SUPERFICI */
+  -canopy-surface:     #D6DBE6;
+  -canopy-surface-2:   #C5CCD9;
+  -canopy-card:        #E6E9F2;
+  -canopy-card-soft:   rgba(230, 233, 242, 0.96);
+
+  /* TESTO (quasi nero) */
+  -canopy-text:        #12161F;
+  -canopy-muted:       #5C6475;
+
+  /* ACCENTI: blu + giallo → super visibili anche con CVD */
+  -canopy-accent:      #2F7ED8;   /* blu principale */
+  -canopy-accent-2:    #FFC857;   /* giallo caldo per highlight */
+  -canopy-bark:        #555A70;
+  -canopy-soil:        #888FA5;
+
+  /* FOCUS / DANGER / BORDI */
+  -canopy-focus:         rgba(47, 126, 216, 0.55);
+  -canopy-focus-soft:    rgba(47, 126, 216, 0.20);
+  -canopy-danger:        #D7263D;  /* rosso solo per errori espliciti */
+  -canopy-border-subtle: rgba(18, 22, 31, 0.12);
+  -canopy-border-strong: rgba(18, 22, 31, 0.28);
+  -canopy-accent-soft:   rgba(47, 126, 216, 0.22);
+}
+
+.root.theme-daltonici-dark {
+  /* BACKGROUND scuro ma non “nero totale” per evitare aloni */
+  -canopy-bg:          linear-gradient(to bottom, #050914, #0A1020);
+
+  /* SUPERFICI */
+  -canopy-surface:     #131827;
+  -canopy-surface-2:   #0D111E;
+  -canopy-card:        #1B2235;
+  -canopy-card-soft:   rgba(27, 34, 53, 0.96);
+
+  /* TESTO (quasi bianco) */
+  -canopy-text:        #F4F7FF;
+  -canopy-muted:       #B5BEDA;
+
+  /* ACCENTI: stessi blu + giallo del light per coerenza mentale */
+  -canopy-accent:      #2F7ED8;
+  -canopy-accent-2:    #FFC857;
+  -canopy-bark:        #6C7491;
+  -canopy-soil:        #303852;
+
+  /* FOCUS / DANGER / BORDI */
+  -canopy-focus:         rgba(255, 200, 87, 0.55);  /* alone giallo forte */
+  -canopy-focus-soft:    rgba(255, 200, 87, 0.22);
+  -canopy-danger:        #FF6B6B;
+  -canopy-border-subtle: rgba(244, 247, 255, 0.12);
+  -canopy-border-strong: rgba(244, 247, 255, 0.28);
+  -canopy-accent-soft:   rgba(47, 126, 216, 0.26);
+}
+
 
 /* ============================================================
    2. OVERRIDE SELEZIONI PER TEMA
@@ -425,6 +486,74 @@
         derive(-canopy-accent-soft, 10%));
   -fx-text-fill: -canopy-text;
   -fx-border-color: transparent;
+}
+
+/* Tema DALTONICI (light + dark) – selezioni ultra visibili */
+
+/* LIGHT */
+.root.theme-daltonici-light .toggle-button:selected {
+  -fx-background-color:
+      linear-gradient(to right,
+        -canopy-accent-soft,
+        derive(-canopy-accent-soft, 15%));
+  -fx-text-fill: -canopy-text;
+  -fx-font-weight: 900;
+  -fx-border-color: -canopy-border-strong;
+  -fx-border-width: 2;
+}
+
+.root.theme-daltonici-light .list-cell:selected,
+.root.theme-daltonici-light .list-cell:filled:selected:hover {
+  -fx-background-color:
+      linear-gradient(to right,
+        -canopy-accent-soft,
+        derive(-canopy-accent-soft, 10%));
+  -fx-text-fill: -canopy-text;
+  -fx-border-color: -canopy-border-strong;
+  -fx-border-width: 2;
+}
+
+.root.theme-daltonici-light .chip:selected {
+  -fx-background-color:
+      linear-gradient(to right,
+        -canopy-accent-soft,
+        derive(-canopy-accent-soft, 12%));
+  -fx-text-fill: -canopy-text;
+  -fx-border-color: -canopy-border-strong;
+  -fx-border-width: 2;
+}
+
+/* DARK */
+.root.theme-daltonici-dark .toggle-button:selected {
+  -fx-background-color:
+      linear-gradient(to right,
+        -canopy-accent-soft,
+        derive(-canopy-accent-soft, 12%));
+  -fx-text-fill: -canopy-text;
+  -fx-font-weight: 900;
+  -fx-border-color: -canopy-border-strong;
+  -fx-border-width: 2;
+}
+
+.root.theme-daltonici-dark .list-cell:selected,
+.root.theme-daltonici-dark .list-cell:filled:selected:hover {
+  -fx-background-color:
+      linear-gradient(to right,
+        -canopy-accent-soft,
+        derive(-canopy-accent-soft, 8%));
+  -fx-text-fill: -canopy-text;
+  -fx-border-color: -canopy-border-strong;
+  -fx-border-width: 2;
+}
+
+.root.theme-daltonici-dark .chip:selected {
+  -fx-background-color:
+      linear-gradient(to right,
+        -canopy-accent-soft,
+        derive(-canopy-accent-soft, 10%));
+  -fx-text-fill: -canopy-text;
+  -fx-border-color: -canopy-border-strong;
+  -fx-border-width: 2;
 }
 
 /* NB: gli altri temi usano ancora le regole di base (.toggle-button:selected, ecc.) */
@@ -586,19 +715,24 @@
         transparent 55%),
     -canopy-bg;
   -fx-background-radius: 22;
+  -fx-border-radius: 22;
+  -fx-background-insets: 0;
   -fx-padding: 16;
 }
+
 
 /* pannello principale “card grande” */
 .main-panel {
   -fx-background-color:
     linear-gradient(to bottom, -canopy-surface-2, -canopy-surface);
   -fx-background-radius: 20;
+  -fx-border-radius: 20;
+  -fx-background-insets: 0;
   -fx-padding: 16;
   -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.45), 18, 0.32, 0, 6);
   -fx-border-color: -canopy-border-subtle;
-  -fx-border-radius: 20;
 }
+
 
 /* pannello laterale tipo colonna destra */
 .side-panel {
@@ -606,9 +740,15 @@
     linear-gradient(to bottom, -canopy-surface-2, -canopy-surface);
   -fx-padding: 14;
   -fx-spacing: 10;
+
+  /* bordo più soft e arrotondato per togliere l’effetto “colonna squadrata” */
   -fx-border-color: -canopy-border-strong;
   -fx-border-width: 0 0 0 1;
+  -fx-background-radius: 20;
+  -fx-border-radius: 20;
+  -fx-background-insets: 0;
 }
+
 
 /* titoli pannelli */
 .panel-title {
@@ -714,7 +854,10 @@
   -fx-control-inner-background: transparent;
   -fx-background-insets: 0;
   -fx-padding: 4;
+  -fx-background-radius: 12;
+  -fx-border-radius: 12;
 }
+
 
 .list-cell {
   -fx-background-color: transparent;
@@ -766,9 +909,14 @@
 .scrollpane-clean > .viewport {
   -fx-background-color: transparent;
 }
+
 .scrollpane-clean {
   -fx-background-color: transparent;
+  -fx-background-radius: 20;
+  -fx-border-radius: 20;
+  -fx-background-insets: 0;
 }
+
 
 
 /* ============================================================
@@ -783,8 +931,20 @@
   -fx-font-family: "Comic Neue";
 }
 
-.root.font-robotomono {
-  -fx-font-family: "Roboto Mono";
+/* nuovo mono */
+.root.font-spacemono {
+  -fx-font-family: "Space Mono";
+}
+
+/* nuovo serif */
+.root.font-notoserif {
+  -fx-font-family: "Noto Serif";
+}
+
+
+/* bilanciamento size comic neue rispetto agli altri */
+.root.font-comicneue {
+    -fx-font-size: 16px; /* invece di 14 */
 }
 
 /* stile per il bottone di cambio tema nei settings */
@@ -830,3 +990,114 @@
             derive(-canopy-accent-soft, 10%));
     -fx-text-fill: -canopy-text;
 }
+
+/* ==== FIX GENERALE ANTI-ANGOLI QUADRATI ==== */
+
+.button,
+.toggle-button,
+.points-label,
+.chip,
+.list-cell {
+  -fx-background-insets: 0;
+}
+
+/* ============================================================
+   FIX ANGOLO QUADRATO / CONTORNO DIETRO AGLI ANGOLI TONDI
+   ============================================================ */
+
+/* 1) Tutti i layout container NON devono ridisegnare uno sfondo quadrato */
+.border-pane,
+.stack-pane,
+.anchor-pane,
+.pane,
+.scroll-pane,
+.split-pane,
+.v-box,
+.h-box {
+  -fx-background-color: transparent;
+  -fx-background-insets: 0;
+}
+
+/* 2) Il root usa solo il nostro background di tema */
+.root {
+  -fx-background-color: -canopy-bg;
+}
+
+/* 3) Pannelli tondi: stesso radius per sfondo e bordo, niente insets strani */
+.center-area {
+  -fx-background-radius: 22;
+  -fx-border-radius: 22;
+  -fx-background-insets: 0;
+}
+
+.main-panel,
+.side-panel {
+  -fx-background-radius: 20;
+  -fx-border-radius: 20;
+  -fx-background-insets: 0;
+}
+
+/* ============================================================
+   FIX ANGOLI CONTROLLI INTERATTIVI (BUTTON / TOGGLE)
+   ============================================================ */
+
+/* Bottoni e toggle: devono restare tondi in qualsiasi stato */
+.button,
+.button:hover,
+.button:pressed,
+.button:default,
+.button:default:hover,
+.button:default:pressed,
+.toggle-button,
+.toggle-button:hover,
+.toggle-button:pressed,
+.toggle-button:selected,
+.toggle-button:selected:hover,
+.toggle-button:selected:pressed {
+  -fx-background-radius: 999;
+  -fx-border-radius: 999;
+  -fx-background-insets: 0;
+}
+
+/* Forza gli angoli tondi anche sugli override di selezione per tema */
+.root.theme-light .toggle-button:selected,
+.root.theme-dark .toggle-button:selected,
+.root.theme-daltonici-light .toggle-button:selected,
+.root.theme-daltonici-dark .toggle-button:selected {
+  -fx-background-radius: 999;
+  -fx-border-radius: 999;
+  -fx-background-insets: 0;
+}
+
+/* ============================================================
+   LISTE & COMBOBOX – ANGOLI ARROTONDATI ANCHE IN SELEZIONE
+   ============================================================ */
+
+.list-cell,
+.list-cell:hover,
+.list-cell:selected,
+.list-cell:filled:selected:hover {
+  -fx-background-radius: 12;
+  -fx-border-radius: 12;
+  -fx-background-insets: 0;
+}
+
+/* Celle del popup della ComboBox */
+.combo-box-popup .list-cell,
+.combo-box-popup .list-cell:hover,
+.combo-box-popup .list-cell:selected,
+.combo-box-popup .list-cell:filled:selected:hover {
+  -fx-background-radius: 8;
+  -fx-border-radius: 8;
+  -fx-background-insets: 0;
+}
+
+/* Pill / chip sempre arrotondati */
+.chip,
+.chip:hover,
+.chip:selected {
+  -fx-background-radius: 999;
+  -fx-border-radius: 999;
+  -fx-background-insets: 0;
+}
+
