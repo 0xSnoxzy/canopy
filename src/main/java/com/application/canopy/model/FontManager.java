@@ -14,8 +14,8 @@ public final class FontManager {
     public enum AppFont {
         ATKINSON("Atkinson Hyperlegible", "/css/fonts/AtkinsonHyperlegible-Regular.ttf", "font-atkinson"),
         COMIC_NEUE("Comic Neue", "/css/fonts/ComicNeue-Regular.ttf", "font-comicneue"),
-        SPACE_MONO("Space Mono", "/css/fonts/SpaceMono-Regular.ttf", "font-spacemono"),
-        NOTO_SERIF("Noto Serif", "/css/fonts/NotoSerif_Condensed-Regular.ttf", "font-notoserif");
+        ROBOTO_MONO("Roboto Mono", "/css/fonts/RobotoMono-Regular.ttf", "font-robotomono"),
+        NOTO_SERIF("Noto Serif", "/css/fonts/NotoSerif-Regular.ttf", "font-notoserif");
 
         private final String displayName;
         private final String resourcePath;
@@ -114,7 +114,7 @@ public final class FontManager {
         root.getStyleClass().removeAll(
                 "font-atkinson",
                 "font-comicneue",
-                "font-spacemono",
+                "font-robotomono",
                 "font-notoserif"
         );
 

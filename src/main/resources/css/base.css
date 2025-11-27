@@ -932,8 +932,8 @@
 }
 
 /* nuovo mono */
-.root.font-spacemono {
-  -fx-font-family: "Space Mono";
+.root.font-robotomono {
+  -fx-font-family: "Roboto Mono";
 }
 
 /* nuovo serif */

@@ -77,7 +77,7 @@ public class SettingsController {
         fontCombo.getItems().setAll(
                 AppFont.ATKINSON.getDisplayName(),
                 AppFont.COMIC_NEUE.getDisplayName(),
-                AppFont.SPACE_MONO.getDisplayName(),
+                AppFont.ROBOTO_MONO.getDisplayName(),
                 AppFont.NOTO_SERIF.getDisplayName()
         );
 
