@@ -437,10 +437,10 @@ public class CalendarController {
         String fileName = switch (key) {
             case "lavanda"      -> "lavanda.png";
             case "menta"        -> "menta.png";
-            case "orchidea"     -> "orchidea.png";
-            case "peperoncino"  -> "peperoncino.png";
+            case "orchidea"     -> "Orchidea.png";
+            case "peperoncino"  -> "Peperoncino.png";
             case "quercia"      -> "Quercia.png"; // NOTA: nel tuo filesystem la Q è maiuscola
-            case "sakura"       -> "sakura.png";
+            case "sakura"       -> "Sakura.png";
             default -> null; // nessuna icona conosciuta
         };
 

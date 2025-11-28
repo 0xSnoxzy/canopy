@@ -130,13 +130,17 @@
   -fx-font-style: italic;
 }
 
-/* card per descrizione/cura */
+/* card per descrizione/cura/curiosità+nome */
 .detail-section {
-  -fx-background-color: -canopy-card-soft;
-  -fx-background-radius: 16;
+  -fx-background-color:
+      linear-gradient(to bottom,
+          derive(-canopy-card-soft, 6%),
+          -canopy-card-soft);
+  -fx-background-radius: 18;
   -fx-padding: 12 14;
   -fx-border-color: -canopy-border-subtle;
-  -fx-border-radius: 16;
+  -fx-border-radius: 18;
+  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 14, 0.25, 0, 3);
 }
 
 /* titolo sezione (Descrizione/Cura) */
@@ -154,7 +158,7 @@
   -fx-line-spacing: 3px;
 }
 
-/* ---------- SELEZIONE PIANTE CON GLOW SOFT (simile nav, ma senza sfocare il contenuto) ---------- */
+/* ---------- SELEZIONE PIANTE CON GLOW SOFT ---------- */
 
 .sidebar-right .list-view:focused .list-cell:filled:selected,
 .sidebar-right .list-view .list-cell:filled:selected:hover,
@@ -175,4 +179,45 @@
       linear-gradient(to right,
           -canopy-accent-soft,
           derive(-canopy-accent-soft, 8%));
+}
+
+/* ---------- ERBARIO BOARD / TILE LAYOUT ---------- */
+
+/* FlowPane che contiene la board */
+.detail-board {
+  -fx-padding: 16;
+}
+
+/* rettangolo base per ogni blocco immagine (hero, foglia, frutto) */
+.board-tile {
+  -fx-background-color: -canopy-card-soft;
+  -fx-background-radius: 18;
+  -fx-padding: 12;
+  -fx-border-color: -canopy-border-subtle;
+  -fx-border-radius: 18;
+  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 18, 0.25, 0, 4);
+}
+
+/* tile grande tipo “rettangolone” (icona pianta) */
+.board-tile-lg {
+  -fx-pref-width: 320;
+  -fx-pref-height: 260;
+}
+
+/* tile testo grande (titolo + curiosità) */
+.board-text-lg {
+  -fx-pref-width: 260;
+  -fx-pref-height: 220;
+}
+
+/* tile testo (descrizione / cura) */
+.board-text {
+  -fx-pref-width: 220;
+  -fx-pref-height: 180;
+}
+
+/* tile immagine piccola (foglia / frutto / seme) */
+.board-img-sm {
+  -fx-pref-width: 160;
+  -fx-pref-height: 160;
 }

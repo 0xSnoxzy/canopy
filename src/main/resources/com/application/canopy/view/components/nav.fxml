@@ -157,5 +157,4 @@
                 styleClass="logout-button"
                 accessibleText="Esegui il logout"/>
     </VBox>
-
 </VBox>

@@ -4,6 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Text?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
@@ -12,62 +13,106 @@
 
     <!-- ⚠️ NIENTE NAV QUI ⚠️ -->
 
-    <!-- CENTRO: SplitPane = [Dettaglio | Sidebar destra] -->
     <center>
-        <SplitPane fx:id="mainSplit" dividerPositions="0.66">
+        <SplitPane dividerPositions="0.66">
             <items>
 
-                <ScrollPane fx:id="detailScroll" fitToWidth="true" fitToHeight="true" pannable="true">
+                <!-- AREA DETTAGLIO: BOARD -->
+                <ScrollPane fx:id="detailScroll"
+                            fitToWidth="true"
+                            pannable="true"
+                            styleClass="scrollpane-clean">
                     <content>
-                        <VBox spacing="16" styleClass="content-root">
-                            <padding>
-                                <Insets top="16" right="16" bottom="16" left="16"/>
-                            </padding>
+                        <StackPane styleClass="content-root">
 
-                            <StackPane fx:id="stageContainer" styleClass="plant-stage">
-                                <!-- background -->
-                                <ImageView fx:id="stageBackground"
-                                           preserveRatio="true" smooth="true"
-                                           pickOnBounds="false"/>
+                            <!-- BOARD: rettangoli sparsi -->
+                            <FlowPane fx:id="detailFlow"
+                                      hgap="16"
+                                      vgap="16"
+                                      prefWrapLength="820"
+                                      styleClass="detail-board">
 
-                                <!-- tasto switch sfondo -->
-                                <HBox spacing="8" alignment="CENTER_RIGHT" StackPane.alignment="TOP_RIGHT"
-                                      styleClass="stage-controls">
-                                    <Label text="Sfondo:"/>
-                                    <ChoiceBox fx:id="backgroundChoice" prefWidth="200"/>
-                                </HBox>
+                                <!-- TILE HERO: icona grande pianta -->
+                                <StackPane styleClass="board-tile board-tile-lg">
+                                    <ImageView fx:id="plantImage"
+                                               preserveRatio="true"
+                                               smooth="true"
+                                               fitWidth="260"
+                                               fitHeight="260"
+                                               styleClass="plant-hero"/>
+                                </StackPane>
 
-                                <!-- overlay della pianta -->
-                                <ImageView fx:id="plantImage"
-                                           preserveRatio="true" smooth="true"
-                                           pickOnBounds="true" styleClass="plant-hero"/>
-                            </StackPane>
-
-                            <!-- TESTI PIANTE -->
-                            <VBox spacing="12" styleClass="detail">
-                                <Label fx:id="plantTitle" styleClass="plant-title"/>
-                                <Text fx:id="plantCuriosity" wrappingWidth="800" styleClass="plant-curiosity"/>
-
-                                <VBox spacing="6" styleClass="detail-section">
-                                    <Label text="Descrizione" styleClass="section-title"/>
-                                    <Text fx:id="plantDescription" wrappingWidth="800" styleClass="section-body"/>
+                                <!-- TILE TITOLO + CURIOSITÀ (rettangolo dedicato) -->
+                                <VBox spacing="6"
+                                      styleClass="board-text-lg detail-section">
+                                    <Label fx:id="plantTitle"
+                                           text="-"
+                                           styleClass="plant-title"/>
+                                    <Text fx:id="plantCuriosity"
+                                          wrappingWidth="260"
+                                          styleClass="plant-curiosity"/>
                                 </VBox>
 
-                                <VBox spacing="6" styleClass="detail-section">
-                                    <Label text="Cura" styleClass="section-title"/>
-                                    <Text fx:id="plantCare" wrappingWidth="800" styleClass="section-body"/>
+                                <!-- TILE DESCRIZIONE (rettangolo dedicato) -->
+                                <VBox spacing="8"
+                                      styleClass="board-text detail-section">
+                                    <Label text="Descrizione"
+                                           styleClass="section-title-herb"/>
+                                    <Text fx:id="plantDescription"
+                                          wrappingWidth="220"
+                                          styleClass="section-body"/>
                                 </VBox>
 
-                                <!-- Nessuna selezione -->
-                                <Label fx:id="emptyHint"
-                                       text="Seleziona una pianta a destra per vederne i dettagli"
-                                       styleClass="hint" visible="true"/>
-                            </VBox>
-                        </VBox>
+                                <!-- TILE CURA (rettangolo dedicato) -->
+                                <VBox spacing="8"
+                                      styleClass="board-text detail-section">
+                                    <Label text="Cura"
+                                           styleClass="section-title-herb"/>
+                                    <Text fx:id="plantCare"
+                                          wrappingWidth="220"
+                                          styleClass="section-body"/>
+                                </VBox>
+
+                                <!-- TILE FOGLIA -->
+                                <StackPane styleClass="board-tile board-img-sm">
+                                    <ImageView fx:id="leafImage"
+                                               preserveRatio="true"
+                                               smooth="true"
+                                               fitWidth="160"
+                                               fitHeight="160">
+                                        <clip>
+                                            <Rectangle width="160" height="160"
+                                                       arcWidth="20" arcHeight="20"/>
+                                        </clip>
+                                    </ImageView>
+                                </StackPane>
+
+                                <!-- TILE FRUTTO / SEME -->
+                                <StackPane styleClass="board-tile board-img-sm">
+                                    <ImageView fx:id="fruitImage"
+                                               preserveRatio="true"
+                                               smooth="true"
+                                               fitWidth="160"
+                                               fitHeight="160">
+                                        <clip>
+                                            <Rectangle width="160" height="160"
+                                                       arcWidth="20" arcHeight="20"/>
+                                        </clip>
+                                    </ImageView>
+                                </StackPane>
+
+                            </FlowPane>
+
+                            <!-- MESSAGGIO NESSUNA SELEZIONE -->
+                            <Label fx:id="emptyHint"
+                                   text="Seleziona una pianta a destra per vederne la board"
+                                   styleClass="hint"
+                                   StackPane.alignment="CENTER"/>
+                        </StackPane>
                     </content>
                 </ScrollPane>
 
-                <!-- SIDEBAR DESTRA -->
+                <!-- SIDEBAR DESTRA (search + lista) -->
                 <VBox spacing="12" styleClass="sidebar-right"
                       prefWidth="340" minWidth="260" maxWidth="480">
 
@@ -86,7 +131,9 @@
                         <ToggleButton fx:id="specialChip" text="Speciali"               styleClass="chip"/>
                     </FlowPane>
 
-                    <ListView fx:id="plantsList" prefHeight="520" VBox.vgrow="ALWAYS"/>
+                    <ListView fx:id="plantsList"
+                              prefHeight="520"
+                              VBox.vgrow="ALWAYS"/>
                 </VBox>
 
             </items>
