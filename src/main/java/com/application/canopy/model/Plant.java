@@ -94,13 +94,13 @@ public class Plant {
                                 "Orchidea.png"
                         ),
                 new Plant(
-                                "ceneradice",
-                                "Ceneradice",
-                        "Il Bocciotorto (il seme) emette costantemente un suono simile ad un lamento quando viene guardato.",
-                        "Ceneradice è un'esile creatura grigia composta da rami attorcigliati. Ha una testa tondeggiante con due rametti che ricordano ciuffi di capelli ai lati della testa, e due grandi occhi scintillanti.",
-                        "Non ha bisogno di acqua, non ha bisogno di cibo, ha solo bisogno di concludere il suo rito di rinascita.",
-                                "Ceneradice",
-                                "Ceneradice.png"
+                                "lifeblood",
+                                "Lifeblood",
+                        "La Creatura di Grimm e le piccole tessitrici evocate dal Canto della Tessitrice non posso assimilare i Semi Vitali.",
+                        "Piccolo seme irrequieto pieno di sangue vitale, che può essere estratto e consumato per le sue proprietà curative.",
+                        "Cresce molto solo se circondata da simili, i suoi frutti potrebbero correre via ma non preoccuparti.",
+                                "Lifeblood",
+                                "Lifeblood.png"
                         ),
                 new Plant(
                                 "radice_sussurrante",
@@ -109,7 +109,7 @@ public class Plant {
                         "Le Radici Sussurranti sono delle piante ripiene di Essenze che si trovano nel lungo e il largo di Nidosacro. Quando si colpisce una radice con l'Aculeo dei Sogni, questa farà comparire dei globi rossi che raccontano le storie di ha vissuto in quei luoghi.",
                         "Si nutre dei ricordi di chi ci vive vicino. Non piantarlo troppo vicino pensieri pesanti.",
                                 "Radice_Sussurrante",
-                                "Radice_Sussurrante.png"
+                                "Radici_Sussurranti.png"
                         )
         );
     }

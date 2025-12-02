@@ -16,6 +16,7 @@ import javafx.scene.text.Text;
 import java.net.URL;
 import java.util.EnumSet;
 import java.util.Locale;
+import java.util.Map;
 import java.util.function.Predicate;
 
 public class HerbariumController {
@@ -50,32 +51,45 @@ public class HerbariumController {
         }
     }
 
-    // --- immagini (coerente con la tua struttura) ---
+    // ---------- PATH IMMAGINI ----------
+
     private static final String ROOT       = "/com/application/canopy/view/components/images/";
     private static final String THUMBS_DIR = ROOT + "thumbs/";
-    private static final String HERO_DIR   = ROOT + "heroes/"; // opzionale: PNG grandi/trasparenti
 
-    // --- FXML ---
-    @FXML private BorderPane root;
-    @FXML private NavController navController; // può rimanere null se non c'è nel FXML
+    /** id/nome -> base file immagini (lavanda -> lavanda.png, lavanda1.jpg, ...) */
+    private static final Map<String, String> IMAGE_BASES = Map.of(
+            "lavanda",            "lavanda",
+            "menta",              "menta",
+            "orchidea",           "orchidea",
+            "peperoncino",        "peperoncino",
+            "quercia",            "quercia",
+            "radice_sussurrante", "radici_sussurranti",
+            "lifeblood",          "lifeblood",
+            "sakura",             "sakura"
+    );
 
-    // Dettaglio / board
+    // ---------- FXML: BOARD CENTRALE ----------
+
+    @FXML private VBox  boardRoot;
+
     @FXML private Label plantTitle;
-    @FXML private Text plantCuriosity;
-    @FXML private Text plantDescription;
-    @FXML private Text plantCare;
+    @FXML private Label rarityBadge;
+    @FXML private Text  plantCuriosity;
+    @FXML private Text  plantDescription;
+    @FXML private Text  plantCare;
+
+    @FXML private ImageView plantImage;     // hero
+    @FXML private ImageView variant1Image;  // var1
+    @FXML private ImageView variant2Image;  // var2
+    @FXML private ImageView variant3Image;  // var3
+
+
     @FXML private Label emptyHint;
 
-    @FXML private ImageView plantImage; // icona / hero principale
-    @FXML private ImageView leafImage;  // immagine foglia (board tile)
-    @FXML private ImageView fruitImage; // immagine frutto / seme (board tile)
+    // ---------- FXML: SIDEBAR DESTRA ----------
 
-    @FXML private ScrollPane detailScroll;
-    @FXML private FlowPane detailFlow;  // board vera e propria (tile sparse)
-
-    // Sidebar destra (lista + filtri)
-    @FXML private TextField searchField;
-    @FXML private Button clearSearchBtn;
+    @FXML private TextField    searchField;
+    @FXML private Button       clearSearchBtn;
     @FXML private ToggleButton allChip, commonChip, rareChip, specialChip;
     @FXML private ListView<PlantItem> plantsList;
 
@@ -85,51 +99,53 @@ public class HerbariumController {
 
     private final GameState gameState = GameState.getInstance();
 
+    // ---------- INITIALIZE ----------
+
     @FXML
     private void initialize() {
-        // Popola l’erbario dal modello di gioco
         loadFromGameState();
 
-        // ListView con card + thumb
-        plantsList.setCellFactory(lv -> new PlantCardCell());
-        filtered = new FilteredList<>(source, p -> true);
-        plantsList.setItems(filtered);
+        if (plantsList != null) {
+            plantsList.setCellFactory(lv -> new PlantCardCell());
+            filtered = new FilteredList<>(source, p -> true);
+            plantsList.setItems(filtered);
+        }
 
-        // Toggle chips categorie
+        // toggle categorie
         ToggleGroup categoryGroup = new ToggleGroup();
         for (ToggleButton b : new ToggleButton[]{allChip, commonChip, rareChip, specialChip}) {
             b.setToggleGroup(categoryGroup);
         }
         allChip.setSelected(true);
 
-        // Ricerca + clear
-        searchField.textProperty().addListener((obs, oldV, newV) -> applyFilters());
-        clearSearchBtn.setOnAction(e -> searchField.clear());
-        categoryGroup.selectedToggleProperty().addListener((obs, oldT, newT) -> applyFilters());
+        // ricerca
+        if (searchField != null) {
+            searchField.textProperty().addListener((obs, o, n) -> applyFilters());
+        }
+        if (clearSearchBtn != null) {
+            clearSearchBtn.setOnAction(e -> searchField.clear());
+        }
+        categoryGroup.selectedToggleProperty().addListener((obs, o, n) -> applyFilters());
 
-        // Selezione pianta → dettaglio / board
-        plantsList.getSelectionModel().selectedItemProperty().addListener((obs, old, sel) -> showPlant(sel));
-
-        // Adatta la board alla larghezza del viewport
-        if (detailScroll != null && detailFlow != null) {
-            detailScroll.viewportBoundsProperty().addListener((obs, oldV, newV) -> {
-                double w = newV.getWidth();
-                detailFlow.setPrefWidth(w);
-                detailFlow.setPrefWrapLength(w - 32); // un po' di margine a destra/sinistra
-            });
+        // selezione lista
+        if (plantsList != null) {
+            plantsList.getSelectionModel().selectedItemProperty()
+                    .addListener((obs, old, sel) -> showPlant(sel));
         }
 
         showEmptyState();
     }
 
-    /** Costruisce la lista Herbarium leggendo da GameState */
+
+
+    // ---------- COSTRUZIONE LISTA ----------
+
     private void loadFromGameState() {
         source.clear();
         for (UserPlantState state : gameState.getAllPlantStates()) {
             Plant p = state.getPlant();
             Category cat = classifyPlant(p);
-
-            PlantItem item = new PlantItem(
+            source.add(new PlantItem(
                     p,
                     p.getName(),
                     p.getDescription(),
@@ -137,23 +153,32 @@ public class HerbariumController {
                     p.getCareTips(),
                     cat,
                     state.isUnlocked()
-            );
-            source.add(item);
+            ));
         }
     }
 
-    /** Mapping semplice Plant -> categoria UI */
     private Category classifyPlant(Plant p) {
         String id = p.getId().toLowerCase(Locale.ROOT);
-        if (id.contains("radice") || id.contains("ceneradice")) return Category.SPECIALE;
+        if (id.contains("radice") || id.contains("lifeblood")) return Category.SPECIALE;
         if (id.contains("menta") || id.contains("quercia") || id.contains("peperoncino")) return Category.COMUNI;
         if (id.contains("orchidea") || id.contains("sakura") || id.contains("lavanda")) return Category.RARE;
         return Category.COMUNI;
     }
 
-    // --- filtri / ricerca --------------------------------------------------
+    private String categoryText(Category c) {
+        return switch (c) {
+            case COMUNI   -> "COMUNE";
+            case RARE     -> "RARE";
+            case SPECIALE -> "SPECIALE";
+            case ALL      -> "";
+        };
+    }
+
+    // ---------- FILTRI ----------
 
     private void applyFilters() {
+        if (filtered == null) return;
+
         String q = searchField.getText() == null ? "" : searchField.getText().trim().toLowerCase(Locale.ROOT);
         EnumSet<Category> cats = selectedCategories();
 
@@ -171,14 +196,14 @@ public class HerbariumController {
     private EnumSet<Category> selectedCategories() {
         if (allChip.isSelected()) return EnumSet.of(Category.ALL);
         EnumSet<Category> set = EnumSet.noneOf(Category.class);
-        if (commonChip.isSelected()) set.add(Category.COMUNI);
-        if (rareChip.isSelected()) set.add(Category.RARE);
+        if (commonChip.isSelected())  set.add(Category.COMUNI);
+        if (rareChip.isSelected())    set.add(Category.RARE);
         if (specialChip.isSelected()) set.add(Category.SPECIALE);
         if (set.isEmpty()) set.add(Category.ALL);
         return set;
     }
 
-    // --- dettaglio / board -------------------------------------------------
+    // ---------- DETTAGLIO / BOARD ----------
 
     private void showPlant(PlantItem p) {
         if (p == null) {
@@ -186,101 +211,113 @@ public class HerbariumController {
             return;
         }
 
-        // testo base
+        setBoardVisible(true);
+
+        rarityBadge.setText(categoryText(p.category));
+
         if (!p.unlocked) {
-            setDetailVisible(true);
-            plantTitle.setText(p.name + " (bloccata)");
+            plantTitle.setText(p.name);
             plantCuriosity.setText("Sblocca questa pianta completando gli obiettivi.");
             plantDescription.setText("");
             plantCare.setText("");
+            rarityBadge.setText("BLOCCATA");
 
-            if (plantImage != null) plantImage.setImage(loadThumbFor(p.plant));
-            if (leafImage != null) leafImage.setImage(null);
-            if (fruitImage != null) fruitImage.setImage(null);
+            Image heroLocked = loadHeroImage(p.plant);
+            plantImage.setImage(heroLocked);
+            variant1Image.setImage(null);
+            variant2Image.setImage(null);
+            variant3Image.setImage(null);
             return;
         }
 
-        setDetailVisible(true);
         plantTitle.setText(p.name);
         plantCuriosity.setText(safe(p.curiosity));
         plantDescription.setText(safe(p.description));
         plantCare.setText(safe(p.care));
 
-        if (plantImage != null) {
-            Image hero = loadHeroFor(p.plant);
-            plantImage.setImage(hero != null ? hero : loadThumbFor(p.plant));
-        }
+        // HERO
+        plantImage.setImage(loadHeroImage(p.plant));
 
-        // per ora le tile foglia / frutto restano vuote;
-        // in futuro potrai caricarle da risorse dedicate.
-        if (leafImage != null)  leafImage.setImage(null);
-        if (fruitImage != null) fruitImage.setImage(null);
+        // VARIANTI
+        variant1Image.setImage(loadVariantImage(p.plant, 1));
+        variant2Image.setImage(loadVariantImage(p.plant, 2));
+        variant3Image.setImage(loadVariantImage(p.plant, 3));
     }
 
     private void showEmptyState() {
-        setDetailVisible(false);
+        setBoardVisible(false);
+
         plantTitle.setText("-");
         plantCuriosity.setText("");
         plantDescription.setText("");
         plantCare.setText("");
+        rarityBadge.setText("");
 
-        if (plantImage != null) plantImage.setImage(null);
-        if (leafImage != null)  leafImage.setImage(null);
-        if (fruitImage != null) fruitImage.setImage(null);
+        plantImage.setImage(null);
+        variant1Image.setImage(null);
+        variant2Image.setImage(null);
+        variant3Image.setImage(null);
     }
 
-    private void setDetailVisible(boolean hasSelection) {
+    private void setBoardVisible(boolean hasSelection) {
+        if (boardRoot != null) {
+            boardRoot.setVisible(hasSelection);
+            boardRoot.setManaged(hasSelection);
+        }
         if (emptyHint != null) {
             emptyHint.setVisible(!hasSelection);
             emptyHint.setManaged(!hasSelection);
         }
-        if (detailFlow != null) {
-            detailFlow.setVisible(hasSelection);
-            detailFlow.setManaged(hasSelection);
-        }
     }
 
-    // --- caricamento immagini ---------------------------------------------
+    // ---------- CARICAMENTO IMMAGINI ----------
+
+    private String imageBaseFor(Plant plant) {
+        String id = plant.getId().toLowerCase(Locale.ROOT);
+
+        for (var e : IMAGE_BASES.entrySet()) {
+            if (id.contains(e.getKey())) return e.getValue();
+        }
+
+        String name = plant.getName().toLowerCase(Locale.ROOT);
+        for (var e : IMAGE_BASES.entrySet()) {
+            if (name.contains(e.getKey())) return e.getValue();
+        }
+
+        return id.replace(" ", "").replace("-", "_");
+    }
+
+    private Image loadHeroImage(Plant plant) {
+        String base = imageBaseFor(plant);
+        return loadFirstExisting(
+                THUMBS_DIR + capitalizeFirst(base) + ".png",
+                THUMBS_DIR + base + ".png",
+                THUMBS_DIR + base + ".jpg"
+        );
+    }
+
+    private Image loadVariantImage(Plant plant, int idx) {
+        String base = imageBaseFor(plant);
+        String suf = String.valueOf(idx);
+        return loadFirstExisting(
+                THUMBS_DIR + base + suf + ".png",
+                THUMBS_DIR + base + suf + ".jpg"
+        );
+    }
 
     private Image loadThumbFor(Plant plant) {
-        String fileName = plant.getThumbFile(); // es: "Lavanda.png"
-        String path = THUMBS_DIR + fileName;
-        return loadImageFromResource(path);
+        Image img = loadHeroImage(plant);
+        if (img == null) {
+            System.err.println("[Herbarium] Nessuna immagine trovata per " + plant.getName());
+        }
+        return img;
     }
 
-    /** Prova a caricare una PNG trasparente; fallback su thumb. */
-    private Image loadHeroFor(Plant plant) {
-        String file = tryGetHeroFileFromModel(plant);
-        if (file != null) {
-            Image img = loadImageFromResource(HERO_DIR + file);
-            if (img != null) return img;
-
-            // se l'attributo era già completo di path (caso raro), prova diretto
-            img = loadImageFromResource(file);
+    private Image loadFirstExisting(String... paths) {
+        for (String path : paths) {
+            Image img = loadImageFromResource(path);
             if (img != null) return img;
         }
-        return loadThumbFor(plant);
-    }
-
-    private String tryGetHeroFileFromModel(Plant plant) {
-        try {
-            var m = plant.getClass().getMethod("getHeroFile");
-            Object r = m.invoke(plant);
-            if (r instanceof String s && !s.isBlank()) return s;
-        } catch (ReflectiveOperationException ignored) { }
-
-        try {
-            var m = plant.getClass().getMethod("getHeroPngPath");
-            Object r = m.invoke(plant);
-            if (r instanceof String s && !s.isBlank()) return s;
-        } catch (ReflectiveOperationException ignored) { }
-
-        try {
-            var m = plant.getClass().getMethod("getImageFile");
-            Object r = m.invoke(plant);
-            if (r instanceof String s && !s.isBlank()) return s;
-        } catch (ReflectiveOperationException ignored) { }
-
         return null;
     }
 
@@ -291,18 +328,24 @@ public class HerbariumController {
             System.err.println("[Herbarium] Risorsa NON trovata: " + path);
             return null;
         }
-        return new Image(url.toExternalForm(), true);
+        return new Image(url.toExternalForm(), false);
     }
 
-    /** Cella ListView con thumb + lock, stile “card” minimal */
+    private static String capitalizeFirst(String s) {
+        if (s == null || s.isEmpty()) return s;
+        return Character.toUpperCase(s.charAt(0)) + s.substring(1);
+    }
+
+    // ---------- LISTVIEW CARD ----------
+
     private class PlantCardCell extends ListCell<PlantItem> {
-        private final HBox root = new HBox(10);
-        private final ImageView thumb = new ImageView();
-        private final VBox textBox = new VBox(2);
-        private final Label title = new Label();
-        private final Label subtitle = new Label();
-        private final Pane spacer = new Pane();
-        private final Label lock = new Label();
+        private final HBox      root    = new HBox(10);
+        private final ImageView thumb   = new ImageView();
+        private final VBox      textBox = new VBox(2);
+        private final Label     title   = new Label();
+        private final Label     subtitle = new Label();
+        private final Pane      spacer  = new Pane();
+        private final Label     lock    = new Label();
 
         PlantCardCell() {
             root.getStyleClass().add("card");

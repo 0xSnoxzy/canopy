@@ -78,7 +78,6 @@ public class Main extends Application {
     @Override
     public void stop() throws Exception {
         super.stop();
-        // Chiudiamo la connessione DB quando l'app si chiude
         DatabaseManager.close();
     }
 

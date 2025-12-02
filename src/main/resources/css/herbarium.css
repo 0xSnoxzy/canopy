@@ -1,50 +1,153 @@
-/* ---------- ERBARIO (HERBARIUM) ---------- */
+/* ============================================================
+   HERBARIUM – layout moderno
+   ============================================================ */
 
-/* ERBARIO wrapper */
-.content-root {
-  -fx-padding: 22;
-  -fx-background-color:
-     linear-gradient(to bottom,
-        -canopy-accent-soft,
-        -canopy-bg);
-  -fx-background-radius: 20;
-  -fx-border-color: -canopy-border-strong;
-  -fx-border-radius: 20;
+/* root interno alla ScrollPane dell’erbario */
+.herb-scroll-root {
+  -fx-background-color: transparent;
+  -fx-padding: 24 32 40 32;
 }
 
-/* Titoli & testi */
-.h2 {
-  -fx-font-size: 22px;
+/* layout principale, centrato nella pagina */
+.herb-layout {
+  -fx-alignment: TOP_CENTER;
+  -fx-spacing: 24;
+}
+
+/* ------------------------------------------------------------
+   HERO SECTION
+   ------------------------------------------------------------ */
+
+.herb-hero {
+  -fx-alignment: CENTER_LEFT;
+}
+
+.hero-image-card {
+  -fx-background-color:
+    linear-gradient(to bottom right,
+      derive(-canopy-card-soft, 12%),
+      -canopy-card-soft);
+  -fx-background-radius: 28;
+  -fx-border-radius: 28;
+  -fx-border-color: -canopy-border-subtle;
+  -fx-border-width: 1;
+  /* niente padding: l'immagine tocca direttamente i bordi */
+  -fx-padding: 0;
+  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.55), 32, 0.45, 0, 12);
+}
+
+.hero-text {
+  -fx-alignment: TOP_LEFT;
+}
+
+/* titolo principale */
+.plant-title {
+  -fx-font-size: 30px;
   -fx-font-weight: 900;
   -fx-text-fill: -canopy-text;
 }
-.h3 {
-  -fx-font-size: 14px;
+
+/* badge rarità */
+.rarity-badge {
+  -fx-font-size: 11px;
   -fx-font-weight: 800;
-  -fx-text-fill: -canopy-text;
-}
-.muted {
-  -fx-fill: -canopy-muted;
-  -fx-text-fill: -canopy-muted;
-  -fx-opacity: 0.96;
+  -fx-text-fill: -canopy-card;
+  -fx-background-color:
+    linear-gradient(to right, -canopy-accent-2, -canopy-accent);
+  -fx-background-radius: 999;
+  -fx-padding: 4 10;
+  -fx-effect: dropshadow(gaussian, -canopy-focus-soft, 12, 0.45, 0, 2);
 }
 
-/* messaggio “nessuna pianta selezionata” */
+/* curiosità sotto il titolo */
+.plant-curiosity {
+  -fx-fill: -canopy-muted;
+  -fx-font-size: 13px;
+  -fx-line-spacing: 2px;
+}
+
+/* ------------------------------------------------------------
+   SEZIONE INFO (descrizione + cura)
+   ------------------------------------------------------------ */
+
+.info-row {
+  -fx-alignment: TOP_LEFT;
+}
+
+.info-card {
+  -fx-background-color: -canopy-card-soft;
+  -fx-background-radius: 24;
+  -fx-border-radius: 24;
+  -fx-border-color: -canopy-border-subtle;
+  -fx-border-width: 1;
+  -fx-padding: 16 18;
+  -fx-spacing: 8;
+}
+
+/* titoletti sezione */
+.section-title-herb {
+  -fx-font-size: 11px;
+  -fx-font-weight: 800;
+  -fx-text-fill: -canopy-muted;
+  -fx-letter-spacing: 1.6px;
+}
+
+/* corpo testo */
+.section-body {
+  -fx-fill: -canopy-text;
+  -fx-font-size: 13px;
+  -fx-line-spacing: 3px;
+}
+
+/* ------------------------------------------------------------
+   GALLERIA VARIANTI
+   ------------------------------------------------------------ */
+
+.gallery-section {
+  -fx-spacing: 10;
+}
+
+.gallery-title {
+  -fx-font-size: 13px;
+  -fx-font-weight: 800;
+  -fx-text-fill: -canopy-muted;
+}
+
+.gallery-flow {
+  -fx-padding: 4 0 0 0;
+}
+
+/* card singola della galleria */
+.gallery-card {
+  -fx-background-color:
+    linear-gradient(to bottom, -canopy-surface-2, -canopy-surface);
+  -fx-background-radius: 22;
+  -fx-border-radius: 22;
+  -fx-border-color: -canopy-border-subtle;
+  -fx-border-width: 1;
+  /* niente padding: immagine edge-to-edge */
+  -fx-padding: 0;
+  -fx-alignment: CENTER;
+  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.45), 24, 0.35, 0, 8);
+}
+
+/* ------------------------------------------------------------
+   EMPTY STATE
+   ------------------------------------------------------------ */
+
 .hint {
   -fx-text-fill: -canopy-muted;
-  -fx-font-size: 12px;
-  -fx-background-color: rgba(0,0,0,0.35);
-  -fx-padding: 8 12;
-  -fx-background-radius: 10;
+  -fx-font-size: 13px;
+  -fx-background-color: rgba(0,0,0,0.45);
+  -fx-padding: 10 16;
+  -fx-background-radius: 999;
+  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 20, 0.45, 0, 4);
 }
 
-/* immagine grande pianta */
-.plant-hero {
-  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.55), 22, 0.4, 0, 6);
-  -fx-smooth: true;
-}
+/* ============================================================
+   SIDEBAR DESTRA (come prima)
+   ============================================================ */
 
-/* colonna destra erbario (search + lista) */
 .sidebar-right {
   -fx-padding: 16;
   -fx-background-color:
@@ -67,7 +170,7 @@
   -fx-faint-focus-color: transparent;
 }
 
-/* filtri chip */
+/* pillole filtro categoria */
 .chip {
   -fx-background-color: -canopy-accent-soft;
   -fx-text-fill: -canopy-text;
@@ -79,145 +182,33 @@
   -fx-focus-color: transparent;
   -fx-faint-focus-color: transparent;
 }
+
 .chip:hover {
   -fx-background-color: derive(-canopy-accent-soft, 10%);
 }
-.chip:selected {
-  -fx-background-color:
-    linear-gradient(to right, -canopy-accent-2, -canopy-accent);
-  -fx-text-fill: -canopy-card;
-  -fx-border-color: transparent;
-}
-.chip:selected:hover {
-  -fx-background-color:
-    linear-gradient(to right,
-      derive(-canopy-accent-2, 10%),
-      -canopy-accent);
-}
 
-/* scroll lista erbario */
-.list-scroll {
-  -fx-background-color: transparent;
-  -fx-padding: 0;
-}
-.list-scroll .viewport {
-  -fx-background-color: transparent;
-}
+/* ============================================================
+   LISTVIEW CARDS Piante (destra)
+   ============================================================ */
 
-/* card nella lista piante (si appoggia a .list-cell) */
 .plant-card {
-  -fx-background-radius: 14;
-  -fx-padding: 8 10 8 10;
-}
-
-/* contenitore testo dettaglio pianta */
-.detail-text {
-  -fx-padding: 10 0 0 0;
-}
-
-/* titolo pianta */
-.plant-title {
-  -fx-font-size: 24px;
-  -fx-font-weight: 900;
-  -fx-text-fill: -canopy-text;
-  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.55), 14, 0.45, 0, 2);
-}
-
-/* curiosità */
-.plant-curiosity {
-  -fx-fill: -canopy-muted;
-  -fx-font-size: 12px;
-  -fx-font-style: italic;
-}
-
-/* card per descrizione/cura/curiosità+nome */
-.detail-section {
-  -fx-background-color:
-      linear-gradient(to bottom,
-          derive(-canopy-card-soft, 6%),
-          -canopy-card-soft);
+  -fx-background-color: -canopy-card;
   -fx-background-radius: 18;
-  -fx-padding: 12 14;
-  -fx-border-color: -canopy-border-subtle;
   -fx-border-radius: 18;
-  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 14, 0.25, 0, 3);
+  -fx-padding: 10 12;
+  -fx-border-color: -canopy-border-subtle;
+  -fx-border-width: 1;
 }
 
-/* titolo sezione (Descrizione/Cura) */
-.section-title-herb {
-  -fx-font-size: 11px;
-  -fx-font-weight: 800;
-  -fx-text-fill: -canopy-muted;
-  -fx-letter-spacing: 1.4px;
+.plant-card:hover {
+  -fx-background-color: -canopy-accent-soft;
 }
 
-/* testo dentro le card */
-.section-body {
-  -fx-fill: -canopy-text;
+/* testo dentro la card */
+.plant-card .label {
   -fx-font-size: 13px;
-  -fx-line-spacing: 3px;
 }
 
-/* ---------- SELEZIONE PIANTE CON GLOW SOFT ---------- */
-
-.sidebar-right .list-view:focused .list-cell:filled:selected,
-.sidebar-right .list-view .list-cell:filled:selected:hover,
-.sidebar-right .list-cell:selected {
-  -fx-effect: none; /* niente blur su contenuti */
-
-  /* bordo principale (più chiaro, “glow core”) */
-  -fx-border-color: -canopy-focus;
-  -fx-border-width: 1.2;
-  -fx-border-radius: 14;
-
-  /* secondo “alone” simulato tramite background sheath leggero */
-  -fx-background-radius: 14;
-  -fx-background-color:
-      radial-gradient(radius 140%,
-          -canopy-focus-soft,
-          transparent 70%),
-      linear-gradient(to right,
-          -canopy-accent-soft,
-          derive(-canopy-accent-soft, 8%));
-}
-
-/* ---------- ERBARIO BOARD / TILE LAYOUT ---------- */
-
-/* FlowPane che contiene la board */
-.detail-board {
-  -fx-padding: 16;
-}
-
-/* rettangolo base per ogni blocco immagine (hero, foglia, frutto) */
-.board-tile {
-  -fx-background-color: -canopy-card-soft;
-  -fx-background-radius: 18;
-  -fx-padding: 12;
-  -fx-border-color: -canopy-border-subtle;
-  -fx-border-radius: 18;
-  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 18, 0.25, 0, 4);
-}
-
-/* tile grande tipo “rettangolone” (icona pianta) */
-.board-tile-lg {
-  -fx-pref-width: 320;
-  -fx-pref-height: 260;
-}
-
-/* tile testo grande (titolo + curiosità) */
-.board-text-lg {
-  -fx-pref-width: 260;
-  -fx-pref-height: 220;
-}
-
-/* tile testo (descrizione / cura) */
-.board-text {
-  -fx-pref-width: 220;
-  -fx-pref-height: 180;
-}
-
-/* tile immagine piccola (foglia / frutto / seme) */
-.board-img-sm {
-  -fx-pref-width: 160;
-  -fx-pref-height: 160;
+.plant-card .label:first-child {
+  -fx-font-weight: 700;
 }
