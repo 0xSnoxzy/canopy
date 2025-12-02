@@ -1,5 +1,5 @@
 /* ============================================================
-   OBJETTIVI – stile locale (compatibile con base.css)
+   OBIETTIVI – stile locale (compatibile con base.css)
    ============================================================ */
 
 /* Root della pagina */
@@ -7,12 +7,14 @@
     -fx-background-color: transparent;
 }
 
-/* Layout centrale */
+/* Layout centrale (contenitore principale) */
 .objectives-center {
-    -fx-spacing: 24;
+    -fx-padding: 16 16 4 16;  /* top right bottom left */
+    -fx-spacing: 16;
+    -fx-alignment: CENTER;
 }
 
-/* Titolo principale */
+/* Titolo principale (ora non usato, ma lo lascio in caso serva altrove) */
 .objectives-title {
     -fx-font-size: 20px;
     -fx-font-weight: 800;
@@ -21,93 +23,139 @@
 
 /* ------------------------------
    RIEPILOGO GENERALE
------------------------------- */
-/* cerchio grande del riepilogo */
-.overall-progress {
-    /* cerchio generale*/
-    -fx-progress-color: -canopy-accent;
-    /* ingrandisce VISIVAMENTE il cerchio */
-    -fx-scale-x: 2.5;
-    -fx-scale-y: 2.5;
+   ------------------------------ */
+
+.summary-card {
+    -fx-background-color:
+        linear-gradient(to bottom, -canopy-surface-2, -canopy-surface);
+    -fx-background-radius: 18;
+    -fx-border-radius: 18;
+
+    -fx-border-color: -canopy-border-subtle;
+    -fx-border-width: 1;
+
+    /* più padding verticale: il riquadro cresce
+       e, dato che l'HBox è allineato CENTER_LEFT,
+       cerchio e testi si posizionano più verso il centro */
+    -fx-padding: 20 20 20 20;   /* top right bottom left */
+
+    /* un filo più di aria tra cerchio e testo */
+    -fx-spacing: 20;
+
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 18, 0.25, 0, 4);
+    -fx-max-width: 900;
 }
 
-/* testo al centro del cerchio */
+/* contenitore del cerchio grande */
+.overall-ring-container {
+    -fx-alignment: CENTER;
+}
+
+/* cerchio grande del riepilogo (ProgressIndicator) */
+.overall-progress {
+    -fx-progress-color: -canopy-accent;
+    -fx-scale-x: 1.8;
+    -fx-scale-y: 1.8;
+}
+
+/* testo al centro del cerchio grande */
 .overall-percent-label {
-    -fx-font-size: 34px;
+    -fx-font-size: 28px;
     -fx-font-weight: 900;
     -fx-text-fill: -canopy-accent-2;
 }
 
-
-.summary-card {
-    -fx-background-color:
-        linear-gradient(to bottom, -canopy-card, -canopy-surface);
-    -fx-background-radius: 18;
-    -fx-border-color: -canopy-border-subtle;
-    -fx-border-radius: 18;
-    -fx-padding: 18;
-    -fx-spacing: 18;
-}
-
+/* titolo e testi del riepilogo */
 .summary-title {
-    -fx-font-size: 16px;
-    -fx-font-weight: 700;
+    -fx-font-size: 22px;
+    -fx-font-weight: 900;
 }
 
 .summary-subtitle {
     -fx-fill: -canopy-text;
-    -fx-font-size: 13px;
+    -fx-font-size: 16px;
 }
 
 .summary-hint {
     -fx-fill: -canopy-muted;
-    -fx-font-size: 12px;
+    -fx-font-size: 15px;
 }
 
-/* percentuale nel cerchio
-.circle-percent-label {
-    -fx-font-size: 22px;
-    -fx-font-weight: 900;
-    -fx-text-fill: -canopy-accent-2;
-}*/
+/* VBox dei testi nel pannello del progresso generale */
+.summary-text-box {
+    /* sposta leggermente tutto il blocco testi verso il basso
+       rispetto al centro dell'HBox, così "cade" più sul centro del cerchio */
+    -fx-translate-y: -3;   /* prova 6; se lo vuoi ancora più giù, metti 8 o 10 */
+}
 
 /* ------------------------------
    LISTA OBIETTIVI
------------------------------- */
+   ------------------------------ */
 
+/* ScrollPane che contiene il pannello degli obiettivi */
 .goals-scroll {
+    -fx-background-color: transparent;
+    -fx-padding: 0;          /* nessun bordo extra intorno allo scroll */
+}
+
+/* viewport dello ScrollPane trasparente */
+.goals-scroll .viewport {
     -fx-background-color: transparent;
 }
 
-.goals-flow {
-    -fx-padding: 8;
-    -fx-hgap: 16;
-    -fx-vgap: 16;
+/* CONTENITORE arrotondato degli obiettivi (pannello sotto) */
+.goals-container {
+    -fx-background-color:
+        linear-gradient(to bottom, -canopy-surface-2, -canopy-surface);
+    -fx-background-radius: 18;
+    -fx-border-radius: 18;
+    -fx-border-color: -canopy-border-subtle;
+    -fx-border-width: 1;
+
+    /* un filo di respiro, ma poco */
+    -fx-padding: 4 10 10 10;   /* top right bottom left */
 }
 
-/* card singolo obiettivo */
+/* FlowPane che contiene le card degli obiettivi */
+.goals-flow {
+    -fx-padding: 6 6 10 6;     /* top right bottom left */
+    -fx-hgap: 16;
+    -fx-vgap: 16;
+    -fx-alignment: TOP_CENTER;
+}
+
+/* Card del singolo obiettivo (grandi, 2 per riga) */
 .goal-card {
     -fx-background-color:
         linear-gradient(to bottom, -canopy-card-soft, -canopy-card);
     -fx-background-radius: 16;
     -fx-border-radius: 16;
     -fx-border-color: -canopy-border-subtle;
-    -fx-padding: 14;
+    -fx-border-width: 1;
+    -fx-padding: 16;
     -fx-spacing: 12;
     -fx-cursor: hand;
+
+    -fx-min-width: 320;
+    -fx-pref-width: 420;
+    -fx-max-width: 420;
+
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.28), 12, 0.20, 0, 3);
 }
 
+/* hover sulla card: leggero highlight */
 .goal-card:hover {
     -fx-background-color:
         linear-gradient(to bottom, derive(-canopy-card,10%), -canopy-card);
 }
 
+/* stato "selezionato" per la card */
 .goal-card-selected {
     -fx-border-color: -canopy-accent;
     -fx-border-width: 2;
 }
 
-/* testo card */
+/* testo nella card */
 .goal-title {
     -fx-font-size: 14px;
     -fx-font-weight: 800;
@@ -118,7 +166,7 @@
     -fx-font-size: 11px;
 }
 
-/* cerchio progress per singoli obiettivi */
+/* etichetta della percentuale nei cerchi dei singoli obiettivi */
 .goal-circle-label {
     -fx-font-size: 15px;
     -fx-font-weight: bold;
@@ -126,7 +174,7 @@
 
 /* ------------------------------
    DETTAGLI A DESTRA
------------------------------- */
+   ------------------------------ */
 
 .details-pane {
     -fx-background-color:
@@ -165,7 +213,7 @@
     -fx-font-size: 12px;
 }
 
-/* placeholder immagine */
+/* placeholder per immagine / illustrazione */
 .details-image-placeholder {
     -fx-background-color: -canopy-surface;
     -fx-border-color: -canopy-border-strong;
@@ -174,16 +222,16 @@
     -fx-border-radius: 16;
 }
 
-/* ====== ANILLOS DE PROGRESO (DONUT) ====== */
+/* ====== ANELLI DI PROGRESSO (DONUT) RIUTILIZZABILI ====== */
 
-/* círculo gris de fondo */
+/* cerchio grigio di sfondo */
 .ring-track {
     -fx-stroke: derive(-canopy-surface-2, 35%);
     -fx-stroke-width: 10;
     -fx-fill: transparent;
 }
 
-/* arco de color (progreso) */
+/* arco colorato (progresso) */
 .ring-progress {
     -fx-stroke: -canopy-accent;
     -fx-stroke-width: 10;
@@ -191,23 +239,23 @@
     -fx-fill: transparent;
 }
 
-/* círculo interior */
+/* cerchio interno */
 .ring-inner {
     -fx-fill: -canopy-card;
 }
 
-/* texto común de los anillos */
+/* testo comune degli anelli */
 .ring-label {
     -fx-text-fill: -canopy-accent-2;
     -fx-font-weight: 800;
 }
 
-/* texto círculo grande (progreso general) */
+/* testo del cerchio grande (progresso generale) */
 .ring-label-big {
     -fx-font-size: 26px;
 }
 
-/* texto círculos pequeños (objetivos individuales) */
+/* testo dei cerchi piccoli (obiettivi individuali) */
 .ring-label-small {
     -fx-font-size: 13px;
 }

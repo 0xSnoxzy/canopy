@@ -29,6 +29,7 @@ public class AchievementsController implements Initializable {
     @FXML private StackPane overallRingContainer; // StackPane vacío del FXML
     @FXML private Text overallText;
     @FXML private Text overallHint;
+    @FXML private HBox summaryBox;
 
     // ---- LISTA OBIETTIVI ----
     @FXML private FlowPane goalsFlow;
@@ -60,6 +61,18 @@ public class AchievementsController implements Initializable {
         overallRing = new RingProgressNode(140, 10);
         overallRing.getLabel().getStyleClass().addAll("ring-label", "ring-label-big");
         overallRingContainer.getChildren().add(overallRing);
+
+        // il testo del riepilogo si adatta allo spazio disponibile
+        overallText.wrappingWidthProperty().bind(
+                summaryBox.widthProperty()
+                        .subtract(overallRingContainer.widthProperty())
+                        .subtract(48)
+        );
+        overallHint.wrappingWidthProperty().bind(
+                summaryBox.widthProperty()
+                        .subtract(overallRingContainer.widthProperty())
+                        .subtract(48)
+        );
 
         // per ora: obiettivi finti di esempio
         loadMockGoals();

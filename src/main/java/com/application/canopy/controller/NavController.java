@@ -27,35 +27,145 @@ public class NavController {
     @FXML private ImageView calendarIcon;
     @FXML private ImageView settingsIcon;
 
+    // tema corrente (stringa che manda il ThemeManager: "dark", "light", "sakura-dark", ecc.)
+    private String currentThemeId = "dark";
+
+    // CACHE IMMAGINI: nere (stroke scuro) / bianche (stroke chiaro)
+    private Image homeBlack;
+    private Image homeWhite;
+    private Image achievementsBlack;
+    private Image achievementsWhite;
+    private Image herbariumBlack;
+    private Image herbariumWhite;
+    private Image calendarBlack;
+    private Image calendarWhite;
+    private Image settingsBlack;
+    private Image settingsWhite;
+
     @FXML
     private void initialize() {
-        // mi iscrivo ai cambi tema; ricevo sempre themeId (es. "dark", "sakura-light", "lavanda-dark", ...)
-        ThemeManager.addThemeListener(this::updateIconsForTheme);
+        cacheIcons();
+
+        // ascolta i cambi tema
+        ThemeManager.addThemeListener(this::onThemeChanged);
+
+        // ascolta i cambi selezione (per aggiornare le icone della pagina attiva)
+        installSelectionListeners();
+
+        // primo refresh
+        onThemeChanged(currentThemeId);
     }
 
-    private void updateIconsForTheme(String themeId) {
+    private void cacheIcons() {
         String base = "/com/application/canopy/view/components/images/";
 
-        boolean isDark =
-                "dark".equalsIgnoreCase(themeId) ||
-                        themeId.toLowerCase().endsWith("-dark");
+        // NB: per come li hai chiamati:
+        //  - "*.png"      = icona scura (nera)
+        //  - "*-dark.png" = icona chiara (bianca)
+        homeBlack         = new Image(getClass().getResourceAsStream(base + "home.png"));
+        achievementsBlack = new Image(getClass().getResourceAsStream(base + "achievements.png"));
+        herbariumBlack    = new Image(getClass().getResourceAsStream(base + "herbarium.png"));
+        calendarBlack     = new Image(getClass().getResourceAsStream(base + "calendar.png"));
+        settingsBlack     = new Image(getClass().getResourceAsStream(base + "settings.png"));
 
-        if (isDark) {
-            // modalità scura → icone bianche
-            homeIcon.setImage(new Image(getClass().getResourceAsStream(base + "home-dark.png")));
-            achievementsIcon.setImage(new Image(getClass().getResourceAsStream(base + "achievements-dark.png")));
-            herbariumIcon.setImage(new Image(getClass().getResourceAsStream(base + "herbarium-dark.png")));
-            calendarIcon.setImage(new Image(getClass().getResourceAsStream(base + "calendar-dark.png")));
-            settingsIcon.setImage(new Image(getClass().getResourceAsStream(base + "settings-dark.png")));
+        homeWhite         = new Image(getClass().getResourceAsStream(base + "home-dark.png"));
+        achievementsWhite = new Image(getClass().getResourceAsStream(base + "achievements-dark.png"));
+        herbariumWhite    = new Image(getClass().getResourceAsStream(base + "herbarium-dark.png"));
+        calendarWhite     = new Image(getClass().getResourceAsStream(base + "calendar-dark.png"));
+        settingsWhite     = new Image(getClass().getResourceAsStream(base + "settings-dark.png"));
+    }
+
+    private void onThemeChanged(String themeId) {
+        if (themeId == null || themeId.isBlank()) {
+            themeId = "dark";
+        }
+        this.currentThemeId = themeId.toLowerCase().trim();
+        updateIconsForThemeAndSelection();
+    }
+
+    private void installSelectionListeners() {
+        addSelectionListener(btnHome);
+        addSelectionListener(btnAchievements);
+        addSelectionListener(btnHerbarium);
+        addSelectionListener(btnCalendar);
+        addSelectionListener(btnSettings);
+    }
+
+    private void addSelectionListener(ToggleButton button) {
+        button.selectedProperty().addListener((obs, oldVal, newVal) -> updateIconsForThemeAndSelection());
+    }
+
+    /**
+     * Applica le regole:
+     * - tutti i temi SCURI tranne evergreen ("dark") e daltonici:
+     *      SOLO la pagina selezionata -> icona NERA
+     * - tutti i temi CHIARI tranne evergreen ("light") e daltonici:
+     *      SOLO la pagina selezionata -> icona BIANCA
+     * - evergreen + daltonici: comportamento classico (icone tutte chiare su dark, tutte scure su light)
+     */
+    private void updateIconsForThemeAndSelection() {
+        String id = currentThemeId;
+
+        boolean isEvergreen = "dark".equals(id) || "light".equals(id);
+        boolean isDaltonici = id.contains("daltonici");
+        boolean isDarkTheme = "dark".equals(id) || id.endsWith("-dark");
+        boolean isLightTheme = "light".equals(id) || id.endsWith("-light");
+
+        if (isEvergreen || isDaltonici) {
+            // comportamento "classico":
+            if (isDarkTheme) {
+                // nav con testo chiaro -> icone chiare
+                setAllIconsWhite();
+            } else {
+                // nav con testo scuro -> icone scure
+                setAllIconsBlack();
+            }
+            return;
+        }
+
+        // Qui siamo nei temi "colorati" (sakura, quercia, menta, peperoncino, lavanda, orchidea, ecc.)
+
+        if (isDarkTheme) {
+            // Tema SCURO non evergreen/non daltonici:
+            // - bottoni NON selezionati: icona bianca
+            // - bottone selezionato: icona nera
+            homeIcon.setImage(btnHome.isSelected() ? homeBlack : homeWhite);
+            achievementsIcon.setImage(btnAchievements.isSelected() ? achievementsBlack : achievementsWhite);
+            herbariumIcon.setImage(btnHerbarium.isSelected() ? herbariumBlack : herbariumWhite);
+            calendarIcon.setImage(btnCalendar.isSelected() ? calendarBlack : calendarWhite);
+            settingsIcon.setImage(btnSettings.isSelected() ? settingsBlack : settingsWhite);
+        } else if (isLightTheme) {
+            // Tema CHIARO non evergreen/non daltonici:
+            // - bottoni NON selezionati: icona nera
+            // - bottone selezionato: icona bianca
+            homeIcon.setImage(btnHome.isSelected() ? homeWhite : homeBlack);
+            achievementsIcon.setImage(btnAchievements.isSelected() ? achievementsWhite : achievementsBlack);
+            herbariumIcon.setImage(btnHerbarium.isSelected() ? herbariumWhite : herbariumBlack);
+            calendarIcon.setImage(btnCalendar.isSelected() ? calendarWhite : calendarBlack);
+            settingsIcon.setImage(btnSettings.isSelected() ? settingsWhite : settingsBlack);
         } else {
-            // modalità chiara → icone nere
-            homeIcon.setImage(new Image(getClass().getResourceAsStream(base + "home.png")));
-            achievementsIcon.setImage(new Image(getClass().getResourceAsStream(base + "achievements.png")));
-            herbariumIcon.setImage(new Image(getClass().getResourceAsStream(base + "herbarium.png")));
-            calendarIcon.setImage(new Image(getClass().getResourceAsStream(base + "calendar.png")));
-            settingsIcon.setImage(new Image(getClass().getResourceAsStream(base + "settings.png")));
+            // fallback improbabile → icone bianche su sfondo presumibilmente scuro
+            setAllIconsWhite();
         }
     }
+
+    private void setAllIconsBlack() {
+        homeIcon.setImage(homeBlack);
+        achievementsIcon.setImage(achievementsBlack);
+        herbariumIcon.setImage(herbariumBlack);
+        calendarIcon.setImage(calendarBlack);
+        settingsIcon.setImage(settingsBlack);
+    }
+
+    private void setAllIconsWhite() {
+        homeIcon.setImage(homeWhite);
+        achievementsIcon.setImage(achievementsWhite);
+        herbariumIcon.setImage(herbariumWhite);
+        calendarIcon.setImage(calendarWhite);
+        settingsIcon.setImage(settingsWhite);
+    }
+
+    // ===== Navigazione =====
 
     public void setOnNavigate(Consumer<String> onNavigate) {
         this.onNavigate = onNavigate;
@@ -80,5 +190,7 @@ public class NavController {
             case "settings"     -> btnSettings.setSelected(true);
             default             -> pagesGroup.selectToggle(null);
         }
+        // dopo aver cambiato il selezionato, riallineo le icone
+        updateIconsForThemeAndSelection();
     }
 }
