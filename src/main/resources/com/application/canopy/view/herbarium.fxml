@@ -4,8 +4,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Text?>
 <?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Text?>
+<?import com.application.canopy.model.MasonryPane?>
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
@@ -16,158 +17,128 @@
         <SplitPane dividerPositions="0.64">
             <items>
 
-                <!-- AREA DETTAGLIO MODERNA -->
-                <ScrollPane fitToWidth="true"
+                <!-- AREA DETTAGLIO con MasonryPane -->
+                <ScrollPane fx:id="detailScroll"
+                            fitToWidth="true"
                             pannable="true"
                             hbarPolicy="NEVER"
                             vbarPolicy="AS_NEEDED"
                             styleClass="scrollpane-clean">
                     <content>
-                        <!-- StackPane per gestire empty-state sopra il contenuto -->
-                        <StackPane styleClass="herb-scroll-root">
+                        <!-- root interno, usato per il binding dell'altezza -->
+                        <StackPane fx:id="herbRoot"
+                                   styleClass="herb-scroll-root">
 
-                            <!-- LAYOUT PRINCIPALE BOARD -->
-                            <VBox fx:id="boardRoot"
-                                  spacing="24"
-                                  maxWidth="960"
-                                  StackPane.alignment="TOP_CENTER"
-                                  styleClass="herb-layout">
+                            <!-- BOARD MASONRY -->
+                            <MasonryPane fx:id="masonryBoard"
+                                         hgap="24"
+                                         vgap="24"
+                                         maxWidth="960"
+                                         StackPane.alignment="TOP_CENTER">
 
-                                <!-- HERO SECTION -->
-                                <HBox spacing="24"
-                                      styleClass="herb-hero">
+                                <!-- CARD 1: icona pianta -->
+                                <StackPane fx:id="heroCard"
+                                           styleClass="hero-image-card"
+                                           prefWidth="320" maxWidth="320"
+                                           prefHeight="360" maxHeight="360">
 
-                                    <!-- Immagine principale -->
-                                    <StackPane styleClass="hero-image-card"
-                                               prefWidth="320" maxWidth="320"
-                                               prefHeight="360" maxHeight="360">
-                                        <ImageView fx:id="plantImage"
-                                                   preserveRatio="true"
-                                                   smooth="true"
-                                                   fitWidth="320"
-                                                   fitHeight="360"
-                                                   StackPane.alignment="CENTER">
-                                            <clip>
-                                                <Rectangle width="320"
-                                                           height="360"
-                                                           arcWidth="28"
-                                                           arcHeight="28"/>
-                                            </clip>
-                                        </ImageView>
-                                    </StackPane>
+                                    <!-- clip legata nel controller -->
+                                    <clip>
+                                        <Rectangle fx:id="heroClip"
+                                                   arcWidth="28"
+                                                   arcHeight="28"/>
+                                    </clip>
 
-                                    <!-- Testi principali -->
-                                    <VBox spacing="12"
-                                          VBox.vgrow="ALWAYS"
-                                          styleClass="hero-text">
-                                        <Label fx:id="plantTitle"
-                                               text="-"
-                                               styleClass="plant-title"/>
+                                    <ImageView fx:id="plantIcon"
+                                               preserveRatio="true"
+                                               smooth="true"
+                                               StackPane.alignment="CENTER"/>
+                                </StackPane>
 
-                                        <HBox spacing="8">
-                                            <Label fx:id="rarityBadge"
-                                                   text=""
-                                                   styleClass="rarity-badge"/>
-                                        </HBox>
-
-                                        <Text fx:id="plantCuriosity"
-                                              styleClass="plant-curiosity"
-                                              wrappingWidth="320"/>
-                                    </VBox>
-                                </HBox>
-
-                                <!-- SEZIONE INFO (Descrizione + Cura) -->
-                                <HBox spacing="18"
-                                      styleClass="info-row">
-                                    <!-- DESCRIZIONE -->
-                                    <VBox spacing="8"
-                                          HBox.hgrow="ALWAYS"
-                                          styleClass="info-card">
-                                        <Label text="DESCRIZIONE"
-                                               styleClass="section-title-herb"/>
-                                        <Text fx:id="plantDescription"
-                                              styleClass="section-body"
-                                              wrappingWidth="380"/>
-                                    </VBox>
-
-                                    <!-- CURA -->
-                                    <VBox spacing="8"
-                                          HBox.hgrow="ALWAYS"
-                                          styleClass="info-card">
-                                        <Label text="CURA"
-                                               styleClass="section-title-herb"/>
-                                        <Text fx:id="plantCare"
-                                              styleClass="section-body"
-                                              wrappingWidth="380"/>
-                                    </VBox>
-                                </HBox>
-
-                                <!-- GALLERIA VARIANTI -->
+                                <!-- CARD 2: titolo + rarità + curiosità -->
                                 <VBox spacing="12"
-                                      styleClass="gallery-section">
-                                    <Label text="Galleria"
-                                           styleClass="gallery-title"/>
+                                      styleClass="info-card hero-text">
+                                    <Label fx:id="plantTitle"
+                                           text="-"
+                                           styleClass="plant-title"/>
 
-                                    <FlowPane hgap="16"
-                                              vgap="16"
-                                              prefWrapLength="800"
-                                              styleClass="gallery-flow">
+                                    <HBox spacing="8">
+                                        <Label fx:id="rarityBadge"
+                                               text=""
+                                               styleClass="rarity-badge"/>
+                                    </HBox>
 
-                                        <StackPane styleClass="gallery-card"
-                                                   prefWidth="230" maxWidth="230">
-                                            <ImageView fx:id="variant1Image"
-                                                       preserveRatio="true"
-                                                       smooth="true"
-                                                       fitWidth="230"
-                                                       fitHeight="230"
-                                                       StackPane.alignment="CENTER">
-                                                <clip>
-                                                    <Rectangle width="230"
-                                                               height="230"
-                                                               arcWidth="22"
-                                                               arcHeight="22"/>
-                                                </clip>
-                                            </ImageView>
-                                        </StackPane>
-
-                                        <StackPane styleClass="gallery-card"
-                                                   prefWidth="230" maxWidth="230">
-                                            <ImageView fx:id="variant2Image"
-                                                       preserveRatio="true"
-                                                       smooth="true"
-                                                       fitWidth="230"
-                                                       fitHeight="230"
-                                                       StackPane.alignment="CENTER">
-                                                <clip>
-                                                    <Rectangle width="230"
-                                                               height="230"
-                                                               arcWidth="22"
-                                                               arcHeight="22"/>
-                                                </clip>
-                                            </ImageView>
-                                        </StackPane>
-
-                                        <StackPane styleClass="gallery-card"
-                                                   prefWidth="230" maxWidth="230">
-                                            <ImageView fx:id="variant3Image"
-                                                       preserveRatio="true"
-                                                       smooth="true"
-                                                       fitWidth="230"
-                                                       fitHeight="230"
-                                                       StackPane.alignment="CENTER">
-                                                <clip>
-                                                    <Rectangle width="230"
-                                                               height="230"
-                                                               arcWidth="22"
-                                                               arcHeight="22"/>
-                                                </clip>
-                                            </ImageView>
-                                        </StackPane>
-
-                                    </FlowPane>
+                                    <Text fx:id="plantCuriosity"
+                                          styleClass="plant-curiosity"
+                                          wrappingWidth="260"/>
                                 </VBox>
 
-                            </VBox>
+                                <!-- CARD 3: DESCRIZIONE -->
+                                <VBox spacing="8"
+                                      styleClass="info-card">
+                                    <Label text="DESCRIZIONE"
+                                           styleClass="section-title-herb"/>
+                                    <Text fx:id="plantDescription"
+                                          styleClass="section-body"
+                                          wrappingWidth="260"/>
+                                </VBox>
+
+                                <!-- CARD 4: CURA -->
+                                <VBox spacing="8"
+                                      styleClass="info-card">
+                                    <Label text="CURA"
+                                           styleClass="section-title-herb"/>
+                                    <Text fx:id="plantCare"
+                                          styleClass="section-body"
+                                          wrappingWidth="260"/>
+                                </VBox>
+
+                                <!-- CARD 5: VARIANTE 1 -->
+                                <StackPane fx:id="variant1Card"
+                                           styleClass="gallery-card">
+                                    <clip>
+                                        <Rectangle fx:id="variant1Clip"
+                                                   arcWidth="22"
+                                                   arcHeight="22"/>
+                                    </clip>
+
+                                    <ImageView fx:id="variant1Image"
+                                               preserveRatio="true"
+                                               smooth="true"
+                                               StackPane.alignment="CENTER"/>
+                                </StackPane>
+
+                                <!-- CARD 6: VARIANTE 2 -->
+                                <StackPane fx:id="variant2Card"
+                                           styleClass="gallery-card">
+                                    <clip>
+                                        <Rectangle fx:id="variant2Clip"
+                                                   arcWidth="22"
+                                                   arcHeight="22"/>
+                                    </clip>
+
+                                    <ImageView fx:id="variant2Image"
+                                               preserveRatio="true"
+                                               smooth="true"
+                                               StackPane.alignment="CENTER"/>
+                                </StackPane>
+
+                                <!-- CARD 7: VARIANTE 3 -->
+                                <StackPane fx:id="variant3Card"
+                                           styleClass="gallery-card">
+                                    <clip>
+                                        <Rectangle fx:id="variant3Clip"
+                                                   arcWidth="22"
+                                                   arcHeight="22"/>
+                                    </clip>
+
+                                    <ImageView fx:id="variant3Image"
+                                               preserveRatio="true"
+                                               smooth="true"
+                                               StackPane.alignment="CENTER"/>
+                                </StackPane>
+
+                            </MasonryPane>
 
                             <!-- MESSAGGIO “NESSUNA PIANTA SELEZIONATA” -->
                             <Label fx:id="emptyHint"

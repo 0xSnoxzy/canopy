@@ -1,6 +1,7 @@
 package com.application.canopy.controller;
 
 import com.application.canopy.model.GameState;
+import com.application.canopy.model.MasonryPane;
 import com.application.canopy.model.Plant;
 import com.application.canopy.model.UserPlantState;
 import javafx.collections.FXCollections;
@@ -11,6 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
 import java.net.URL;
@@ -70,7 +72,19 @@ public class HerbariumController {
 
     // ---------- FXML: BOARD CENTRALE ----------
 
-    @FXML private VBox  boardRoot;
+    @FXML private StackPane  herbRoot;
+    @FXML private MasonryPane masonryBoard;
+
+    // card & clip per binding dinamico
+    @FXML private StackPane heroCard;
+    @FXML private StackPane variant1Card;
+    @FXML private StackPane variant2Card;
+    @FXML private StackPane variant3Card;
+
+    @FXML private Rectangle heroClip;
+    @FXML private Rectangle variant1Clip;
+    @FXML private Rectangle variant2Clip;
+    @FXML private Rectangle variant3Clip;
 
     @FXML private Label plantTitle;
     @FXML private Label rarityBadge;
@@ -78,11 +92,10 @@ public class HerbariumController {
     @FXML private Text  plantDescription;
     @FXML private Text  plantCare;
 
-    @FXML private ImageView plantImage;     // hero
-    @FXML private ImageView variant1Image;  // var1
-    @FXML private ImageView variant2Image;  // var2
-    @FXML private ImageView variant3Image;  // var3
-
+    @FXML private ImageView plantIcon;
+    @FXML private ImageView variant1Image;
+    @FXML private ImageView variant2Image;
+    @FXML private ImageView variant3Image;
 
     @FXML private Label emptyHint;
 
@@ -133,10 +146,40 @@ public class HerbariumController {
                     .addListener((obs, old, sel) -> showPlant(sel));
         }
 
+        // BIND altezza per scroll completo
+        if (herbRoot != null && masonryBoard != null) {
+            herbRoot.minHeightProperty().bind(masonryBoard.heightProperty());
+            herbRoot.prefHeightProperty().bind(masonryBoard.heightProperty());
+        }
+
+        // BIND clip <-> card (così non si tagliano quando cambi dimensione)
+        bindClipToCard(heroClip, heroCard);
+        bindClipToCard(variant1Clip, variant1Card);
+        bindClipToCard(variant2Clip, variant2Card);
+        bindClipToCard(variant3Clip, variant3Card);
+
+        // BIND immagine <-> card: riempie il rettangolo mantenendo il ratio
+        bindImageToCard(plantIcon, heroCard);
+        bindImageToCard(variant1Image, variant1Card);
+        bindImageToCard(variant2Image, variant2Card);
+        bindImageToCard(variant3Image, variant3Card);
+
         showEmptyState();
     }
 
+    private void bindClipToCard(Rectangle clip, Region card) {
+        if (clip == null || card == null) return;
+        clip.widthProperty().bind(card.widthProperty());
+        clip.heightProperty().bind(card.heightProperty());
+    }
 
+    private void bindImageToCard(ImageView view, Region card) {
+        if (view == null || card == null) return;
+        view.fitWidthProperty().bind(card.widthProperty());
+        view.fitHeightProperty().bind(card.heightProperty());
+        view.setPreserveRatio(true);
+        view.setSmooth(true);
+    }
 
     // ---------- COSTRUZIONE LISTA ----------
 
@@ -222,8 +265,8 @@ public class HerbariumController {
             plantCare.setText("");
             rarityBadge.setText("BLOCCATA");
 
-            Image heroLocked = loadHeroImage(p.plant);
-            plantImage.setImage(heroLocked);
+            Image iconLocked = loadPlantIconImage(p.plant);
+            plantIcon.setImage(iconLocked);
             variant1Image.setImage(null);
             variant2Image.setImage(null);
             variant3Image.setImage(null);
@@ -235,10 +278,10 @@ public class HerbariumController {
         plantDescription.setText(safe(p.description));
         plantCare.setText(safe(p.care));
 
-        // HERO
-        plantImage.setImage(loadHeroImage(p.plant));
+        // icona principale
+        plantIcon.setImage(loadPlantIconImage(p.plant));
 
-        // VARIANTI
+        // varianti
         variant1Image.setImage(loadVariantImage(p.plant, 1));
         variant2Image.setImage(loadVariantImage(p.plant, 2));
         variant3Image.setImage(loadVariantImage(p.plant, 3));
@@ -253,16 +296,16 @@ public class HerbariumController {
         plantCare.setText("");
         rarityBadge.setText("");
 
-        plantImage.setImage(null);
+        plantIcon.setImage(null);
         variant1Image.setImage(null);
         variant2Image.setImage(null);
         variant3Image.setImage(null);
     }
 
     private void setBoardVisible(boolean hasSelection) {
-        if (boardRoot != null) {
-            boardRoot.setVisible(hasSelection);
-            boardRoot.setManaged(hasSelection);
+        if (masonryBoard != null) {
+            masonryBoard.setVisible(hasSelection);
+            masonryBoard.setManaged(hasSelection);
         }
         if (emptyHint != null) {
             emptyHint.setVisible(!hasSelection);
@@ -287,7 +330,8 @@ public class HerbariumController {
         return id.replace(" ", "").replace("-", "_");
     }
 
-    private Image loadHeroImage(Plant plant) {
+    /** ex loadHeroImage, ora icona principale */
+    private Image loadPlantIconImage(Plant plant) {
         String base = imageBaseFor(plant);
         return loadFirstExisting(
                 THUMBS_DIR + capitalizeFirst(base) + ".png",
@@ -306,7 +350,7 @@ public class HerbariumController {
     }
 
     private Image loadThumbFor(Plant plant) {
-        Image img = loadHeroImage(plant);
+        Image img = loadPlantIconImage(plant);
         if (img == null) {
             System.err.println("[Herbarium] Nessuna immagine trovata per " + plant.getName());
         }
