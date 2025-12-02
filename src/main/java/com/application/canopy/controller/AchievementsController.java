@@ -1,162 +1,270 @@
 package com.application.canopy.controller;
 
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.scene.Cursor;
-import javafx.scene.Node;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.shape.Arc;
+import javafx.scene.shape.ArcType;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.text.Text;
 
-import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.ResourceBundle;
 
-import com.application.canopy.Navigator;
+public class AchievementsController implements Initializable {
 
-public class AchievementsController {
-    // Navigazione pagine
     @FXML private BorderPane root;
-    @FXML private NavController navController;
 
-    @FXML private FlowPane achievementsFlow;
+    // ---- RIEPILOGO GENERALE ----
+    @FXML private StackPane overallRingContainer; // StackPane vacío del FXML
+    @FXML private Text overallText;
+    @FXML private Text overallHint;
 
-    @FXML private VBox detailPane;
+    // ---- LISTA OBIETTIVI ----
+    @FXML private FlowPane goalsFlow;
+
+    // ---- DETTAGLI A DESTRA ----
     @FXML private ImageView detailImage;
-    @FXML private Label detailTitle;
-    @FXML private Label detailSubtitle;
-    @FXML private Label detailProgress;
+    @FXML private Region detailImagePlaceholder;
+    @FXML private Label detailName;
+    @FXML private Text detailShortDescription;
+    @FXML private ProgressBar detailProgressBar;
+    @FXML private Label detailProgressLabel;
     @FXML private Label detailStatus;
 
-    private final List<Achievement> data = new ArrayList<>();
-    private final List<Region> cards = new ArrayList<>();
-    private Node selectedCard = null;
+    // dati demo (sostituisci dopo con il tuo modello reale)
+    private final List<Goal> goals = new ArrayList<>();
 
-    @FXML
-    public void initialize() {
+    private RingProgressNode overallRing;
+    private HBox selectedCard;
 
-        data.add(new Achievement("Botanico Professionista", "Pianta 10 piante diverse", "/images/achievements/botanist.png", 7, 10, false));
-        data.add(new Achievement("Custode della Foresta", "Completa 5 sessioni giornaliere", "/images/achievements/guardian.png", 5, 5, true));
-        data.add(new Achievement("Seminatore", "Pianta 3 nuove piante", "/images/achievements/seeder.png", 1, 3, false));
-        data.add(new Achievement("Coltivatore Attento", "Fai crescere una pianta per 7 giorni", "/images/achievements/water.png", 7, 7, true));
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        renderGrid();
+        // CSS specifico degli obiettivi
+        root.getStylesheets().add(
+                Objects.requireNonNull(getClass().getResource("/css/achievements.css")).toExternalForm()
+        );
 
-        if (!achievementsFlow.getChildren().isEmpty()) {
-            selectCard(achievementsFlow.getChildren().get(0));
+        // crea il donut grande nel contenitore overallRingContainer
+        overallRing = new RingProgressNode(140, 10);
+        overallRing.getLabel().getStyleClass().addAll("ring-label", "ring-label-big");
+        overallRingContainer.getChildren().add(overallRing);
+
+        // per ora: obiettivi finti di esempio
+        loadMockGoals();
+
+        buildGoalCards();
+        updateOverall();
+    }
+
+    /* ---------- DATI DEMO (puoi sostituire con il tuo modello) ---------- */
+
+    private void loadMockGoals() {
+        goals.clear();
+        goals.add(new Goal("Botanico Professionista",
+                "Pianta 10 piante diverse.", 7, 10, null));
+        goals.add(new Goal("Custode della Foresta",
+                "Completa 5 sessioni giornaliere.", 3, 5, null));
+        goals.add(new Goal("Seminatore",
+                "Pianta 3 nuove piante.", 3, 3, null));
+        goals.add(new Goal("Coltivatore Attento",
+                "Fai crescere una pianta per 7 giorni.", 2, 7, null));
+    }
+
+    /* ---------- RIEPILOGO GENERALE ---------- */
+
+    private void updateOverall() {
+        if (goals.isEmpty()) {
+            overallRing.setProgress(0);
+            overallText.setText("Non hai ancora obiettivi.");
+            overallHint.setText("");
+            return;
         }
 
-        achievementsFlow.widthProperty().addListener((obs, oldW, newW) -> resizeCards());
-        achievementsFlow.sceneProperty().addListener((obs, oldScene, newScene) -> {
-            if (newScene != null) newScene.windowProperty().addListener((o2, ow, nw) -> resizeCards());
+        long completed = goals.stream().filter(Goal::isCompleted).count();
+        double ratio = (double) completed / goals.size();
+
+        overallRing.setProgress(ratio);
+
+        overallText.setText(
+                "Hai completato " + completed + " obiettivi su " + goals.size() + "."
+        );
+        overallHint.setText("Continua a completare obiettivi per far crescere il tuo giardino!");
+    }
+
+    /* ---------- LISTA OBIETTIVI ---------- */
+
+    private void buildGoalCards() {
+        goalsFlow.getChildren().clear();
+
+        for (Goal g : goals) {
+            HBox card = createGoalCard(g);
+            goalsFlow.getChildren().add(card);
+        }
+    }
+
+    private HBox createGoalCard(Goal goal) {
+        HBox card = new HBox(12);
+        card.setPadding(new Insets(10));
+        card.getStyleClass().add("goal-card");
+        card.setAlignment(Pos.CENTER_LEFT);
+
+        // donut piccolo per il singolo obiettivo
+        RingProgressNode ring = new RingProgressNode(70, 8);
+        ring.setProgress(goal.getCompletionRatio());
+        ring.getLabel().getStyleClass().addAll("ring-label", "ring-label-small");
+
+        VBox textBox = new VBox(4);
+        Label title = new Label(goal.name);
+        title.getStyleClass().add("goal-title");
+
+        Text desc = new Text(goal.shortDescription);
+        desc.setWrappingWidth(220);
+        desc.getStyleClass().add("goal-description");
+
+        textBox.getChildren().addAll(title, desc);
+
+        card.getChildren().addAll(ring, textBox);
+
+        card.setOnMouseClicked(e -> {
+            selectCard(card);
+            showDetails(goal);
         });
-    }
-
-
-    private void renderGrid() {
-        achievementsFlow.getChildren().clear();
-        cards.clear();
-
-        for (Achievement a : data) {
-            Region card = (Region) buildCard(a);
-            cards.add(card);
-            achievementsFlow.getChildren().add(card);
-        }
-        resizeCards();
-    }
-
-    private void resizeCards() {
-        if (achievementsFlow == null) return;
-
-        double horizontalPadding = 32.0;
-        double gap = achievementsFlow.getHgap();
-        double available = Math.max(0, achievementsFlow.getWidth() - horizontalPadding);
-
-        double cardWidth = (available > 0) ? (available - gap) / 2.0 : 360.0;
-        cardWidth = Math.max(220, cardWidth);
-
-        for (Region c : cards) {
-            c.setPrefWidth(cardWidth);
-            c.setMinHeight(Region.USE_PREF_SIZE);
-        }
-    }
-
-    private Node buildCard(Achievement a) {
-        ImageView icon = new ImageView(loadSafe(a.iconPath));
-        icon.setFitWidth(48);
-        icon.setFitHeight(48);
-        icon.setPreserveRatio(true);
-
-        Label title = new Label(a.title);
-        title.getStyleClass().add("card-title");
-
-        Label desc = new Label(a.description);
-        desc.getStyleClass().add("card-desc");
-        desc.setWrapText(true);
-
-        VBox texts = new VBox(4, title, desc);
-
-        HBox card = new HBox(12, icon, texts);
-        card.setPadding(new Insets(12));
-        card.setCursor(Cursor.HAND);
-        card.getStyleClass().addAll("card", a.achieved ? "card-achieved" : "card-locked");
-
-        card.setOnMouseClicked(e -> selectCard(card));
-        card.setUserData(a);
 
         return card;
     }
 
-    private void selectCard(Node card) {
-        if (selectedCard != null) selectedCard.getStyleClass().remove("card-selected");
-        selectedCard = card;
+    private void selectCard(HBox card) {
         if (selectedCard != null) {
-            selectedCard.getStyleClass().add("card-selected");
-            Achievement a = (Achievement) selectedCard.getUserData();
-            updateDetail(a);
+            selectedCard.getStyleClass().remove("goal-card-selected");
+        }
+        selectedCard = card;
+        if (!selectedCard.getStyleClass().contains("goal-card-selected")) {
+            selectedCard.getStyleClass().add("goal-card-selected");
         }
     }
 
-    private void updateDetail(Achievement a) {
-        detailImage.setImage(loadSafe(a.iconPath));
-        detailTitle.setText(a.title);
-        detailSubtitle.setText(a.description);
-        detailProgress.setText("Progresso: " + a.progress + "/" + a.goal);
-        detailStatus.setText(a.achieved ? "Completato" : "Non completato");
-        detailPane.getStyleClass().removeAll("detail-achieved", "detail-locked");
-        detailPane.getStyleClass().add(a.achieved ? "detail-achieved" : "detail-locked");
-    }
+    /* ---------- DETTAGLI A DESTRA ---------- */
 
+    private void showDetails(Goal goal) {
+        detailName.setText(goal.name);
+        detailShortDescription.setText(goal.description);
+        detailProgressBar.setProgress(goal.getCompletionRatio());
+        detailProgressLabel.setText(goal.current + "/" + goal.total);
 
-    private Image loadSafe(String classpathPath) {
-        try (InputStream is = getClass().getResourceAsStream(classpathPath)) {
-            if (is != null) {
-                return new Image(is);
-            } else {
-                // immagine trasparente 1x1
-                return new Image("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGNgYGD4DwABBAEAxQY9FwAAAABJRU5ErkJggg==");
+        String stato = goal.isCompleted() ? "Completato" : "In corso";
+        detailStatus.setText("Stato: " + stato);
+
+        if (goal.iconPath != null) {
+            try {
+                Image img = new Image(getClass().getResourceAsStream(goal.iconPath));
+                detailImage.setImage(img);
+                detailImage.setVisible(true);
+                detailImagePlaceholder.setVisible(false);
+            } catch (Exception e) {
+                detailImage.setImage(null);
+                detailImage.setVisible(false);
+                detailImagePlaceholder.setVisible(true);
             }
-        } catch (Exception e) {
-            return new Image("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGNgYGD4DwABBAEAxQY9FwAAAABJRU5ErkJggg==");
+        } else {
+            detailImage.setImage(null);
+            detailImage.setVisible(false);
+            detailImagePlaceholder.setVisible(true);
         }
     }
 
-    private static class Achievement {
-        final String title;
-        final String description;
-        final String iconPath;
-        final int progress;
-        final int goal;
-        final boolean achieved;
+    /* ---------- MODELLO INTERNO SEMPLICE ---------- */
 
-        Achievement(String title, String description, String iconPath, int progress, int goal, boolean achieved) {
-            this.title = title;
+    private static class Goal {
+        final String name;
+        final String shortDescription;
+        final String description;
+        final int current;
+        final int total;
+        final String iconPath;
+
+        Goal(String name, String description, int current, int total, String iconPath) {
+            this.name = name;
+            this.shortDescription = description;
             this.description = description;
+            this.current = current;
+            this.total = total;
             this.iconPath = iconPath;
-            this.progress = progress;
-            this.goal = goal;
-            this.achieved = achieved;
+        }
+
+        double getCompletionRatio() {
+            return total <= 0 ? 0 : Math.min(1.0, (double) current / total);
+        }
+
+        boolean isCompleted() {
+            return total > 0 && current >= total;
+        }
+    }
+
+    /* ---------- COMPONENTE: DONUT ---------- */
+
+    /** Nodo che disegna un anello di progresso tipo “donut” con percentuale al centro. */
+    private static class RingProgressNode extends StackPane {
+
+        private final Arc arc;
+        private final Label label;
+
+        RingProgressNode(int size, double thickness) {
+            setPrefSize(size, size);
+            setMinSize(size, size);
+            setMaxSize(size, size);
+
+            double radius = size / 2.0;
+
+            Pane draw = new Pane();
+            draw.setPrefSize(size, size);
+            draw.setMinSize(size, size);
+            draw.setMaxSize(size, size);
+
+            // cerchio di fondo
+            Circle track = new Circle(radius, radius, radius - thickness / 2);
+            track.getStyleClass().add("ring-track");
+
+            // cerchio interno
+            Circle inner = new Circle(radius, radius, radius - thickness - 2);
+            inner.getStyleClass().add("ring-inner");
+
+            // arco di progresso
+            arc = new Arc(radius, radius,
+                    radius - thickness / 2,
+                    radius - thickness / 2,
+                    90, 0);
+            arc.setType(ArcType.OPEN);
+            arc.setStrokeLineCap(StrokeLineCap.ROUND);
+            arc.getStyleClass().add("ring-progress");
+
+            draw.getChildren().addAll(track, inner, arc);
+
+            label = new Label("0%");
+            getChildren().addAll(draw, label);
+            setAlignment(label, Pos.CENTER);
+        }
+
+        void setProgress(double value) {
+            value = Math.max(0, Math.min(1, value));
+            arc.setLength(-360 * value);   // senso orario
+            int percent = (int) Math.round(value * 100);
+            label.setText(percent + "%");
+        }
+
+        Label getLabel() {
+            return label;
         }
     }
 }

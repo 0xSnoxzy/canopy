@@ -1,173 +1,213 @@
-/* ---------- ACHIEVEMENTS ---------- */
+/* ============================================================
+   OBJETTIVI – stile locale (compatibile con base.css)
+   ============================================================ */
 
-/* wrapper achievements */
-.achievements-root {
-  -fx-background-color:
-    radial-gradient(center 15% 0%, radius 120%,
-        -canopy-accent-soft,
-        transparent 60%),
-    -canopy-bg;
-  -fx-background-radius: 22;
-  -fx-padding: 18;
+/* Root della pagina */
+.objectives-root {
+    -fx-background-color: transparent;
 }
 
-/* FlowPane centrale della griglia */
-.achievements-grid {
-  -fx-hgap: 12;
-  -fx-vgap: 12;
-  -fx-padding: 4 0 0 0;
+/* Layout centrale */
+.objectives-center {
+    -fx-spacing: 24;
 }
 
-.detail-pane {
-  -fx-background-color:
-      linear-gradient(to bottom,
-          -canopy-card-soft,
-          -canopy-card);
-  -fx-background-radius: 20;
-  -fx-padding: 16;
-  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.55), 18, 0.4, 0, 5);
-  -fx-border-color: -canopy-border-subtle;
-  -fx-border-radius: 20;
+/* Titolo principale */
+.objectives-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: 800;
+    -fx-text-fill: -canopy-accent-2;
 }
 
-.detail-pane.detail-achieved {
-  -fx-background-color:
-      linear-gradient(to bottom,
-          derive(-canopy-accent, 40%),
-          -canopy-card);
+/* ------------------------------
+   RIEPILOGO GENERALE
+------------------------------ */
+/* cerchio grande del riepilogo */
+.overall-progress {
+    /* cerchio generale*/
+    -fx-progress-color: -canopy-accent;
+    /* ingrandisce VISIVAMENTE il cerchio */
+    -fx-scale-x: 2.5;
+    -fx-scale-y: 2.5;
 }
 
-.detail-pane.detail-locked {
-  -fx-background-color:
-      linear-gradient(to bottom,
-          -canopy-soil,
-          derive(-canopy-soil, -20%));
-  -fx-opacity: 0.95;
+/* testo al centro del cerchio */
+.overall-percent-label {
+    -fx-font-size: 34px;
+    -fx-font-weight: 900;
+    -fx-text-fill: -canopy-accent-2;
 }
 
-/* micro-sezione tipo “PROGRESSO” / “DETTAGLI” */
-.section-title {
-  -fx-font-size: 11px;
-  -fx-font-weight: 700;
-  -fx-text-fill: -canopy-muted;
-  -fx-letter-spacing: 1.2px;
+
+.summary-card {
+    -fx-background-color:
+        linear-gradient(to bottom, -canopy-card, -canopy-surface);
+    -fx-background-radius: 18;
+    -fx-border-color: -canopy-border-subtle;
+    -fx-border-radius: 18;
+    -fx-padding: 18;
+    -fx-spacing: 18;
 }
 
-/* titolo obiettivo selezionato */
-.detail-title {
-  -fx-font-size: 18px;
-  -fx-font-weight: 900;
-  -fx-text-fill: -canopy-text;
-  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.45), 12, 0.4, 0, 2);
+.summary-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: 700;
 }
 
-/* sottotitolo / descrizione breve */
-.detail-subtitle {
-  -fx-text-fill: -canopy-muted;
-  -fx-opacity: 0.98;
+.summary-subtitle {
+    -fx-fill: -canopy-text;
+    -fx-font-size: 13px;
 }
 
-/* testo progresso numerico */
-.detail-progress {
-  -fx-text-fill: -canopy-accent-2;
-  -fx-font-weight: 800;
+.summary-hint {
+    -fx-fill: -canopy-muted;
+    -fx-font-size: 12px;
 }
 
-/* badge stato */
-.badge {
-  -fx-font-size: 10px;
-  -fx-font-weight: 800;
-  -fx-background-radius: 999;
-  -fx-padding: 3 8;
-  -fx-letter-spacing: 1.1px;
-}
-.badge-achieved {
-  -fx-background-color: -canopy-accent-soft;
-  -fx-text-fill: -canopy-text;
-}
-.badge-locked {
-  -fx-background-color: rgba(255,255,255,0.10);
-  -fx-text-fill: -canopy-muted;
+/* percentuale nel cerchio
+.circle-percent-label {
+    -fx-font-size: 22px;
+    -fx-font-weight: 900;
+    -fx-text-fill: -canopy-accent-2;
+}*/
+
+/* ------------------------------
+   LISTA OBIETTIVI
+------------------------------ */
+
+.goals-scroll {
+    -fx-background-color: transparent;
 }
 
-/* ----- Card obiettivi centrali ----- */
-
-.card {
-  -fx-background-color:
-    linear-gradient(to bottom,
-        -canopy-card-soft,
-        -canopy-card);
-  -fx-background-radius: 18;
-  -fx-padding: 10 12;
-  -fx-border-color: -canopy-border-subtle;
-  -fx-border-radius: 18;
-  -fx-border-width: 1;
-  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.55), 14, 0.38, 0, 3);
-  -fx-cursor: hand;
-  -fx-opacity: 0.96;
+.goals-flow {
+    -fx-padding: 8;
+    -fx-hgap: 16;
+    -fx-vgap: 16;
 }
 
-.card:hover {
-  -fx-background-color:
-    linear-gradient(to bottom,
-        derive(-canopy-card, 10%),
-        -canopy-card);
-  -fx-border-color: -canopy-border-strong;
+/* card singolo obiettivo */
+.goal-card {
+    -fx-background-color:
+        linear-gradient(to bottom, -canopy-card-soft, -canopy-card);
+    -fx-background-radius: 16;
+    -fx-border-radius: 16;
+    -fx-border-color: -canopy-border-subtle;
+    -fx-padding: 14;
+    -fx-spacing: 12;
+    -fx-cursor: hand;
 }
 
-.card-selected {
-  -fx-background-color:
-    linear-gradient(to bottom,
-        derive(-canopy-accent, 35%),
-        -canopy-card-soft);
-  -fx-border-color: -canopy-accent-2;
-  -fx-border-width: 2;
-  -fx-effect: dropshadow(gaussian, -canopy-focus, 16, 0.55, 0, 3);
+.goal-card:hover {
+    -fx-background-color:
+        linear-gradient(to bottom, derive(-canopy-card,10%), -canopy-card);
 }
 
-.card-achieved {
-  -fx-opacity: 1.0;
-  -fx-background-color:
-    linear-gradient(to bottom,
-      derive(-canopy-accent-2, -10%),
-      -canopy-card);
+.goal-card-selected {
+    -fx-border-color: -canopy-accent;
+    -fx-border-width: 2;
 }
 
-.card-locked {
-  -fx-opacity: 0.55;
-  -fx-background-color:
-    linear-gradient(to bottom,
-      -canopy-soil,
-      derive(-canopy-soil, -25%));
-  -fx-border-color: -canopy-border-subtle;
+/* testo card */
+.goal-title {
+    -fx-font-size: 14px;
+    -fx-font-weight: 800;
 }
 
-/* titolo e descrizione interno card */
-.card-title {
-  -fx-font-weight: 800;
-  -fx-font-size: 13px;
-  -fx-text-fill: -canopy-text;
-  -fx-wrap-text: true;
-}
-.card-desc {
-  -fx-font-size: 11px;
-  -fx-text-fill: -canopy-muted;
-  -fx-opacity: 0.96;
+.goal-description {
+    -fx-fill: -canopy-muted;
+    -fx-font-size: 11px;
 }
 
-/* mini-pill di progresso */
-.card-progress-pill {
-  -fx-font-size: 10px;
-  -fx-font-weight: 700;
-  -fx-text-fill: -canopy-text;
-  -fx-background-color: -canopy-accent-soft;
-  -fx-background-radius: 999;
-  -fx-padding: 2 6;
+/* cerchio progress per singoli obiettivi */
+.goal-circle-label {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
 }
-.card-achieved .card-progress-pill {
-  -fx-background-color: derive(-canopy-accent, 20%);
+
+/* ------------------------------
+   DETTAGLI A DESTRA
+------------------------------ */
+
+.details-pane {
+    -fx-background-color:
+        linear-gradient(to bottom, -canopy-surface-2, -canopy-surface);
+    -fx-border-color: -canopy-border-strong;
+    -fx-border-width: 0 0 0 1;
+    -fx-padding: 20;
+    -fx-spacing: 16;
 }
-.card-locked .card-progress-pill {
-  -fx-background-color: rgba(255,255,255,0.12);
-  -fx-text-fill: -canopy-muted;
+
+.details-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: 800;
+    -fx-text-fill: -canopy-accent-2;
+}
+
+.details-name {
+    -fx-font-size: 15px;
+    -fx-font-weight: 700;
+}
+
+.details-short-description {
+    -fx-fill: -canopy-muted;
+}
+
+.details-section-label {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.details-progress-label {
+    -fx-font-size: 12px;
+}
+
+.details-status {
+    -fx-font-size: 12px;
+}
+
+/* placeholder immagine */
+.details-image-placeholder {
+    -fx-background-color: -canopy-surface;
+    -fx-border-color: -canopy-border-strong;
+    -fx-border-width: 2;
+    -fx-background-radius: 16;
+    -fx-border-radius: 16;
+}
+
+/* ====== ANILLOS DE PROGRESO (DONUT) ====== */
+
+/* círculo gris de fondo */
+.ring-track {
+    -fx-stroke: derive(-canopy-surface-2, 35%);
+    -fx-stroke-width: 10;
+    -fx-fill: transparent;
+}
+
+/* arco de color (progreso) */
+.ring-progress {
+    -fx-stroke: -canopy-accent;
+    -fx-stroke-width: 10;
+    -fx-stroke-line-cap: round;
+    -fx-fill: transparent;
+}
+
+/* círculo interior */
+.ring-inner {
+    -fx-fill: -canopy-card;
+}
+
+/* texto común de los anillos */
+.ring-label {
+    -fx-text-fill: -canopy-accent-2;
+    -fx-font-weight: 800;
+}
+
+/* texto círculo grande (progreso general) */
+.ring-label-big {
+    -fx-font-size: 26px;
+}
+
+/* texto círculos pequeños (objetivos individuales) */
+.ring-label-small {
+    -fx-font-size: 13px;
 }

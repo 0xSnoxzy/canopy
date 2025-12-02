@@ -1,79 +1,94 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.ImageView?>
+
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.image.ImageView?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.application.canopy.controller.AchievementsController"
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
             fx:id="root"
-            prefWidth="1100" prefHeight="700">
+            styleClass="objectives-root"
+            fx:controller="com.application.canopy.controller.AchievementsController">
 
-    <!-- ⚠️ NIENTE NAV QUI ⚠️ -->
-
-    <!-- CENTRO: griglia achievements -->
+    <!-- CENTRALE -->
     <center>
-        <ScrollPane fitToWidth="true" fitToHeight="true"
-                    hbarPolicy="NEVER"
-                    vbarPolicy="AS_NEEDED"
-                    styleClass="scrollpane-clean">
+        <VBox fx:id="centerBox"
+              spacing="20"
+              styleClass="objectives-center"
+              BorderPane.alignment="CENTER">
 
-            <content>
-                <FlowPane fx:id="achievementsFlow" hgap="16" vgap="16" alignment="TOP_LEFT">
-                    <padding>
-                        <Insets top="16" right="16" bottom="16" left="16"/>
-                    </padding>
-                </FlowPane>
-            </content>
+            <Label text="Obiettivi" styleClass="objectives-title"/>
 
-        </ScrollPane>
-    </center>
+            <!-- RIEPILOGO -->
+            <HBox spacing="20" styleClass="summary-card">
+                <!-- CERCHIO GROSSO TIPO DONUT-->
+                <StackPane fx:id="overallRingContainer"
+                           prefWidth="180" prefHeight="180"
+                           maxWidth="180" maxHeight="180"/>
 
-    <!-- DESTRA: dettaglio obiettivo -->
-    <right>
-        <VBox fx:id="detailPane"
-              spacing="12"
-              alignment="TOP_LEFT"
-              prefWidth="320"
-              styleClass="detail-pane">
+                <!-- Testi a destra -->
+                <VBox spacing="8">
+                    <Label text="Progresso generale" styleClass="summary-title"/>
 
-            <padding>
-                <Insets top="16" right="16" bottom="16" left="16"/>
-            </padding>
+                    <Text fx:id="overallText"
+                          wrappingWidth="260"
+                          styleClass="summary-subtitle"/>
 
-            <Label text="Dettagli obiettivo" styleClass="section-title"/>
-            <Separator/>
-
-            <ImageView fx:id="detailImage"
-                       fitWidth="64"
-                       fitHeight="64"
-                       preserveRatio="true"/>
-
-            <Label fx:id="detailTitle"
-                   styleClass="detail-title"
-                   text="Seleziona un obiettivo"/>
-
-            <Label fx:id="detailSubtitle"
-                   styleClass="detail-subtitle"
-                   text="Descrizione"/>
-
-            <Label fx:id="detailProgress"
-                   styleClass="detail-progress"
-                   text="Progresso: 0/0"/>
-
-            <HBox spacing="8" alignment="CENTER_LEFT">
-                <Label text="Stato:" styleClass="muted"/>
-                <Label fx:id="detailStatus" text="—"/>
+                    <Text fx:id="overallHint"
+                          wrappingWidth="260"
+                          styleClass="summary-hint"/>
+                </VBox>
             </HBox>
 
+
+            <!-- LISTA OBIETTIVI -->
+            <ScrollPane fitToWidth="true"
+                        fx:id="goalsScroll"
+                        hbarPolicy="NEVER"
+                        vbarPolicy="AS_NEEDED"
+                        styleClass="goals-scroll"
+                        VBox.vgrow="ALWAYS">
+                <content>
+                    <FlowPane fx:id="goalsFlow"
+                              styleClass="goals-flow"/>
+                </content>
+            </ScrollPane>
+        </VBox>
+    </center>
+
+    <!-- DESTRA DETTAGLI -->
+    <right>
+        <VBox prefWidth="320"
+              styleClass="details-pane">
+
+            <Label text="Dettagli obiettivo" styleClass="details-title"/>
+
+            <StackPane prefWidth="120" prefHeight="120">
+                <ImageView fx:id="detailImage"
+                           fitHeight="90"
+                           fitWidth="90"
+                           preserveRatio="true"/>
+                <Region fx:id="detailImagePlaceholder"
+                        styleClass="details-image-placeholder"
+                        visible="true" managed="true"/>
+            </StackPane>
+
+            <Label fx:id="detailName" text="Seleziona un obiettivo" styleClass="details-name"/>
+            <Text fx:id="detailShortDescription" wrappingWidth="250" styleClass="details-short-description"/>
+
             <Separator/>
 
-            <Button fx:id="btnTrack"
-                    text="Traccia/Apri"
-                    maxWidth="Infinity"
-                    styleClass="primary-button"/>
+            <Label text="Progresso" styleClass="details-section-label"/>
+            <HBox spacing="12">
+                <ProgressBar fx:id="detailProgressBar" prefWidth="180"/>
+                <Label fx:id="detailProgressLabel" text="0/0" styleClass="details-progress-label"/>
+            </HBox>
 
+            <Label fx:id="detailStatus" text="Stato: -" styleClass="details-status"/>
+
+            <VBox VBox.vgrow="ALWAYS"/>
         </VBox>
     </right>
-
 </BorderPane>
