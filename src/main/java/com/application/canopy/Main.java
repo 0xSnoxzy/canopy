@@ -2,7 +2,6 @@ package com.application.canopy;
 
 import com.application.canopy.model.FontManager;
 import com.application.canopy.model.ThemeManager;
-
 import com.application.canopy.db.DatabaseManager;
 
 import javafx.application.Application;
@@ -20,7 +19,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
 
-        /* Inizializza SQLite*/
+        /* Inizializza SQLite */
         try {
             DatabaseManager.init();
             System.out.println("SQLite inizializzato!");
@@ -29,7 +28,7 @@ public class Main extends Application {
             throw new RuntimeException("Errore durante inizializzazione SQLite", e);
         }
 
-        // Font e icona come prima
+        // Font e icona
         FontManager.initFonts();
 
         stage.getIcons().add(
@@ -50,12 +49,12 @@ public class Main extends Application {
 
         Scene scene = new Scene(root, 1080, 620);
 
-        // Caricamento nuovi CSS
+        // Caricamento CSS
         String[] styles = {
-                "/css/base.css",         // contiene temi + stile globale
-                "/css/achievements.css", // schermata achievements
-                "/css/calendar.css",     // calendario e dialog piante del giorno
-                "/css/herbarium.css"     // erbario + glow selezione piante
+                "/css/base.css",
+                "/css/achievements.css",
+                "/css/calendar.css",
+                "/css/herbarium.css"
         };
 
         for (String style : styles) {
@@ -65,7 +64,6 @@ public class Main extends Application {
             }
             scene.getStylesheets().add(url.toExternalForm());
         }
-
 
         ThemeManager.applyTheme(root);
         FontManager.applyCurrentFont(scene);
@@ -82,6 +80,13 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
+
+        // ----------------------------------------------------
+        // ⚠️ FIX PER I PROBLEMI DI D3D (texture null in JavaFX)
+        // ----------------------------------------------------
+        System.setProperty("prism.order", "sw"); // forza renderer software
+        System.setProperty("prism.text", "t2k"); // renderer testi alternativo
+
         launch(args);
     }
 }

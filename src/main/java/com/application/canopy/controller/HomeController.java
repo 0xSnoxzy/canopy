@@ -95,6 +95,11 @@ public class HomeController {
 
         setupPlantList();
 
+        // 👉 Classe CSS per targettare SOLO la lista piante
+        if (!list.getStyleClass().contains("plant-list")) {
+            list.getStyleClass().add("plant-list");
+        }
+
         // seleziona pianta di default
         if (!list.getItems().isEmpty()) {
             list.getSelectionModel().selectFirst();
@@ -115,6 +120,7 @@ public class HomeController {
         updateUI();
         updateButtonUI();
     }
+
 
     private void setupPlantList() {
         list.getItems().setAll(Plant.samplePlants());

@@ -1101,3 +1101,45 @@
   -fx-background-insets: 0;
 }
 
+/* ============================================================
+   LISTA PIANTE – TESTO NERO SU TEMA SCURO (no Evergreen, no Daltonici)
+   ============================================================ */
+
+/* Sakura dark */
+.root.theme-sakura-dark .plant-list .list-cell:selected .label,
+.root.theme-sakura-dark .plant-list .list-cell:filled:selected:hover .label,
+.root.theme-sakura-dark .plant-list .list-cell:selected .subtle,
+.root.theme-sakura-dark .plant-list .list-cell:filled:selected:hover .subtle,
+
+/* Quercia dark */
+.root.theme-quercia-dark .plant-list .list-cell:selected .label,
+.root.theme-quercia-dark .plant-list .list-cell:filled:selected:hover .label,
+.root.theme-quercia-dark .plant-list .list-cell:selected .subtle,
+.root.theme-quercia-dark .plant-list .list-cell:filled:selected:hover .subtle,
+
+/* Menta dark */
+.root.theme-menta-dark .plant-list .list-cell:selected .label,
+.root.theme-menta-dark .plant-list .list-cell:filled:selected:hover .label,
+.root.theme-menta-dark .plant-list .list-cell:selected .subtle,
+.root.theme-menta-dark .plant-list .list-cell:filled:selected:hover .subtle,
+
+/* Peperoncino dark */
+.root.theme-peperoncino-dark .plant-list .list-cell:selected .label,
+.root.theme-peperoncino-dark .plant-list .list-cell:filled:selected:hover .label,
+.root.theme-peperoncino-dark .plant-list .list-cell:selected .subtle,
+.root.theme-peperoncino-dark .plant-list .list-cell:filled:selected:hover .subtle,
+
+/* Lavanda dark */
+.root.theme-lavanda-dark .plant-list .list-cell:selected .label,
+.root.theme-lavanda-dark .plant-list .list-cell:filled:selected:hover .label,
+.root.theme-lavanda-dark .plant-list .list-cell:selected .subtle,
+.root.theme-lavanda-dark .plant-list .list-cell:filled:selected:hover .subtle,
+
+/* Orchidea dark */
+.root.theme-orchidea-dark .plant-list .list-cell:selected .label,
+.root.theme-orchidea-dark .plant-list .list-cell:filled:selected:hover .label,
+.root.theme-orchidea-dark .plant-list .list-cell:selected .subtle,
+.root.theme-orchidea-dark .plant-list .list-cell:filled:selected:hover .subtle {
+
+    -fx-text-fill: black;
+}
