@@ -21,15 +21,16 @@ import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+import javafx.beans.binding.Bindings;
+
 public class AchievementsController implements Initializable {
 
     @FXML private BorderPane root;
 
     // ---- RIEPILOGO GENERALE ----
-    @FXML private StackPane overallRingContainer; // StackPane vacío del FXML
+    @FXML private StackPane overallRingContainer;
     @FXML private Text overallText;
     @FXML private Text overallHint;
-    @FXML private HBox summaryBox;
 
     // ---- LISTA OBIETTIVI ----
     @FXML private FlowPane goalsFlow;
@@ -43,7 +44,7 @@ public class AchievementsController implements Initializable {
     @FXML private Label detailProgressLabel;
     @FXML private Label detailStatus;
 
-    // dati demo (sostituisci dopo con il tuo modello reale)
+    // dati demo
     private final List<Goal> goals = new ArrayList<>();
 
     private RingProgressNode overallRing;
@@ -62,17 +63,7 @@ public class AchievementsController implements Initializable {
         overallRing.getLabel().getStyleClass().addAll("ring-label", "ring-label-big");
         overallRingContainer.getChildren().add(overallRing);
 
-        // il testo del riepilogo si adatta allo spazio disponibile
-        overallText.wrappingWidthProperty().bind(
-                summaryBox.widthProperty()
-                        .subtract(overallRingContainer.widthProperty())
-                        .subtract(48)
-        );
-        overallHint.wrappingWidthProperty().bind(
-                summaryBox.widthProperty()
-                        .subtract(overallRingContainer.widthProperty())
-                        .subtract(48)
-        );
+        // ⚠️ NIENTE piú binding della wrappingWidth qui
 
         // per ora: obiettivi finti di esempio
         loadMockGoals();
@@ -132,6 +123,18 @@ public class AchievementsController implements Initializable {
         card.setPadding(new Insets(10));
         card.getStyleClass().add("goal-card");
         card.setAlignment(Pos.CENTER_LEFT);
+
+        // layout responsive:
+        // - sotto ~900px: una card per riga (quasi full-width)
+        // - sopra ~900px: due card per riga
+        card.prefWidthProperty().bind(
+                Bindings.when(goalsFlow.widthProperty().greaterThan(900))
+                        // finestra larga: 2 per riga
+                        .then(goalsFlow.widthProperty().divide(2).subtract(24))
+                        // finestra stretta: 1 per riga
+                        .otherwise(goalsFlow.widthProperty().subtract(16))
+        );
+
 
         // donut piccolo per il singolo obiettivo
         RingProgressNode ring = new RingProgressNode(70, 8);

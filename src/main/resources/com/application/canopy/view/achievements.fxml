@@ -23,52 +23,46 @@
             <!-- (titolo "Obiettivi" rimosso) -->
 
             <!-- RIEPILOGO -->
-            <HBox fx:id="summaryBox"
-                  spacing="12"
+            <HBox spacing="12"
                   alignment="CENTER_LEFT"
                   styleClass="summary-card">
 
-                <!-- CONTENITORE CERCHIO GRANDE (DONUT) -->
                 <StackPane fx:id="overallRingContainer"
                            prefWidth="150" prefHeight="150"
                            maxWidth="150" maxHeight="150"
                            styleClass="overall-ring-container"/>
 
-                <!-- Testi a destra -->
-                <VBox spacing="3"
-                      alignment="CENTER_LEFT"
-                      styleClass="summary-text-box">
+                <VBox spacing="6">
                     <Label text="Progresso generale"
                            styleClass="summary-title"/>
 
                     <Text fx:id="overallText"
+                          wrappingWidth="380"
                           styleClass="summary-subtitle"/>
 
                     <Text fx:id="overallHint"
+                          wrappingWidth="380"
                           styleClass="summary-hint"/>
                 </VBox>
-
             </HBox>
 
 
             <!-- LISTA OBIETTIVI -->
-            <ScrollPane fitToWidth="true"
-                        fitToHeight="true"
-                        fx:id="goalsScroll"
+            <ScrollPane fx:id="goalsScroll"
+                        fitToWidth="true"
                         hbarPolicy="NEVER"
                         vbarPolicy="AS_NEEDED"
                         styleClass="goals-scroll"
                         VBox.vgrow="ALWAYS">
+
                 <content>
-                    <!-- CONTENITORE CON BORDI ARROTONDATI -->
-                    <StackPane styleClass="goals-container"
-                               VBox.vgrow="ALWAYS">
-                        <FlowPane fx:id="goalsFlow"
-                                  prefWrapLength="900"
-                                  styleClass="goals-flow"/>
-                    </StackPane>
+                    <FlowPane fx:id="goalsFlow"
+                              prefWrapLength="900"
+                              styleClass="goals-flow"/>
                 </content>
             </ScrollPane>
+
+
         </VBox>
     </center>
 

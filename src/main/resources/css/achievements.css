@@ -43,7 +43,6 @@
     -fx-spacing: 20;
 
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 18, 0.25, 0, 4);
-    -fx-max-width: 900;
 }
 
 /* contenitore del cerchio grande */
@@ -98,33 +97,24 @@
     -fx-padding: 0;          /* nessun bordo extra intorno allo scroll */
 }
 
-/* viewport dello ScrollPane trasparente */
+/* viewport dello ScrollPane = pannello degli obiettivi */
 .goals-scroll .viewport {
-    -fx-background-color: transparent;
-}
-
-/* CONTENITORE arrotondato degli obiettivi (pannello sotto) */
-.goals-container {
     -fx-background-color:
         linear-gradient(to bottom, -canopy-surface-2, -canopy-surface);
     -fx-background-radius: 18;
     -fx-border-radius: 18;
     -fx-border-color: -canopy-border-subtle;
     -fx-border-width: 1;
-
-    /* un filo di respiro, ma poco */
-    -fx-padding: 4 10 10 10;   /* top right bottom left */
 }
 
-/* FlowPane che contiene le card degli obiettivi */
 .goals-flow {
-    -fx-padding: 6 6 10 6;     /* top right bottom left */
+    -fx-padding: 12 8 20 8;    /* top right bottom left */
     -fx-hgap: 16;
-    -fx-vgap: 16;
+    -fx-vgap: 20;
     -fx-alignment: TOP_CENTER;
+    -fx-background-color: transparent;
 }
 
-/* Card del singolo obiettivo (grandi, 2 per riga) */
 .goal-card {
     -fx-background-color:
         linear-gradient(to bottom, -canopy-card-soft, -canopy-card);
@@ -136,9 +126,13 @@
     -fx-spacing: 12;
     -fx-cursor: hand;
 
+    /* LASCIA solo questa, se vuoi una minima */
     -fx-min-width: 320;
-    -fx-pref-width: 420;
-    -fx-max-width: 420;
+
+    /* ➜ ELIMINA queste tre righe dal file:
+    -fx-pref-width: 460;
+    -fx-max-width: 460;
+    */
 
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.28), 12, 0.20, 0, 3);
 }
