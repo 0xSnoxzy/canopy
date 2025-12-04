@@ -9,7 +9,12 @@ import java.util.prefs.Preferences;
 
 public class ThemeManager {
 
-    private static final String PREF_KEY = "canopy.themeId";
+    // =======================
+    //  PREFERENZE
+    // =======================
+
+    private static final String PREF_THEME_KEY = "canopy.themeId";
+    private static final String PREF_CVD_KEY   = "canopy.cvdFilter";
 
     /**
      * themeId supportati:
@@ -20,7 +25,8 @@ public class ThemeManager {
      *  - "peperoncino-light", "peperoncino-dark"
      *  - "lavanda-light", "lavanda-dark"
      *  - "orchidea-light", "orchidea-dark"
-     *  - "daltonici-light", "daltonici-dark"
+     *
+     * NB: il vecchio tema "daltonici-*" è stato rimosso: ora usiamo filtri CVD.
      */
     private static final Set<String> SUPPORTED_THEMES = Set.of(
             "dark",
@@ -30,33 +36,56 @@ public class ThemeManager {
             "menta-light", "menta-dark",
             "peperoncino-light", "peperoncino-dark",
             "lavanda-light", "lavanda-dark",
-            "orchidea-light", "orchidea-dark",
-            "daltonici-light", "daltonici-dark"
+            "orchidea-light", "orchidea-dark"
     );
 
-    // di default: evergreen dark
-    private static String currentThemeId = "dark";
+    /** Filtri daltonismo supportati */
+    private static final Set<String> SUPPORTED_CVD = Set.of(
+            "none",
+            "deuteranopia",
+            "protanopia",
+            "tritanopia"
+    );
+
+    // di default: evergreen dark, nessun filtro CVD
+    private static String currentThemeId    = "dark";
+    private static String currentCvdFilter  = "none";
 
     // listener che ascoltano i cambi di tema (Nav, ecc.)
     private static final List<Consumer<String>> listeners = new ArrayList<>();
 
+    // =======================
+    //  STATIC INIT
+    // =======================
+
     static {
         try {
             Preferences prefs = Preferences.userNodeForPackage(ThemeManager.class);
-            String saved = prefs.get(PREF_KEY, "dark");
-            saved = saved.toLowerCase(Locale.ROOT);
-            if (SUPPORTED_THEMES.contains(saved)) {
-                currentThemeId = saved;
+
+            String savedTheme = prefs.get(PREF_THEME_KEY, "dark");
+            savedTheme = savedTheme.toLowerCase(Locale.ROOT);
+            if (SUPPORTED_THEMES.contains(savedTheme)) {
+                currentThemeId = savedTheme;
             } else {
                 currentThemeId = "dark";
             }
+
+            String savedCvd = prefs.get(PREF_CVD_KEY, "none");
+            savedCvd = savedCvd.toLowerCase(Locale.ROOT);
+            if (SUPPORTED_CVD.contains(savedCvd)) {
+                currentCvdFilter = savedCvd;
+            } else {
+                currentCvdFilter = "none";
+            }
+
         } catch (Exception e) {
             currentThemeId = "dark";
+            currentCvdFilter = "none";
         }
     }
 
     // =======================
-    //  API PUBBLICA
+    //  API PUBBLICA TEMA
     // =======================
 
     public static String getCurrentThemeId() {
@@ -71,7 +100,7 @@ public class ThemeManager {
         return "light";
     }
 
-    /** Ritorna la "palette": evergreen / sakura / quercia / ... */
+    /** Ritorna la "palette": evergreen / sakura / quercia / menta / peperoncino / lavanda / orchidea */
     public static String getCurrentPalette() {
         return switch (currentThemeId) {
             case "dark", "light" -> "evergreen";
@@ -94,12 +123,13 @@ public class ThemeManager {
         listener.accept(currentThemeId);
     }
 
-    /** Applica la classe CSS corretta al root */
+    /** Applica la classe CSS corretta al root (tema + eventuale filtro CVD) */
     public static void applyTheme(Parent root) {
         if (root == null) return;
 
         var styles = root.getStyleClass();
         styles.removeAll(
+                // temi
                 "theme-dark",
                 "theme-light",
                 "theme-sakura-light", "theme-sakura-dark",
@@ -108,12 +138,24 @@ public class ThemeManager {
                 "theme-peperoncino-light", "theme-peperoncino-dark",
                 "theme-lavanda-light", "theme-lavanda-dark",
                 "theme-orchidea-light", "theme-orchidea-dark",
-                "theme-daltonici-light", "theme-daltonici-dark"
+                // filtri CVD
+                "cvd-deuteranopia",
+                "cvd-protanopia",
+                "cvd-tritanopia"
         );
 
+        // classe tema botanico / modalità
         String cssClass = "theme-" + currentThemeId;
         if (!styles.contains(cssClass)) {
             styles.add(cssClass);
+        }
+
+        // eventuale filtro daltonismo
+        if (!"none".equals(currentCvdFilter)) {
+            String cvdClass = "cvd-" + currentCvdFilter;
+            if (!styles.contains(cvdClass)) {
+                styles.add(cvdClass);
+            }
         }
     }
 
@@ -168,8 +210,7 @@ public class ThemeManager {
                 "menta",
                 "peperoncino",
                 "lavanda",
-                "orchidea",
-                "daltonici"
+                "orchidea"
         ).contains(palette)) {
             palette = "evergreen";
         }
@@ -187,13 +228,49 @@ public class ThemeManager {
     }
 
     // =======================
+    //  API PUBBLICA – FILTRI DALTONISMO
+    // =======================
+
+    /** Ritorna il filtro CVD corrente: "none", "deuteranopia", "protanopia", "tritanopia" */
+    public static String getCurrentColorVisionFilter() {
+        return currentCvdFilter;
+    }
+
+    /** Imposta il filtro daltonismo e ri-applica il tema alla scena */
+    public static void setColorVisionFilter(String filterId, Scene scene) {
+        if (filterId == null) filterId = "none";
+        filterId = filterId.toLowerCase(Locale.ROOT);
+
+        if (!SUPPORTED_CVD.contains(filterId)) {
+            filterId = "none";
+        }
+
+        currentCvdFilter = filterId;
+        saveCurrentCvdFilter();
+
+        if (scene != null) {
+            applyTheme(scene.getRoot());
+        }
+
+        // i listener ricevono sempre il themeId; il filtro è "in più"
+        notifyThemeListeners();
+    }
+
+    // =======================
     //  PRIVATI
     // =======================
 
     private static void saveCurrentTheme() {
         try {
             Preferences prefs = Preferences.userNodeForPackage(ThemeManager.class);
-            prefs.put(PREF_KEY, currentThemeId);
+            prefs.put(PREF_THEME_KEY, currentThemeId);
+        } catch (Exception ignored) {}
+    }
+
+    private static void saveCurrentCvdFilter() {
+        try {
+            Preferences prefs = Preferences.userNodeForPackage(ThemeManager.class);
+            prefs.put(PREF_CVD_KEY, currentCvdFilter);
         } catch (Exception ignored) {}
     }
 

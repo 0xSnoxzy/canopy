@@ -362,68 +362,6 @@
   -canopy-accent-soft:   rgba(179, 117, 255, 0.28);
 }
 
-/* ---------- 1.8 Daltonici (Accessibile) ---------- */
-/* deuteranopia / protanopia */
-
-.root.theme-daltonici-light {
-  /* BACKGROUND neutro freddo */
-  -canopy-bg:          linear-gradient(to bottom, #F5F7FA, #E3E7EE);
-
-  /* SUPERFICI */
-  -canopy-surface:     #D6DBE6;
-  -canopy-surface-2:   #C5CCD9;
-  -canopy-card:        #E6E9F2;
-  -canopy-card-soft:   rgba(230, 233, 242, 0.96);
-
-  /* TESTO (quasi nero) */
-  -canopy-text:        #12161F;
-  -canopy-muted:       #5C6475;
-
-  /* ACCENTI: blu + giallo → super visibili anche con CVD */
-  -canopy-accent:      #2F7ED8;   /* blu principale */
-  -canopy-accent-2:    #FFC857;   /* giallo caldo per highlight */
-  -canopy-bark:        #555A70;
-  -canopy-soil:        #888FA5;
-
-  /* FOCUS / DANGER / BORDI */
-  -canopy-focus:         rgba(47, 126, 216, 0.55);
-  -canopy-focus-soft:    rgba(47, 126, 216, 0.20);
-  -canopy-danger:        #D7263D;  /* rosso solo per errori espliciti */
-  -canopy-border-subtle: rgba(18, 22, 31, 0.12);
-  -canopy-border-strong: rgba(18, 22, 31, 0.28);
-  -canopy-accent-soft:   rgba(47, 126, 216, 0.22);
-}
-
-.root.theme-daltonici-dark {
-  /* BACKGROUND scuro ma non “nero totale” per evitare aloni */
-  -canopy-bg:          linear-gradient(to bottom, #050914, #0A1020);
-
-  /* SUPERFICI */
-  -canopy-surface:     #131827;
-  -canopy-surface-2:   #0D111E;
-  -canopy-card:        #1B2235;
-  -canopy-card-soft:   rgba(27, 34, 53, 0.96);
-
-  /* TESTO (quasi bianco) */
-  -canopy-text:        #F4F7FF;
-  -canopy-muted:       #B5BEDA;
-
-  /* ACCENTI: stessi blu + giallo del light per coerenza mentale */
-  -canopy-accent:      #2F7ED8;
-  -canopy-accent-2:    #FFC857;
-  -canopy-bark:        #6C7491;
-  -canopy-soil:        #303852;
-
-  /* FOCUS / DANGER / BORDI */
-  -canopy-focus:         rgba(255, 200, 87, 0.55);  /* alone giallo forte */
-  -canopy-focus-soft:    rgba(255, 200, 87, 0.22);
-  -canopy-danger:        #FF6B6B;
-  -canopy-border-subtle: rgba(244, 247, 255, 0.12);
-  -canopy-border-strong: rgba(244, 247, 255, 0.28);
-  -canopy-accent-soft:   rgba(47, 126, 216, 0.26);
-}
-
-
 /* ============================================================
    2. OVERRIDE SELEZIONI PER TEMA
    ============================================================ */
@@ -1142,4 +1080,279 @@
 .root.theme-orchidea-dark .plant-list .list-cell:filled:selected:hover .subtle {
 
     -fx-text-fill: black;
+}
+
+/* ============================================================
+   LISTA PIANTE – TESTO BIANCO SU TEMA CHIARO (no Evergreen)
+   ============================================================ */
+
+/* Sakura light */
+.root.theme-sakura-light .plant-list .list-cell:selected .label,
+.root.theme-sakura-light .plant-list .list-cell:filled:selected:hover .label,
+.root.theme-sakura-light .plant-list .list-cell:selected .subtle,
+.root.theme-sakura-light .plant-list .list-cell:filled:selected:hover .subtle,
+
+/* Quercia light */
+.root.theme-quercia-light .plant-list .list-cell:selected .label,
+.root.theme-quercia-light .plant-list .list-cell:filled:selected:hover .label,
+.root.theme-quercia-light .plant-list .list-cell:selected .subtle,
+.root.theme-quercia-light .plant-list .list-cell:filled:selected:hover .subtle,
+
+/* Menta light */
+.root.theme-menta-light .plant-list .list-cell:selected .label,
+.root.theme-menta-light .plant-list .list-cell:filled:selected:hover .label,
+.root.theme-menta-light .plant-list .list-cell:selected .subtle,
+.root.theme-menta-light .plant-list .list-cell:filled:selected:hover .subtle,
+
+/* Peperoncino light */
+.root.theme-peperoncino-light .plant-list .list-cell:selected .label,
+.root.theme-peperoncino-light .plant-list .list-cell:filled:selected:hover .label,
+.root.theme-peperoncino-light .plant-list .list-cell:selected .subtle,
+.root.theme-peperoncino-light .plant-list .list-cell:filled:selected:hover .subtle,
+
+/* Lavanda light */
+.root.theme-lavanda-light .plant-list .list-cell:selected .label,
+.root.theme-lavanda-light .plant-list .list-cell:filled:selected:hover .label,
+.root.theme-lavanda-light .plant-list .list-cell:selected .subtle,
+.root.theme-lavanda-light .plant-list .list-cell:filled:selected:hover .subtle,
+
+/* Orchidea light */
+.root.theme-orchidea-light .plant-list .list-cell:selected .label,
+.root.theme-orchidea-light .plant-list .list-cell:filled:selected:hover .label,
+.root.theme-orchidea-light .plant-list .list-cell:selected .subtle,
+.root.theme-orchidea-light .plant-list .list-cell:filled:selected:hover .subtle {
+
+  -fx-text-fill: white;
+}
+
+/* ============================================================
+   FILTRI DALTONISMO (CVD)
+   Applicati come "strato" sopra ai temi esistenti
+   ------------------------------------------------------------
+   Sovrascrivono principalmente accenti / focus / bordi, ma
+   NON toccano lo sfondo delle palette botaniche.
+   ============================================================ */
+
+/* Nessun filtro → nessuna classe, quindi niente CSS qui */
+
+/* Deuteranopia: accenti blu/giallo ad alto contrasto */
+.root.cvd-deuteranopia {
+  -canopy-accent:        #2F7ED8;
+  -canopy-accent-2:      #FFC857;
+  -canopy-accent-soft:   rgba(47, 126, 216, 0.22);
+  -canopy-focus:         rgba(47, 126, 216, 0.55);
+  -canopy-focus-soft:    rgba(47, 126, 216, 0.20);
+  -canopy-border-subtle: rgba(18, 22, 31, 0.12);
+  -canopy-border-strong: rgba(18, 22, 31, 0.28);
+}
+
+/* Protanopia: accenti ciano/giallo, sempre molto visibili */
+.root.cvd-protanopia {
+  -canopy-accent:        #1FA8A8;
+  -canopy-accent-2:      #FFC857;
+  -canopy-accent-soft:   rgba(31, 168, 168, 0.24);
+  -canopy-focus:         rgba(31, 168, 168, 0.55);
+  -canopy-focus-soft:    rgba(31, 168, 168, 0.20);
+  -canopy-border-subtle: rgba(18, 22, 31, 0.12);
+  -canopy-border-strong: rgba(18, 22, 31, 0.28);
+}
+
+/* Tritanopia: accenti arancione/blu a contrasto forte */
+.root.cvd-tritanopia {
+  -canopy-accent:        #FF9800;
+  -canopy-accent-2:      #1565C0;
+  -canopy-accent-soft:   rgba(255, 152, 0, 0.24);
+  -canopy-focus:         rgba(255, 152, 0, 0.55);
+  -canopy-focus-soft:    rgba(255, 152, 0, 0.22);
+  -canopy-border-subtle: rgba(18, 22, 31, 0.12);
+  -canopy-border-strong: rgba(18, 22, 31, 0.28);
+}
+
+/* ============================================================
+   FIX LEGGIBILITÀ COMBOBOX (TESTO OPZIONI + VALORE SELEZIONATO)
+   ============================================================ */
+
+/* Testo dentro al "bottone" della ComboBox (valore selezionato) */
+.combo-box-base .text {
+  -fx-fill: -canopy-text;      /* per i nodi Text, se non overridati dai temi */
+}
+
+.combo-box-base .list-cell {
+  -fx-text-fill: -canopy-text; /* per i Label/ListCell usati come button cell */
+}
+
+/* Testo nel popup (lista delle opzioni):
+   → qui NON tocchiamo hover/selected, così restano coi colori originali */
+.combo-box-popup .list-cell {
+  -fx-text-fill: -canopy-text;
+}
+
+/* Leggera enfasi sul selected nei temi chiari (solo sfondo) */
+.root.theme-light .combo-box-popup .list-cell:selected,
+.root.theme-light .combo-box-popup .list-cell:filled:selected:hover {
+  -fx-background-color:
+      linear-gradient(to right,
+          -canopy-accent-soft,
+          derive(-canopy-accent-soft, 10%));
+}
+
+/* ============================================================
+   COMBOBOX – VALORE SELEZIONATO (INVERSIONE COLORI COME PLANT-LIST)
+   (tutti i temi tranne Evergreen)
+   ============================================================ */
+
+/* ----- MODALITÀ CHIARA: testo bianco ----- */
+
+/* Sakura light */
+.root.theme-sakura-light .combo-box-base .list-cell:selected,
+.root.theme-sakura-light .combo-box-base .list-cell:filled:selected:hover {
+  -fx-text-fill: white;
+}
+
+/* Quercia light */
+.root.theme-quercia-light .combo-box-base .list-cell:selected,
+.root.theme-quercia-light .combo-box-base .list-cell:filled:selected:hover {
+  -fx-text-fill: white;
+}
+
+/* Menta light */
+.root.theme-menta-light .combo-box-base .list-cell:selected,
+.root.theme-menta-light .combo-box-base .list-cell:filled:selected:hover {
+  -fx-text-fill: white;
+}
+
+/* Peperoncino light */
+.root.theme-peperoncino-light .combo-box-base .list-cell:selected,
+.root.theme-peperoncino-light .combo-box-base .list-cell:filled:selected:hover {
+  -fx-text-fill: white;
+}
+
+/* Lavanda light */
+.root.theme-lavanda-light .combo-box-base .list-cell:selected,
+.root.theme-lavanda-light .combo-box-base .list-cell:filled:selected:hover {
+  -fx-text-fill: white;
+}
+
+/* Orchidea light */
+.root.theme-orchidea-light .combo-box-base .list-cell:selected,
+.root.theme-orchidea-light .combo-box-base .list-cell:filled:selected:hover {
+  -fx-text-fill: white;
+}
+
+/* ----- MODALITÀ SCURA: testo nero ----- */
+
+/* Sakura dark */
+.root.theme-sakura-dark .combo-box-base .list-cell:selected,
+.root.theme-sakura-dark .combo-box-base .list-cell:filled:selected:hover {
+  -fx-text-fill: black;
+}
+
+/* Quercia dark */
+.root.theme-quercia-dark .combo-box-base .list-cell:selected,
+.root.theme-quercia-dark .combo-box-base .list-cell:filled:selected:hover {
+  -fx-text-fill: black;
+}
+
+/* Menta dark */
+.root.theme-menta-dark .combo-box-base .list-cell:selected,
+.root.theme-menta-dark .combo-box-base .list-cell:filled:selected:hover {
+  -fx-text-fill: black;
+}
+
+/* Peperoncino dark */
+.root.theme-peperoncino-dark .combo-box-base .list-cell:selected,
+.root.theme-peperoncino-dark .combo-box-base .list-cell:filled:selected:hover {
+  -fx-text-fill: black;
+}
+
+/* Lavanda dark */
+.root.theme-lavanda-dark .combo-box-base .list-cell:selected,
+.root.theme-lavanda-dark .combo-box-base .list-cell:filled:selected:hover {
+  -fx-text-fill: black;
+}
+
+/* Orchidea dark */
+.root.theme-orchidea-dark .combo-box-base .list-cell:selected,
+.root.theme-orchidea-dark .combo-box-base .list-cell:filled:selected:hover {
+  -fx-text-fill: black;
+}
+
+/* ============================================================
+   COMBOBOX — TESTO SELEZIONATO NEL BOTTONE (MODALITÀ SCURA)
+   ============================================================ */
+
+.root.theme-sakura-dark .combo-box-base .text,
+.root.theme-sakura-dark .combo-box-base > .list-cell {
+    -fx-fill: black;        /* per Text */
+    -fx-text-fill: black;   /* per ListCell */
+}
+
+.root.theme-quercia-dark .combo-box-base .text,
+.root.theme-quercia-dark .combo-box-base > .list-cell {
+    -fx-fill: black;
+    -fx-text-fill: black;
+}
+
+.root.theme-menta-dark .combo-box-base .text,
+.root.theme-menta-dark .combo-box-base > .list-cell {
+    -fx-fill: black;
+    -fx-text-fill: black;
+}
+
+.root.theme-peperoncino-dark .combo-box-base .text,
+.root.theme-peperoncino-dark .combo-box-base > .list-cell {
+    -fx-fill: black;
+    -fx-text-fill: black;
+}
+
+.root.theme-lavanda-dark .combo-box-base .text,
+.root.theme-lavanda-dark .combo-box-base > .list-cell {
+    -fx-fill: black;
+    -fx-text-fill: black;
+}
+
+.root.theme-orchidea-dark .combo-box-base .text,
+.root.theme-orchidea-dark .combo-box-base > .list-cell {
+    -fx-fill: black;
+    -fx-text-fill: black;
+}
+
+/* ============================================================
+   COMBOBOX — TESTO SELEZIONATO NEL BOTTONE (MODALITÀ CHIARA)
+   ============================================================ */
+
+.root.theme-sakura-light .combo-box-base .text,
+.root.theme-sakura-light .combo-box-base > .list-cell {
+    -fx-fill: white;
+    -fx-text-fill: white;
+}
+
+.root.theme-quercia-light .combo-box-base .text,
+.root.theme-quercia-light .combo-box-base > .list-cell {
+    -fx-fill: white;
+    -fx-text-fill: white;
+}
+
+.root.theme-menta-light .combo-box-base .text,
+.root.theme-menta-light .combo-box-base > .list-cell {
+    -fx-fill: white;
+    -fx-text-fill: white;
+}
+
+.root.theme-peperoncino-light .combo-box-base .text,
+.root.theme-peperoncino-light .combo-box-base > .list-cell {
+    -fx-fill: white;
+    -fx-text-fill: white;
+}
+
+.root.theme-lavanda-light .combo-box-base .text,
+.root.theme-lavanda-light .combo-box-base > .list-cell {
+    -fx-fill: white;
+    -fx-text-fill: white;
+}
+
+.root.theme-orchidea-light .combo-box-base .text,
+.root.theme-orchidea-light .combo-box-base > .list-cell {
+    -fx-fill: white;
+    -fx-text-fill: white;
 }

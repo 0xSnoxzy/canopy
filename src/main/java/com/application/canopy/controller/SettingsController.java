@@ -21,16 +21,20 @@ public class SettingsController {
     private ComboBox<String> fontCombo;
 
     @FXML
-    private ComboBox<String> modeCombo;   // nuova combo modalità
+    private ComboBox<String> modeCombo;   // modalità light/dark
 
     @FXML
-    private ComboBox<String> themeCombo;  // combo tema botanico
+    private ComboBox<String> themeCombo;  // tema botanico
+
+    @FXML
+    private ComboBox<String> daltonismoCombo; // filtro daltonismo (CVD)
 
     @FXML
     private void initialize() {
         setupFontCombo();
         setupModeCombo();
         setupThemeCombo();
+        setupDaltonismoCombo();   // <--- NUOVO
     }
 
     // ============================
@@ -136,8 +140,7 @@ public class SettingsController {
                 "Menta",
                 "Peperoncino",
                 "Lavanda",
-                "Orchidea",
-                "Daltonici"
+                "Orchidea"
         );
 
         String currentPalette = ThemeManager.getCurrentPalette(); // evergreen / sakura / ...
@@ -148,7 +151,6 @@ public class SettingsController {
             case "peperoncino" -> "Peperoncino";
             case "lavanda"     -> "Lavanda";
             case "orchidea"    -> "Orchidea";
-            case "daltonici"   -> "Daltonici";
             default            -> "Evergreen";
         };
         themeCombo.getSelectionModel().select(label);
@@ -169,11 +171,53 @@ public class SettingsController {
                         case "Peperoncino" -> "peperoncino";
                         case "Lavanda"     -> "lavanda";
                         case "Orchidea"    -> "orchidea";
-                        case "Daltonici"   -> "daltonici";
                         default            -> "evergreen";
                     };
 
                     ThemeManager.setPalette(paletteId, scene);
+                });
+    }
+
+    // ============================
+    // FILTRO DALTONISMO
+    // ============================
+    private void setupDaltonismoCombo() {
+        if (daltonismoCombo == null) return;
+
+        daltonismoCombo.getItems().setAll(
+                "Nessun filtro",
+                "Deuteranopia",
+                "Protanopia",
+                "Tritanopia"
+        );
+
+        // allinea alla preferenza salvata
+        String current = ThemeManager.getCurrentColorVisionFilter(); // "none", "deuteranopia", ...
+        String label = switch (current) {
+            case "deuteranopia" -> "Deuteranopia";
+            case "protanopia"   -> "Protanopia";
+            case "tritanopia"   -> "Tritanopia";
+            default             -> "Nessun filtro";
+        };
+        daltonismoCombo.getSelectionModel().select(label);
+
+        daltonismoCombo.getSelectionModel()
+                .selectedItemProperty()
+                .addListener((obs, oldVal, newVal) -> {
+                    if (newVal == null) return;
+                    if (root == null) return;
+
+                    Scene scene = root.getScene();
+                    if (scene == null) return;
+
+                    String filterId = switch (newVal) {
+                        case "Deuteranopia" -> "deuteranopia";
+                        case "Protanopia"   -> "protanopia";
+                        case "Tritanopia"   -> "tritanopia";
+                        default             -> "none";
+                    };
+
+                    ThemeManager.setColorVisionFilter(filterId, scene);
                 });
     }
 }

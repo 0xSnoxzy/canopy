@@ -14,84 +14,108 @@
     <center>
         <StackPane styleClass="center-area">
 
-            <VBox styleClass="content-root"
-                  spacing="18"
-                  maxWidth="Infinity"
-                  maxHeight="Infinity">
-                <padding>
-                    <Insets top="16" right="16" bottom="16" left="16"/>
-                </padding>
+            <!-- ScrollPane per rendere la pagina impostazioni scorrevole -->
+            <ScrollPane fitToWidth="true"
+                        hbarPolicy="NEVER"
+                        vbarPolicy="AS_NEEDED"
+                        styleClass="scrollpane-clean">
 
-                <!-- titolo pagina -->
-                <Label text="Impostazioni" styleClass="h2"/>
+                <content>
+                    <VBox styleClass="content-root"
+                          spacing="18"
+                          maxWidth="Infinity"
+                          maxHeight="Infinity">
+                        <padding>
+                            <Insets top="16" right="16" bottom="16" left="16"/>
+                        </padding>
 
-                <!-- sottotitolo -->
-                <Label text="Qui puoi configurare le impostazioni dell'app Canopy."
-                       styleClass="muted"/>
+                        <!-- titolo pagina -->
+                        <Label text="Impostazioni" styleClass="h2"/>
 
-                <Separator/>
+                        <!-- sottotitolo -->
+                        <Label text="Qui puoi configurare le impostazioni dell'app Canopy."
+                               styleClass="muted"/>
 
-                <!-- ========================= -->
-                <!-- FONT INTERFACCIA         -->
-                <!-- ========================= -->
-                <Label text="Aspetto" styleClass="h3"/>
+                        <Separator/>
 
-                <HBox spacing="10" alignment="CENTER_LEFT">
-                    <Label text="Font dell'interfaccia" styleClass="muted"/>
-                    <ComboBox fx:id="fontCombo" prefWidth="230"/>
-                </HBox>
+                        <!-- ========================= -->
+                        <!-- FONT INTERFACCIA         -->
+                        <!-- ========================= -->
+                        <Label text="Aspetto" styleClass="h3"/>
 
-                <Label text="Il font predefinito è Atkinson Hyperlegible, pensato per l'accessibilità."
-                       styleClass="muted"/>
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Label text="Font dell'interfaccia" styleClass="muted"/>
+                            <ComboBox fx:id="fontCombo" prefWidth="230"/>
+                        </HBox>
 
-                <Separator/>
+                        <Label text="Il font predefinito è Atkinson Hyperlegible, pensato per l'accessibilità."
+                               styleClass="muted"/>
 
-                <!-- ========================= -->
-                <!-- MODALITÀ (LIGHT / DARK)  -->
-                <!-- ========================= -->
-                <Label text="Modalità" styleClass="h3"/>
+                        <Separator/>
 
-                <HBox spacing="10" alignment="CENTER_LEFT">
-                    <Label text="Modalità generale" styleClass="muted"/>
-                    <ComboBox fx:id="modeCombo" prefWidth="230"/>
-                </HBox>
+                        <!-- ========================= -->
+                        <!-- MODALITÀ (LIGHT / DARK)  -->
+                        <!-- ========================= -->
+                        <Label text="Modalità" styleClass="h3"/>
 
-                <Label text="Scegli se usare una modalità chiara o scura. La scelta influisce su tutti i temi."
-                       styleClass="muted"/>
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Label text="Modalità generale" styleClass="muted"/>
+                            <ComboBox fx:id="modeCombo" prefWidth="230"/>
+                        </HBox>
 
-                <Separator/>
+                        <Label text="Scegli se usare una modalità chiara o scura. La scelta influisce su tutti i temi."
+                               styleClass="muted"/>
 
-                <!-- ========================= -->
-                <!-- TEMA BOTANICO            -->
-                <!-- ========================= -->
-                <Label text="Tema botanico" styleClass="h3"/>
+                        <Separator/>
 
-                <HBox spacing="10" alignment="CENTER_LEFT">
-                    <Label text="Tema di colore" styleClass="muted"/>
-                    <ComboBox fx:id="themeCombo" prefWidth="230"/>
-                </HBox>
+                        <!-- ========================= -->
+                        <!-- TEMA BOTANICO            -->
+                        <!-- ========================= -->
+                        <Label text="Tema botanico" styleClass="h3"/>
 
-                <Label text="Scegli un tema ispirato alle piante di Canopy (Evergreen, Sakura, Quercia, Menta, Peperoncino, Lavanda, Orchidea)."
-                       styleClass="muted"/>
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Label text="Tema di colore" styleClass="muted"/>
+                            <ComboBox fx:id="themeCombo" prefWidth="230"/>
+                        </HBox>
 
-                <Separator/>
+                        <Label text="Scegli un tema ispirato alle piante di Canopy (Evergreen, Sakura, Quercia, Menta, Peperoncino, Lavanda, Orchidea)."
+                               styleClass="muted"/>
 
-                <!-- ========================= -->
-                <!-- SEZIONE DATI / CALENDARIO-->
-                <!-- ========================= -->
-                <Label text="Dati" styleClass="h3"/>
+                        <Separator/>
 
-                <HBox spacing="10" alignment="CENTER_LEFT">
-                    <Label text="Statistiche calendario" styleClass="muted"/>
-                    <Button text="Svuota statistiche"
-                            onAction="#onResetCalendarStats"
-                            styleClass="button danger-button"/>
-                </HBox>
+                        <!-- ========================= -->
+                        <!-- ACCESSIBILITÀ VISIVA     -->
+                        <!-- ========================= -->
+                        <Label text="Accessibilità visiva" styleClass="h3"/>
 
-                <Label text="Puoi svuotare le statistiche del calendario. Questa operazione non può essere annullata."
-                       styleClass="muted"/>
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Label text="Filtro per daltonismo" styleClass="muted"/>
+                            <ComboBox fx:id="daltonismoCombo" prefWidth="230"/>
+                        </HBox>
 
-            </VBox>
+                        <Label text="Applica un filtro ai colori (deuteranopia, protanopia, tritanopia) mantenendo il tema botanico scelto."
+                               styleClass="muted"/>
+
+                        <Separator/>
+
+                        <!-- ========================= -->
+                        <!-- SEZIONE DATI / CALENDARIO-->
+                        <!-- ========================= -->
+                        <Label text="Dati" styleClass="h3"/>
+
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Label text="Statistiche calendario" styleClass="muted"/>
+                            <Button text="Svuota statistiche"
+                                    onAction="#onResetCalendarStats"
+                                    styleClass="button danger-button"/>
+                        </HBox>
+
+                        <Label text="Puoi svuotare le statistiche del calendario. Questa operazione non può essere annullata."
+                               styleClass="muted"/>
+
+                    </VBox>
+                </content>
+            </ScrollPane>
 
         </StackPane>
     </center>
