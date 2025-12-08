@@ -4,6 +4,7 @@ import com.application.canopy.db.DatabaseManager;
 import com.application.canopy.db.PlantActivityRepository;
 import com.application.canopy.model.FontManager;
 import com.application.canopy.model.FontManager.AppFont;
+import com.application.canopy.model.GameState;        // 👈 IMPORT NUOVO
 import com.application.canopy.model.ThemeManager;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -34,41 +35,53 @@ public class SettingsController {
         setupFontCombo();
         setupModeCombo();
         setupThemeCombo();
-        setupDaltonismoCombo();   // <--- NUOVO
+        setupDaltonismoCombo();
     }
 
     // ============================
-    // RESET STATISTICHE CALENDARIO (DB)
+    // RESET DATI: CALENDARIO + GAMESTATE (OBIETTIVI, PROGRESSI, ECC.)
     // ============================
     @FXML
     private void onResetCalendarStats() {
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
-        confirm.setTitle("Svuota statistiche calendario");
-        confirm.setHeaderText("Vuoi davvero cancellare tutte le statistiche del calendario?");
-        confirm.setContentText("Questa operazione non può essere annullata.");
+        confirm.setTitle("Reset dati di gioco");
+        confirm.setHeaderText("Vuoi davvero cancellare TUTTE le statistiche?");
+        confirm.setContentText("""
+                Verranno resettati:
+                • Calendario (tutti i minuti per pianta)
+                • Progressi di gioco (pomodori, best plant, ecc.)
+                • Di conseguenza anche gli obiettivi torneranno a non completati
+
+                Questa operazione non può essere annullata.
+                """);
 
         if (confirm.showAndWait().orElse(ButtonType.CANCEL) != ButtonType.OK) {
             return;
         }
 
         try {
+            // 1) Svuota la tabella del calendario
             PlantActivityRepository repo =
                     new PlantActivityRepository(DatabaseManager.getConnection());
             repo.deleteAll();
+
+            // 2) Resetta anche lo stato di gioco (pomodori, best-of-day, ecc.)
+            GameState.getInstance().resetAllProgress();
+
         } catch (SQLException e) {
             e.printStackTrace();
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setTitle("Errore");
-            error.setHeaderText("Impossibile svuotare le statistiche del calendario.");
+            error.setHeaderText("Impossibile resettare i dati di gioco.");
             error.setContentText("Dettagli: " + e.getMessage());
             error.showAndWait();
             return;
         }
 
         Alert ok = new Alert(Alert.AlertType.INFORMATION);
-        ok.setTitle("Statistiche svuotate");
+        ok.setTitle("Dati resettati");
         ok.setHeaderText(null);
-        ok.setContentText("Tutte le statistiche del calendario sono state cancellate.");
+        ok.setContentText("Calendario e progressi di gioco sono stati resettati.");
         ok.showAndWait();
     }
 

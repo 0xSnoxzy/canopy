@@ -20,15 +20,13 @@ import java.util.stream.Collectors;
 
 public class CalendarController {
 
+    @FXML private BorderPane root;          // 👈 aggiunto: node root dell'FXML
+
     @FXML private ToggleButton monthBtn, weekBtn;
     @FXML private Button prevBtn, nextBtn, backToMonthBtn;
     @FXML private Label periodLabel, rightTitle, summaryLabel;
     @FXML private GridPane calendarGrid, weekdayHeader;
     @FXML private ListView<PlantStat> listMonth, listDay;
-
-
-    //addPlantMinutes(target, "Menta", 15);
-    //addPlantMinutes(target, "Sakura", 90);
 
     private YearMonth currentMonth = YearMonth.now();
     private LocalDate currentWeekStart = LocalDate.now().with(DayOfWeek.MONDAY);
@@ -86,6 +84,14 @@ public class CalendarController {
 
         // Primo caricamento
         refresh();
+
+        // 🔁 quando il calendario viene mostrato di nuovo (root agganciato a un parent),
+        // ricarichiamo i dati dal DB così i nuovi pomodori compaiono subito.
+        root.parentProperty().addListener((obs, oldParent, newParent) -> {
+            if (newParent != null) {
+                refresh();
+            }
+        });
     }
 
     /* ======================
@@ -288,7 +294,6 @@ public class CalendarController {
 
     private void showDayDetails(LocalDate date) {
 
-
         rightTitle.setText("Piante del " + date);
 
         listMonth.setVisible(false);
@@ -398,13 +403,6 @@ public class CalendarController {
        API PER AGGIUNGERE MINUTI
        ====================== */
 
-    /**
-     * Metodo da chiamare DAL RESTO DELL'APP quando l'utente registra
-     * tempo di cura per una pianta in una certa data.
-     *
-     * Esempio:
-     * calendarController.addPlantMinutes(LocalDate.now(), "Menta", 20);
-     */
     public void addPlantMinutes(LocalDate date, String plantName, int minutes) {
         if (minutes <= 0 || repository == null) return;
 
@@ -423,33 +421,27 @@ public class CalendarController {
        SUPPORTO ICONA PIANTA
        ====================== */
 
-    /**
-     * Carica l'icona della pianta in base al nome.
-     * Adatta questo metodo al tuo naming delle immagini.
-     * Es: "Menta" -> /com/application/canopy/view/components/images/plants/menta.png
-     */
     private Image loadIconForPlantName(String plantName) {
         if (plantName == null) return null;
 
         String key = plantName.toLowerCase(locale).trim();
 
-        // Mappa tra nome pianta (come lo usi nell'app) e file nella cartella thumbs
         String fileName = switch (key) {
-            case "lavanda"      -> "lavanda.png";
-            case "menta"        -> "menta.png";
+            case "lavanda"      -> "Lavanda.png";
+            case "menta"        -> "Menta.png";
             case "orchidea"     -> "Orchidea.png";
             case "peperoncino"  -> "Peperoncino.png";
-            case "quercia"      -> "Quercia.png"; // NOTA: nel tuo filesystem la Q è maiuscola
+            case "quercia"      -> "Quercia.png";
             case "sakura"       -> "Sakura.png";
-            default -> null; // nessuna icona conosciuta
+            case "lifeblood"    -> "Lifeblood.png";
+            case "radice_sussurrante" -> "Radici_sussurranti.png";
+            default -> null;
         };
 
         if (fileName == null) {
             return null;
         }
 
-        // Path reale delle immagini nel tuo progetto:
-        // src/main/resources/com.application.canopy.view/components/images/thumbs/...
         String path = "/com/application/canopy/view/components/images/thumbs/" + fileName;
 
         var url = getClass().getResource(path);
@@ -459,7 +451,6 @@ public class CalendarController {
 
         return null;
     }
-
 
     /* ======================
        LAYOUT HELPERS
@@ -493,7 +484,6 @@ public class CalendarController {
        DTO / CELL FACTORY
        ====================== */
 
-    /** Statistica aggregata: nome pianta + minuti. */
     public static class PlantStat {
         public final String name;
         public final int minutes;
@@ -515,7 +505,7 @@ public class CalendarController {
             icon.setFitWidth(20);
             icon.setFitHeight(20);
             icon.setPreserveRatio(true);
-            icon.setVisible(false); // se in futuro vuoi metterci anche qui icone
+            icon.setVisible(false);
 
             HBox.setHgrow(spacer, Priority.ALWAYS);
             root.getChildren().addAll(icon, name, spacer, mins);

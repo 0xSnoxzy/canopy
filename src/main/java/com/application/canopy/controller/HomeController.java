@@ -1,5 +1,7 @@
 package com.application.canopy.controller;
 
+import com.application.canopy.db.DatabaseManager;           // ✅ NUOVO
+import com.application.canopy.db.PlantActivityRepository;   // ✅ NUOVO
 import com.application.canopy.model.GameState;
 import com.application.canopy.model.Plant;
 import com.application.canopy.model.ThemeManager;
@@ -19,6 +21,8 @@ import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 import java.net.URL;
+import java.sql.SQLException;                                // ✅ NUOVO
+import java.time.LocalDate;                                // ✅ NUOVO
 
 public class HomeController {
 
@@ -68,6 +72,9 @@ public class HomeController {
     private final GameState gameState = GameState.getInstance();
     private Plant currentPlant;
 
+    // ✅ REPOSITORY PER LOGGARE NEL CALENDARIO/DB
+    private PlantActivityRepository activityRepository;
+
     // ----------------- IMMAGINI PIANTE (provvisorio)  -----------------
 
     private static final String ROOT = "/com/application/canopy/view/components/images/";
@@ -83,6 +90,15 @@ public class HomeController {
 
     @FXML
     private void initialize() {
+
+        // ✅ Inizializza repository per il calendario (stesso DB del CalendarController)
+        try {
+            activityRepository = new PlantActivityRepository(DatabaseManager.getConnection());
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // se il DB non parte, il timer continua a funzionare,
+            // ma il calendario non registrerà le nuove attività
+        }
 
         // canvas disattivato
         if (canvas != null) {
@@ -249,9 +265,6 @@ public class HomeController {
                 breaksEnabled     = true;
 
                 // ---------- DURATA COMPLESSIVA SESSIONE ----------
-                // Ogni "macro" (routine) = F-B-F-B-...-F + longBreak
-                // = focusPerMacro * focusSec + (focusPerMacro - 1) * shortSec + longSec
-                // ---------- DURATA COMPLESSIVA SESSIONE ----------
                 // numero totale di blocchi di focus
                 int totalFocus = macroCycles * focusPerMacro;
 
@@ -352,9 +365,14 @@ public class HomeController {
 
         if (phase == Phase.FOCUS) {
             showStage(3);
-            if (currentPlant != null) {
+
+            if (currentPlant != null && focusMinutes >= 25) {
+                // 1) aggiorna GameState → achievements / stato pianta
                 gameState.onPomodoroCompleted(currentPlant);
+                // 2) registra anche sul DB per il calendario
+                logPlantActivityForCurrentPomodoro();
             }
+
             completedCycles++;
 
             if (!breaksEnabled) {
@@ -383,6 +401,25 @@ public class HomeController {
                 showStage(0);
                 updateUI();
             }
+        }
+    }
+
+
+    /**
+     * Logga una PlantActivity nel DB così il calendario vede il pomodoro.
+     * Usa la durata corrente di focusMinutes.
+     */
+    private void logPlantActivityForCurrentPomodoro() {
+        if (activityRepository == null || currentPlant == null) return;
+
+        try {
+            activityRepository.addActivity(
+                    LocalDate.now(),
+                    currentPlant.getName(),
+                    focusMinutes // minuti di questa sessione focus
+            );
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -429,7 +466,7 @@ public class HomeController {
         }
 
         if (state == TimerState.RUNNING && phase == Phase.FOCUS) {
-            updateGrowthFrame(p); //la pianta non cresce fuori dai timer di focus
+            updateGrowthFrame(p); // la pianta non cresce fuori dai timer di focus
         }
     }
 

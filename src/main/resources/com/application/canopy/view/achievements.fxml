@@ -20,8 +20,6 @@
               styleClass="objectives-center"
               BorderPane.alignment="CENTER">
 
-            <!-- (titolo "Obiettivi" rimosso) -->
-
             <!-- RIEPILOGO -->
             <HBox spacing="12"
                   alignment="CENTER_LEFT"
@@ -46,7 +44,6 @@
                 </VBox>
             </HBox>
 
-
             <!-- LISTA OBIETTIVI -->
             <ScrollPane fx:id="goalsScroll"
                         fitToWidth="true"
@@ -62,26 +59,16 @@
                 </content>
             </ScrollPane>
 
-
         </VBox>
     </center>
 
     <!-- DESTRA DETTAGLI -->
     <right>
         <VBox prefWidth="320"
+              spacing="8"
               styleClass="details-pane">
 
             <Label text="Dettagli obiettivo" styleClass="details-title"/>
-
-            <StackPane prefWidth="120" prefHeight="120">
-                <ImageView fx:id="detailImage"
-                           fitHeight="90"
-                           fitWidth="90"
-                           preserveRatio="true"/>
-                <Region fx:id="detailImagePlaceholder"
-                        styleClass="details-image-placeholder"
-                        visible="true" managed="true"/>
-            </StackPane>
 
             <Label fx:id="detailName"
                    text="Seleziona un obiettivo"
@@ -92,6 +79,7 @@
                   styleClass="details-short-description"/>
 
             <Separator/>
+
 
             <Label text="Progresso" styleClass="details-section-label"/>
 
@@ -106,6 +94,7 @@
                    text="Stato: -"
                    styleClass="details-status"/>
 
+            <!-- Spacer per spingere in alto i contenuti -->
             <VBox VBox.vgrow="ALWAYS"/>
         </VBox>
     </right>

@@ -1,5 +1,9 @@
 package com.application.canopy.controller;
 
+import com.application.canopy.model.AchievementGoal;
+import com.application.canopy.model.AchievementManager;
+import com.application.canopy.model.GameState;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -20,8 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
-
-import javafx.beans.binding.Bindings;
 
 public class AchievementsController implements Initializable {
 
@@ -44,8 +46,10 @@ public class AchievementsController implements Initializable {
     @FXML private Label detailProgressLabel;
     @FXML private Label detailStatus;
 
-    // dati demo
-    private final List<Goal> goals = new ArrayList<>();
+    // ---- MODELLO ----
+    private final List<AchievementGoal> goals = new ArrayList<>();
+    private final AchievementManager achievementManager = AchievementManager.getInstance();
+    private final GameState gameState = GameState.getInstance();
 
     private RingProgressNode overallRing;
     private HBox selectedCard;
@@ -63,27 +67,31 @@ public class AchievementsController implements Initializable {
         overallRing.getLabel().getStyleClass().addAll("ring-label", "ring-label-big");
         overallRingContainer.getChildren().add(overallRing);
 
-        // ⚠️ NIENTE piú binding della wrappingWidth qui
+        // primo caricamento
+        refreshAchievements();
 
-        // per ora: obiettivi finti di esempio
-        loadMockGoals();
+        // 🔁 ogni volta che questo root viene aggiunto a un parent (cioè la pagina viene mostrata)
+        // ricalcoliamo gli obiettivi leggendo lo stato attuale del GameState
+        root.parentProperty().addListener((obs, oldParent, newParent) -> {
+            if (newParent != null) {
+                refreshAchievements();
+            }
+        });
+    }
+
+    /**
+     * Ricalcola la lista di achievement dal GameState
+     * e aggiorna la UI (cards + donut generale).
+     * NON tocca il pannello di destra (dettagli) per evitare NPE
+     * e lasciarlo gestito dai click sulle card.
+     */
+    private void refreshAchievements() {
+        goals.clear();
+        goals.addAll(achievementManager.evaluateAll(gameState));
 
         buildGoalCards();
         updateOverall();
-    }
-
-    /* ---------- DATI DEMO (puoi sostituire con il tuo modello) ---------- */
-
-    private void loadMockGoals() {
-        goals.clear();
-        goals.add(new Goal("Botanico Professionista",
-                "Pianta 10 piante diverse.", 7, 10, null));
-        goals.add(new Goal("Custode della Foresta",
-                "Completa 5 sessioni giornaliere.", 3, 5, null));
-        goals.add(new Goal("Seminatore",
-                "Pianta 3 nuove piante.", 3, 3, null));
-        goals.add(new Goal("Coltivatore Attento",
-                "Fai crescere una pianta per 7 giorni.", 2, 7, null));
+        // Non chiamiamo showDetails() qui: verrà chiamato solo quando l'utente clicca una card.
     }
 
     /* ---------- RIEPILOGO GENERALE ---------- */
@@ -96,7 +104,7 @@ public class AchievementsController implements Initializable {
             return;
         }
 
-        long completed = goals.stream().filter(Goal::isCompleted).count();
+        long completed = goals.stream().filter(AchievementGoal::isCompleted).count();
         double ratio = (double) completed / goals.size();
 
         overallRing.setProgress(ratio);
@@ -104,21 +112,22 @@ public class AchievementsController implements Initializable {
         overallText.setText(
                 "Hai completato " + completed + " obiettivi su " + goals.size() + "."
         );
-        overallHint.setText("Continua a completare obiettivi per far crescere il tuo giardino!");
+        overallHint.setText("Continua a completare obiettivi!");
     }
 
     /* ---------- LISTA OBIETTIVI ---------- */
 
     private void buildGoalCards() {
         goalsFlow.getChildren().clear();
+        selectedCard = null;
 
-        for (Goal g : goals) {
+        for (AchievementGoal g : goals) {
             HBox card = createGoalCard(g);
             goalsFlow.getChildren().add(card);
         }
     }
 
-    private HBox createGoalCard(Goal goal) {
+    private HBox createGoalCard(AchievementGoal goal) {
         HBox card = new HBox(12);
         card.setPadding(new Insets(10));
         card.getStyleClass().add("goal-card");
@@ -135,17 +144,16 @@ public class AchievementsController implements Initializable {
                         .otherwise(goalsFlow.widthProperty().subtract(16))
         );
 
-
         // donut piccolo per il singolo obiettivo
         RingProgressNode ring = new RingProgressNode(70, 8);
         ring.setProgress(goal.getCompletionRatio());
         ring.getLabel().getStyleClass().addAll("ring-label", "ring-label-small");
 
         VBox textBox = new VBox(4);
-        Label title = new Label(goal.name);
+        Label title = new Label(goal.getName());
         title.getStyleClass().add("goal-title");
 
-        Text desc = new Text(goal.shortDescription);
+        Text desc = new Text(goal.getShortDescription());
         desc.setWrappingWidth(220);
         desc.getStyleClass().add("goal-description");
 
@@ -173,18 +181,35 @@ public class AchievementsController implements Initializable {
 
     /* ---------- DETTAGLI A DESTRA ---------- */
 
-    private void showDetails(Goal goal) {
-        detailName.setText(goal.name);
-        detailShortDescription.setText(goal.description);
+    private void showDetails(AchievementGoal goal) {
+        if (goal == null) {
+            return;
+        }
+
+        // Se i controlli di dettaglio non sono stati iniettati (FXML diverso / fx:id mancanti),
+        // evitiamo di fare qualsiasi cosa per non avere NullPointerException.
+        if (detailName == null ||
+                detailShortDescription == null ||
+                detailProgressBar == null ||
+                detailProgressLabel == null ||
+                detailStatus == null ||
+                detailImage == null ||
+                detailImagePlaceholder == null) {
+            return;
+        }
+
+        detailName.setText(goal.getName());
+        detailShortDescription.setText(goal.getDescription());
         detailProgressBar.setProgress(goal.getCompletionRatio());
-        detailProgressLabel.setText(goal.current + "/" + goal.total);
+        detailProgressLabel.setText(goal.getCurrent() + "/" + goal.getTotal());
 
         String stato = goal.isCompleted() ? "Completato" : "In corso";
         detailStatus.setText("Stato: " + stato);
 
-        if (goal.iconPath != null) {
+        String iconPath = goal.getIconPath();
+        if (iconPath != null) {
             try {
-                Image img = new Image(getClass().getResourceAsStream(goal.iconPath));
+                Image img = new Image(getClass().getResourceAsStream(iconPath));
                 detailImage.setImage(img);
                 detailImage.setVisible(true);
                 detailImagePlaceholder.setVisible(false);
@@ -200,37 +225,11 @@ public class AchievementsController implements Initializable {
         }
     }
 
-    /* ---------- MODELLO INTERNO SEMPLICE ---------- */
-
-    private static class Goal {
-        final String name;
-        final String shortDescription;
-        final String description;
-        final int current;
-        final int total;
-        final String iconPath;
-
-        Goal(String name, String description, int current, int total, String iconPath) {
-            this.name = name;
-            this.shortDescription = description;
-            this.description = description;
-            this.current = current;
-            this.total = total;
-            this.iconPath = iconPath;
-        }
-
-        double getCompletionRatio() {
-            return total <= 0 ? 0 : Math.min(1.0, (double) current / total);
-        }
-
-        boolean isCompleted() {
-            return total > 0 && current >= total;
-        }
-    }
-
     /* ---------- COMPONENTE: DONUT ---------- */
 
-    /** Nodo che disegna un anello di progresso tipo “donut” con percentuale al centro. */
+    /**
+     * Nodo che disegna un anello di progresso tipo “donut” con percentuale al centro.
+     */
     private static class RingProgressNode extends StackPane {
 
         private final Arc arc;
@@ -257,10 +256,14 @@ public class AchievementsController implements Initializable {
             inner.getStyleClass().add("ring-inner");
 
             // arco di progresso
-            arc = new Arc(radius, radius,
+            arc = new Arc(
+                    radius,
+                    radius,
                     radius - thickness / 2,
                     radius - thickness / 2,
-                    90, 0);
+                    90,
+                    0
+            );
             arc.setType(ArcType.OPEN);
             arc.setStrokeLineCap(StrokeLineCap.ROUND);
             arc.getStyleClass().add("ring-progress");
