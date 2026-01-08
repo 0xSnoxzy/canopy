@@ -16,10 +16,10 @@ public class UserPlantState {
     private boolean dead;
 
     // ---- Campi extra per statistiche/achievements ----
-    private LocalDate firstUseDate;      // primo pomodoro completato con questa pianta
-    private LocalDate lastPomodoroDate;  // ultimo giorno in cui è stato fatto un pomodoro con questa pianta
-    private int streakDays;              // streak corrente di giorni consecutivi per questa pianta
-    private int maxStreakDays;           // miglior streak mai raggiunto
+    private LocalDate firstUseDate; // primo pomodoro completato con questa pianta
+    private LocalDate lastPomodoroDate; // ultimo giorno in cui è stato fatto un pomodoro con questa pianta
+    private int streakDays; // streak corrente di giorni consecutivi per questa pianta
+    private int maxStreakDays; // miglior streak mai raggiunto
 
     public UserPlantState(Plant plant) {
         this.plant = plant;
@@ -30,14 +30,14 @@ public class UserPlantState {
      * Costruttore usato dal GameState per ricostruire dallo storage DB.
      */
     public UserPlantState(Plant plant,
-                          boolean unlocked,
-                          int totalPomodori,
-                          int todayPomodori,
-                          boolean dead,
-                          LocalDate firstUseDate,
-                          LocalDate lastPomodoroDate,
-                          int streakDays,
-                          int maxStreakDays) {
+            boolean unlocked,
+            int totalPomodori,
+            int todayPomodori,
+            boolean dead,
+            LocalDate firstUseDate,
+            LocalDate lastPomodoroDate,
+            int streakDays,
+            int maxStreakDays) {
         this.plant = plant;
         this.unlocked = unlocked;
         this.totalPomodori = totalPomodori;
@@ -51,19 +51,36 @@ public class UserPlantState {
 
     // ----------------- METODI ORIGINALI -----------------
 
-    public Plant getPlant() { return plant; }
-    public boolean isUnlocked() { return unlocked; }
-    public int getTotalPomodori() { return totalPomodori; }
-    public int getTodayPomodori() { return todayPomodori; }
-    public boolean isDead() { return dead; }
+    public Plant getPlant() {
+        return plant;
+    }
 
-    public void unlock() { this.unlocked = true; }
+    public boolean isUnlocked() {
+        return unlocked;
+    }
+
+    public int getTotalPomodori() {
+        return totalPomodori;
+    }
+
+    public int getTodayPomodori() {
+        return todayPomodori;
+    }
+
+    public boolean isDead() {
+        return dead;
+    }
+
+    public void unlock() {
+        this.unlocked = true;
+    }
 
     /**
      * Chiamato quando un pomodoro per questa pianta viene completato.
      */
     public void onPomodoroCompleted() {
-        if (dead) return;
+        if (dead)
+            return;
 
         totalPomodori++;
         todayPomodori++;
@@ -83,7 +100,7 @@ public class UserPlantState {
             } else if (delta > 1) {
                 streakDays = 1;
             }
-            // se delta == 0 → stesso giorno, non tocchiamo la streak di giorni
+            // se delta == 0 -> stesso giorno, non tocchiamo la streak di giorni
         }
 
         lastPomodoroDate = today;
@@ -92,9 +109,7 @@ public class UserPlantState {
         }
     }
 
-    /**
-     * Chiamato quando il pomodoro viene abortito (logica originale: la pianta muore).
-     */
+    // Chiamato quando il pomodoro viene abortito -> la pianta muore
     public void onPomodoroAborted() {
         dead = true;
     }
@@ -103,7 +118,7 @@ public class UserPlantState {
         todayPomodori = 0;
     }
 
-    // ----------------- CAMPi EXTRA / GETTER -----------------
+    // ----------------- GETTER -----------------
 
     public LocalDate getFirstUseDate() {
         return firstUseDate;
@@ -121,23 +136,22 @@ public class UserPlantState {
         return maxStreakDays;
     }
 
-    /**
-     * Età in giorni da quando è stato completato il primo pomodoro con questa pianta.
-     */
+    // Età in giorni da quando è stato completato il primo pomodoro con questa
+    // pianta.
     public int getAgeDays() {
-        if (firstUseDate == null) return 0;
+        if (firstUseDate == null)
+            return 0;
         return (int) ChronoUnit.DAYS.between(firstUseDate, LocalDate.now());
     }
 
     public void resetAll() {
-        // decidi tu se al reset tutte le piante devono tornare bloccate o no:
-        this.unlocked = true;   // o false, se vuoi che si sblocchino di nuovo
+        this.unlocked = true;
         this.totalPomodori = 0;
         this.todayPomodori = 0;
         this.dead = false;
     }
 
-    // ----------------- SETTER PER PERSISTENZA (se servono) -----------------
+    // ----------------- SETTER -----------------
 
     public void setTodayPomodori(int todayPomodori) {
         this.todayPomodori = todayPomodori;

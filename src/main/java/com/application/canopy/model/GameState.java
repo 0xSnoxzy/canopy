@@ -8,10 +8,6 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
-/**
- * Stato corrente dell'app.
- * Refactored: Logica DB delegata a GameStateRepository.
- */
 public class GameState {
 
     private static final GameState INSTANCE = new GameState();
@@ -20,12 +16,12 @@ public class GameState {
         return INSTANCE;
     }
 
-    // ----------------- STORAGE IN MEMORIA -----------------
+    // Data structures per memorizzazione dello stato corrente
 
     private final Map<String, UserPlantState> plantStates = new HashMap<>();
     private final Map<LocalDate, String> bestPlantOfDay = new HashMap<>();
 
-    // ----------------- STATISTICHE GLOBALI PER ACHIEVEMENTS -----------------
+    // ----------------- STATISTICHE GLOBALI -----------------
 
     private int totalPomodoriGlobal;
     private int globalStreak;
@@ -41,7 +37,8 @@ public class GameState {
     private boolean hasCrossedNoonPomodoro;
     private boolean hasRinascitaUnlocked;
 
-    // Tracks the currently selected plant ID in Home (for syncing with Herbarium)
+    // Metodi per il tracciamento e setting della pianta corrente nella home ->
+    // mostrata nell'erbario
     private String currentPlantId;
 
     public String getCurrentPlantId() {
@@ -52,12 +49,12 @@ public class GameState {
         this.currentPlantId = id;
     }
 
-    // ----------------- REPOSITORY -----------------
+    // ----------------- Collegamento al DB -----------------
 
     private GameStateRepository repository;
 
     private GameState() {
-        // 1) Inizializza le plantStates dal catalogo (default vuoto)
+        // 1) Inizializza le plantStates dal catalogo
         for (Plant p : Plant.samplePlants()) {
             plantStates.put(p.getId(), new UserPlantState(p));
         }
@@ -70,11 +67,11 @@ public class GameState {
             loadFromRepository();
         } catch (SQLException e) {
             e.printStackTrace();
-            // se il DB non è disponibile, funziona in memoria senza persistenza
+            // se il DB non è disponibile, funziona in memoria ma senza persistenza
         }
     }
 
-    // ----------------- CARICAMENTO -----------------
+    // ----------------- Caricamento dal DB -----------------
 
     private void loadFromRepository() {
         if (repository == null)
@@ -93,7 +90,7 @@ public class GameState {
         hasCrossedNoonPomodoro = parseBool(globalData.get("hasCrossedNoonPomodoro"));
         hasRinascitaUnlocked = parseBool(globalData.get("hasRinascitaUnlocked"));
 
-        // Carica stato piante (sovrascrive i default)
+        // Carica stato piante
         Map<String, UserPlantState> loadedPlants = repository.loadUserPlantStates();
         plantStates.putAll(loadedPlants);
     }
@@ -105,9 +102,7 @@ public class GameState {
     }
 
     public List<Plant> getAllPlants() {
-        return plantStates.values().stream()
-                .map(UserPlantState::getPlant)
-                .toList();
+        return plantStates.values().stream().map(UserPlantState::getPlant).toList();
     }
 
     public UserPlantState getStateFor(Plant plant) {
@@ -125,13 +120,13 @@ public class GameState {
         LocalDate today = LocalDate.now();
         java.time.LocalTime nowTime = java.time.LocalTime.now();
 
-        // ---- MIGLIOR PIANTA DEL GIORNO (in memoria per la sessione) ----
+        // ---- MIGLIOR PIANTA DEL GIORNO ----
         updateBestPlantOfDay(today, plant, state);
 
         // ---- STATISTICHE GLOBALI PER ACHIEVEMENTS ----
         updateGlobalStats(today, nowTime);
 
-        // salva su DB
+        // Salva su DB
         if (repository != null) {
             saveGlobalState();
             repository.saveUserPlantState(state);
