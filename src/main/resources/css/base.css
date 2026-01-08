@@ -1356,3 +1356,32 @@
     -fx-fill: white;
     -fx-text-fill: white;
 }
+
+/* ============================================================
+   10. TIMER HOME (RING)
+   ============================================================ */
+
+.timer-ring-track {
+    -fx-stroke: -canopy-border-strong;
+    -fx-stroke-width: 20;
+    -fx-fill: transparent;
+}
+
+.timer-ring-progress {
+    -fx-stroke: -canopy-accent;
+    -fx-stroke-width: 20;
+    -fx-fill: transparent;
+    -fx-stroke-line-cap: round;
+}
+
+.timer-knob {
+    -fx-fill: -canopy-accent;
+    -fx-stroke: -canopy-bg;
+    -fx-stroke-width: 3;
+    -fx-effect: dropshadow(gaussian, -canopy-focus-soft, 12, 0.4, 0, 3);
+}
+
+.timer-knob:hover {
+    -fx-fill: derive(-canopy-accent, 15%);
+    -fx-cursor: hand;
+}

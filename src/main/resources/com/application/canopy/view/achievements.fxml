@@ -4,7 +4,6 @@
 <?import javafx.scene.control.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.text.Text?>
-<?import javafx.scene.image.ImageView?>
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
@@ -27,7 +26,8 @@
 
                 <StackPane fx:id="overallRingContainer"
                            prefWidth="150" prefHeight="150"
-                           maxWidth="150" maxHeight="150"
+                           minWidth="150"  minHeight="150"
+                           maxWidth="150"  maxHeight="150"
                            styleClass="overall-ring-container"/>
 
                 <VBox spacing="6">
@@ -62,7 +62,7 @@
         </VBox>
     </center>
 
-    <!-- DESTRA DETTAGLI -->
+    <!-- DESTRA DETTAGLI (SENZA IMMAGINE) -->
     <right>
         <VBox prefWidth="320"
               spacing="8"
@@ -80,7 +80,6 @@
 
             <Separator/>
 
-
             <Label text="Progresso" styleClass="details-section-label"/>
 
             <HBox spacing="12">
@@ -94,7 +93,6 @@
                    text="Stato: -"
                    styleClass="details-status"/>
 
-            <!-- Spacer per spingere in alto i contenuti -->
             <VBox VBox.vgrow="ALWAYS"/>
         </VBox>
     </right>

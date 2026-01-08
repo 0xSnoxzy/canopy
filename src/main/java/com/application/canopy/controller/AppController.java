@@ -7,9 +7,12 @@ import javafx.scene.layout.StackPane;
 
 public class AppController {
 
-    @FXML private BorderPane root;
-    @FXML private NavController navController;       // dall'fx:include
-    @FXML private StackPane contentRoot;   // dove mostriamo le pagine
+    @FXML
+    private BorderPane root;
+    @FXML
+    private NavController navController; // dall'fx:include
+    @FXML
+    private StackPane contentRoot; // dove mostriamo le pagine
 
     @FXML
     private void initialize() {
@@ -25,6 +28,14 @@ public class AppController {
         // Pagina iniziale
         Navigator.show("home");
         navController.setActive("home");
+
+        // Listener per Focus / Fullscreen Mode (nasconde la sidebar)
+        Navigator.setOnFullScreenToggle(active -> {
+            if (navController != null && navController.getView() != null) {
+                navController.getView().setVisible(!active);
+                navController.getView().setManaged(!active);
+            }
+        });
     }
 
     public BorderPane getRoot() {

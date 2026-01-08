@@ -1,6 +1,5 @@
 package com.application.canopy.controller;
 
-import com.application.canopy.db.DatabaseManager;
 import com.application.canopy.db.PlantActivityRepository;
 import com.application.canopy.model.PlantActivity;
 import javafx.collections.FXCollections;
@@ -20,13 +19,19 @@ import java.util.stream.Collectors;
 
 public class CalendarController {
 
-    @FXML private BorderPane root;          // 👈 aggiunto: node root dell'FXML
+    @FXML
+    private BorderPane root;
 
-    @FXML private ToggleButton monthBtn, weekBtn;
-    @FXML private Button prevBtn, nextBtn, backToMonthBtn;
-    @FXML private Label periodLabel, rightTitle, summaryLabel;
-    @FXML private GridPane calendarGrid, weekdayHeader;
-    @FXML private ListView<PlantStat> listMonth, listDay;
+    @FXML
+    private ToggleButton monthBtn, weekBtn;
+    @FXML
+    private Button prevBtn, nextBtn, backToMonthBtn;
+    @FXML
+    private Label periodLabel, rightTitle, summaryLabel;
+    @FXML
+    private GridPane calendarGrid, weekdayHeader;
+    @FXML
+    private ListView<PlantStat> listMonth, listDay;
 
     private YearMonth currentMonth = YearMonth.now();
     private LocalDate currentWeekStart = LocalDate.now().with(DayOfWeek.MONDAY);
@@ -37,19 +42,15 @@ public class CalendarController {
 
     /**
      * Cache in memoria:
-     * per ogni giorno, la lista di piante (già aggregate per minuti) di quel giorno.
+     * per ogni giorno, la lista di piante (già aggregate per minuti) di quel
+     * giorno.
      */
     private final Map<LocalDate, List<PlantStat>> dailyStats = new HashMap<>();
 
     @FXML
     private void initialize() {
-        // Inizializza repository DB
-        try {
-            repository = new PlantActivityRepository(DatabaseManager.getConnection());
-        } catch (SQLException e) {
-            e.printStackTrace();
-            // Se il DB non parte, il calendario funzionerà "vuoto"
-        }
+        // Inizializza repository DB via Locator
+        repository = com.application.canopy.service.ServiceLocator.getInstance().getPlantActivityRepository();
 
         buildWeekdayHeader();
 
@@ -65,14 +66,18 @@ public class CalendarController {
         });
 
         prevBtn.setOnAction(e -> {
-            if (monthBtn.isSelected()) currentMonth = currentMonth.minusMonths(1);
-            else currentWeekStart = currentWeekStart.minusWeeks(1);
+            if (monthBtn.isSelected())
+                currentMonth = currentMonth.minusMonths(1);
+            else
+                currentWeekStart = currentWeekStart.minusWeeks(1);
             backToMonth();
             refresh();
         });
         nextBtn.setOnAction(e -> {
-            if (monthBtn.isSelected()) currentMonth = currentMonth.plusMonths(1);
-            else currentWeekStart = currentWeekStart.plusWeeks(1);
+            if (monthBtn.isSelected())
+                currentMonth = currentMonth.plusMonths(1);
+            else
+                currentWeekStart = currentWeekStart.plusWeeks(1);
             backToMonth();
             refresh();
         });
@@ -85,7 +90,7 @@ public class CalendarController {
         // Primo caricamento
         refresh();
 
-        // 🔁 quando il calendario viene mostrato di nuovo (root agganciato a un parent),
+        // quando il calendario viene mostrato di nuovo (root agganciato a un parent),
         // ricarichiamo i dati dal DB così i nuovi pomodori compaiono subito.
         root.parentProperty().addListener((obs, oldParent, newParent) -> {
             if (newParent != null) {
@@ -94,9 +99,11 @@ public class CalendarController {
         });
     }
 
-    /* ======================
-       BUILD HEADER / PERIODI
-       ====================== */
+    /*
+     * ======================
+     * BUILD HEADER / PERIODI
+     * ======================
+     */
 
     private void buildWeekdayHeader() {
         weekdayHeader.getChildren().clear();
@@ -139,8 +146,7 @@ public class CalendarController {
         if (monthBtn.isSelected()) {
             rightTitle.setText(
                     cap(currentMonth.getMonth().getDisplayName(TextStyle.FULL, locale)) +
-                            " " + currentMonth.getYear()
-            );
+                            " " + currentMonth.getYear());
         } else {
             rightTitle.setText("Settimana di " + currentWeekStart);
         }
@@ -156,13 +162,15 @@ public class CalendarController {
      */
     private void reloadStatsForCurrentMonth() {
         dailyStats.clear();
-        if (repository == null) return;
+        if (repository == null)
+            return;
 
         YearMonth month = currentMonth;
         LocalDate first = month.atDay(1);
         LocalDate last = month.atEndOfMonth();
 
-        // Aggiungo qualche giorno di margine, così copriamo bene anche le celle "grigie" prima/dopo il mese
+        // Aggiungo qualche giorno di margine, così copriamo bene anche le celle
+        // "grigie" prima/dopo il mese
         LocalDate from = first.minusDays(7);
         LocalDate to = last.plusDays(7);
 
@@ -196,9 +204,11 @@ public class CalendarController {
         }
     }
 
-    /* ======================
-       COSTRUZIONE GRIGLIA
-       ====================== */
+    /*
+     * ======================
+     * COSTRUZIONE GRIGLIA
+     * ======================
+     */
 
     private void buildMonth() {
         calendarGrid.getChildren().clear();
@@ -218,8 +228,7 @@ public class CalendarController {
         }
         periodLabel.setText(
                 cap(currentMonth.getMonth().getDisplayName(TextStyle.FULL, locale)) +
-                        " " + currentMonth.getYear()
-        );
+                        " " + currentMonth.getYear());
     }
 
     private void buildWeek() {
@@ -245,8 +254,10 @@ public class CalendarController {
     private Pane makeDayCell(LocalDate date, LocalDate today, boolean inMonth) {
         BorderPane cell = new BorderPane();
         cell.getStyleClass().add("day-cell");
-        if (!inMonth) cell.getStyleClass().add("day-cell-out");
-        if (date.equals(today)) cell.getStyleClass().add("day-cell-today");
+        if (!inMonth)
+            cell.getStyleClass().add("day-cell-out");
+        if (date.equals(today))
+            cell.getStyleClass().add("day-cell-today");
 
         Label day = new Label(String.valueOf(date.getDayOfMonth()));
         day.getStyleClass().add("day-number");
@@ -283,14 +294,64 @@ public class CalendarController {
 
         cell.setMinSize(90, 110);
 
-        cell.setOnMouseClicked(e -> showDayDetails(date));
+        cell.setOnMouseClicked(e -> showDayDetailsPopup(date));
 
         return cell;
     }
 
-    /* ======================
-       DETTAGLIO GIORNO / MESE
-       ====================== */
+    private void showDayDetailsPopup(LocalDate date) {
+        try {
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
+                    getClass().getResource("/com/application/canopy/view/daily_stats.fxml"));
+            javafx.scene.Parent view = loader.load();
+
+            DailyStatsController controller = loader.getController();
+            // Passiamo sia la data che la lista di stats (se c'è, altrimenti lista vuota o
+            // fetch interno)
+            List<PlantStat> stats = getStatsForDate(date);
+            controller.setData(date, stats);
+
+            javafx.scene.Scene scene = new javafx.scene.Scene(view, 900, 600);
+
+            // 1. CARICAMENTO STILI GLOBALI (NECESSARIO PER LE VARIABILI -canopy-*)
+            scene.getStylesheets().add(getClass().getResource("/css/base.css").toExternalForm());
+            // stats.css è già incluso nell'FXML, ma assicuriamoci
+
+            // Caricamento Font
+            com.application.canopy.model.FontManager.applyCurrentFont(scene);
+
+            javafx.stage.Stage stage = new javafx.stage.Stage();
+            stage.setTitle("Statistics - " + date);
+            stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+            stage.setScene(scene);
+
+            // 2. APPLICAZIONE CLASSE TEMA E SFONDO ROOT
+            // Clona le classi di stile del root principale (es. "root", "theme-dark")
+            // sulla nuova view root, così eredita i tokens.
+            if (root.getScene() != null && root.getScene().getRoot() != null) {
+                view.getStyleClass().setAll(root.getScene().getRoot().getStyleClass());
+                // Rimuoviamo classi che potrebbero dare fastidio se specifiche del layout
+                // padre,
+                // ma solitamente 'root' e 'theme-...' sono sicure.
+                // Assicuriamoci che ci sia 'stats-root' se l'abbiamo messa nel FXML
+                view.getStyleClass().add("stats-root");
+            } else {
+                view.getStyleClass().add("theme-dark");
+                view.getStyleClass().add("stats-root");
+            }
+
+            stage.showAndWait();
+
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /*
+     * ======================
+     * DETTAGLIO GIORNO / MESE
+     * ======================
+     */
 
     private void showDayDetails(LocalDate date) {
 
@@ -330,8 +391,7 @@ public class CalendarController {
         if (monthBtn.isSelected()) {
             rightTitle.setText(
                     cap(currentMonth.getMonth().getDisplayName(TextStyle.FULL, locale)) +
-                            " " + currentMonth.getYear()
-            );
+                            " " + currentMonth.getYear());
         } else {
             rightTitle.setText("Settimana di " + currentWeekStart);
         }
@@ -346,7 +406,8 @@ public class CalendarController {
 
         for (Map.Entry<LocalDate, List<PlantStat>> entry : dailyStats.entrySet()) {
             LocalDate date = entry.getKey();
-            if (!YearMonth.from(date).equals(currentMonth)) continue;
+            if (!YearMonth.from(date).equals(currentMonth))
+                continue;
 
             for (PlantStat ps : entry.getValue()) {
                 aggregated.merge(ps.name, ps.minutes, Integer::sum);
@@ -370,9 +431,11 @@ public class CalendarController {
      */
     private List<PlantStat> getStatsForDate(LocalDate date) {
         List<PlantStat> stats = dailyStats.get(date);
-        if (stats != null) return stats;
+        if (stats != null)
+            return stats;
 
-        if (repository == null) return Collections.emptyList();
+        if (repository == null)
+            return Collections.emptyList();
 
         try {
             List<PlantActivity> activities = repository.getActivitiesForDate(date);
@@ -399,12 +462,15 @@ public class CalendarController {
         }
     }
 
-    /* ======================
-       API PER AGGIUNGERE MINUTI
-       ====================== */
+    /*
+     * ======================
+     * API PER AGGIUNGERE MINUTI
+     * ======================
+     */
 
     public void addPlantMinutes(LocalDate date, String plantName, int minutes) {
-        if (minutes <= 0 || repository == null) return;
+        if (minutes <= 0 || repository == null)
+            return;
 
         try {
             repository.addActivity(date, plantName, minutes);
@@ -417,44 +483,21 @@ public class CalendarController {
         refresh();
     }
 
-    /* ======================
-       SUPPORTO ICONA PIANTA
-       ====================== */
+    /*
+     * ======================
+     * SUPPORTO ICONA PIANTA
+     * ======================
+     */
 
     private Image loadIconForPlantName(String plantName) {
-        if (plantName == null) return null;
-
-        String key = plantName.toLowerCase(locale).trim();
-
-        String fileName = switch (key) {
-            case "lavanda"      -> "Lavanda.png";
-            case "menta"        -> "Menta.png";
-            case "orchidea"     -> "Orchidea.png";
-            case "peperoncino"  -> "Peperoncino.png";
-            case "quercia"      -> "Quercia.png";
-            case "sakura"       -> "Sakura.png";
-            case "lifeblood"    -> "Lifeblood.png";
-            case "radice_sussurrante" -> "Radici_sussurranti.png";
-            default -> null;
-        };
-
-        if (fileName == null) {
-            return null;
-        }
-
-        String path = "/com/application/canopy/view/components/images/thumbs/" + fileName;
-
-        var url = getClass().getResource(path);
-        if (url != null) {
-            return new Image(url.toExternalForm());
-        }
-
-        return null;
+        return com.application.canopy.util.ResourceManager.getPlantThumbnailByName(plantName);
     }
 
-    /* ======================
-       LAYOUT HELPERS
-       ====================== */
+    /*
+     * ======================
+     * LAYOUT HELPERS
+     * ======================
+     */
 
     private ColumnConstraints[] equalCols(int n) {
         ColumnConstraints[] cols = new ColumnConstraints[n];
@@ -480,9 +523,11 @@ public class CalendarController {
         return s.substring(0, 1).toUpperCase(locale) + s.substring(1);
     }
 
-    /* ======================
-       DTO / CELL FACTORY
-       ====================== */
+    /*
+     * ======================
+     * DTO / CELL FACTORY
+     * ======================
+     */
 
     public static class PlantStat {
         public final String name;

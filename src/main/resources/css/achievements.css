@@ -235,6 +235,7 @@
 
 /* cerchio interno */
 .ring-inner {
+    -fx-opacity: 0;
     -fx-fill: -canopy-card;
 }
 

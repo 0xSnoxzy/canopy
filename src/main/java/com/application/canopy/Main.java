@@ -35,16 +35,11 @@ public class Main extends Application {
                 new javafx.scene.image.Image(
                         Objects.requireNonNull(
                                 getClass().getResourceAsStream(
-                                        "/com/application/canopy/view/components/images/app/canopy.png"
-                                )
-                        )
-                )
-        );
+                                        "/com/application/canopy/view/components/images/app/canopy.png"))));
 
         // Caricamento FXML
         FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/com/application/canopy/view/app.fxml")
-        );
+                getClass().getResource("/com/application/canopy/view/app.fxml"));
         Parent root = loader.load();
 
         Scene scene = new Scene(root, 1080, 620);
@@ -81,9 +76,6 @@ public class Main extends Application {
 
     public static void main(String[] args) {
 
-        // ----------------------------------------------------
-        // ⚠️ FIX PER I PROBLEMI DI D3D (texture null in JavaFX)
-        // ----------------------------------------------------
         System.setProperty("prism.order", "sw"); // forza renderer software
         System.setProperty("prism.text", "t2k"); // renderer testi alternativo
 

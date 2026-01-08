@@ -1,7 +1,10 @@
 package com.application.canopy.controller;
 
+import com.application.canopy.model.GameState;
 import com.application.canopy.model.ThemeManager;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
@@ -13,21 +16,43 @@ public class NavController {
 
     private Consumer<String> onNavigate; // "home", "achievements", "herbarium", "calendar", "settings"
 
-    @FXML private ToggleGroup pagesGroup;
-    @FXML private ToggleButton btnHome;
-    @FXML private ToggleButton btnAchievements;
-    @FXML private ToggleButton btnHerbarium;
-    @FXML private ToggleButton btnCalendar;
-    @FXML private ToggleButton btnSettings;
+    @FXML
+    private Label userPoints;
+
+    @FXML
+    private ToggleGroup pagesGroup;
+    @FXML
+    private ToggleButton btnHome;
+    @FXML
+    private ToggleButton btnAchievements;
+    @FXML
+    private ToggleButton btnHerbarium;
+    @FXML
+    private ToggleButton btnCalendar;
+    @FXML
+    private javafx.scene.layout.VBox navBar;
+    @FXML
+    private ToggleButton btnSettings;
+
+    public javafx.scene.Node getView() {
+        return navBar;
+    }
 
     // ---- Icone FXML ----
-    @FXML private ImageView homeIcon;
-    @FXML private ImageView achievementsIcon;
-    @FXML private ImageView herbariumIcon;
-    @FXML private ImageView calendarIcon;
-    @FXML private ImageView settingsIcon;
+    @FXML
+    private ImageView homeIcon;
+    @FXML
+    private ImageView achievementsIcon;
+    @FXML
+    private ImageView herbariumIcon;
+    @FXML
+    private ImageView calendarIcon;
+    @FXML
+    private ImageView settingsIcon;
+    // @FXML private ImageView streakIcon; // REMOVED (using emoji in label)
 
-    // tema corrente (stringa che manda il ThemeManager: "dark", "light", "sakura-dark", ecc.)
+    // tema corrente (stringa che manda il ThemeManager: "dark", "light",
+    // "sakura-dark", ecc.)
     private String currentThemeId = "dark";
 
     // CACHE IMMAGINI: nere (stroke scuro) / bianche (stroke chiaro)
@@ -41,6 +66,7 @@ public class NavController {
     private Image calendarWhite;
     private Image settingsBlack;
     private Image settingsWhite;
+    // Streak images removed
 
     @FXML
     private void initialize() {
@@ -54,25 +80,35 @@ public class NavController {
 
         // primo refresh
         onThemeChanged(currentThemeId);
+
+        // Listen to streak updates
+        GameState.getInstance().addStatsListener(this::refreshStreak);
+        refreshStreak();
+    }
+
+    private void refreshStreak() {
+        int streak = GameState.getInstance().getGlobalStreak();
+        Platform.runLater(() -> {
+            if (userPoints != null) {
+                userPoints.setText("🌿 " + streak);
+            }
+        });
     }
 
     private void cacheIcons() {
-        String base = "/com/application/canopy/view/components/images/";
+        // Carica icone NERE
+        homeBlack = com.application.canopy.util.ResourceManager.getNavIcon("home", false);
+        achievementsBlack = com.application.canopy.util.ResourceManager.getNavIcon("achievements", false);
+        herbariumBlack = com.application.canopy.util.ResourceManager.getNavIcon("herbarium", false);
+        calendarBlack = com.application.canopy.util.ResourceManager.getNavIcon("calendar", false);
+        settingsBlack = com.application.canopy.util.ResourceManager.getNavIcon("settings", false);
 
-        // NB: per come li hai chiamati:
-        //  - "*.png"      = icona scura (nera)
-        //  - "*-dark.png" = icona chiara (bianca)
-        homeBlack         = new Image(getClass().getResourceAsStream(base + "home.png"));
-        achievementsBlack = new Image(getClass().getResourceAsStream(base + "achievements.png"));
-        herbariumBlack    = new Image(getClass().getResourceAsStream(base + "herbarium.png"));
-        calendarBlack     = new Image(getClass().getResourceAsStream(base + "calendar.png"));
-        settingsBlack     = new Image(getClass().getResourceAsStream(base + "settings.png"));
-
-        homeWhite         = new Image(getClass().getResourceAsStream(base + "home-dark.png"));
-        achievementsWhite = new Image(getClass().getResourceAsStream(base + "achievements-dark.png"));
-        herbariumWhite    = new Image(getClass().getResourceAsStream(base + "herbarium-dark.png"));
-        calendarWhite     = new Image(getClass().getResourceAsStream(base + "calendar-dark.png"));
-        settingsWhite     = new Image(getClass().getResourceAsStream(base + "settings-dark.png"));
+        // Carica icone BIANCHE
+        homeWhite = com.application.canopy.util.ResourceManager.getNavIcon("home", true);
+        achievementsWhite = com.application.canopy.util.ResourceManager.getNavIcon("achievements", true);
+        herbariumWhite = com.application.canopy.util.ResourceManager.getNavIcon("herbarium", true);
+        calendarWhite = com.application.canopy.util.ResourceManager.getNavIcon("calendar", true);
+        settingsWhite = com.application.canopy.util.ResourceManager.getNavIcon("settings", true);
     }
 
     private void onThemeChanged(String themeId) {
@@ -98,10 +134,11 @@ public class NavController {
     /**
      * Applica le regole:
      * - tutti i temi SCURI tranne evergreen ("dark") e daltonici:
-     *      SOLO la pagina selezionata -> icona NERA
+     * SOLO la pagina selezionata -> icona NERA
      * - tutti i temi CHIARI tranne evergreen ("light") e daltonici:
-     *      SOLO la pagina selezionata -> icona BIANCA
-     * - evergreen + daltonici: comportamento classico (icone tutte chiare su dark, tutte scure su light)
+     * SOLO la pagina selezionata -> icona BIANCA
+     * - evergreen + daltonici: comportamento classico (icone tutte chiare su dark,
+     * tutte scure su light)
      */
     private void updateIconsForThemeAndSelection() {
         String id = currentThemeId;
@@ -123,7 +160,8 @@ public class NavController {
             return;
         }
 
-        // Qui siamo nei temi "colorati" (sakura, quercia, menta, peperoncino, lavanda, orchidea, ecc.)
+        // Qui siamo nei temi "colorati" (sakura, quercia, menta, peperoncino, lavanda,
+        // orchidea, ecc.)
 
         if (isDarkTheme) {
             // Tema SCURO non evergreen/non daltonici:
@@ -172,23 +210,43 @@ public class NavController {
     }
 
     private void fire(String route) {
-        if (onNavigate != null) onNavigate.accept(route);
+        if (onNavigate != null)
+            onNavigate.accept(route);
     }
 
-    @FXML private void goHome()        { fire("home"); }
-    @FXML private void goAchievements(){ fire("achievements"); }
-    @FXML private void goHerbarium()   { fire("herbarium"); }
-    @FXML private void goCalendar()    { fire("calendar"); }
-    @FXML private void goSettings()    { fire("settings"); }
+    @FXML
+    private void goHome() {
+        fire("home");
+    }
+
+    @FXML
+    private void goAchievements() {
+        fire("achievements");
+    }
+
+    @FXML
+    private void goHerbarium() {
+        fire("herbarium");
+    }
+
+    @FXML
+    private void goCalendar() {
+        fire("calendar");
+    }
+
+    @FXML
+    private void goSettings() {
+        fire("settings");
+    }
 
     public void setActive(String route) {
         switch (route) {
-            case "home"         -> btnHome.setSelected(true);
+            case "home" -> btnHome.setSelected(true);
             case "achievements" -> btnAchievements.setSelected(true);
-            case "herbarium"    -> btnHerbarium.setSelected(true);
-            case "calendar"     -> btnCalendar.setSelected(true);
-            case "settings"     -> btnSettings.setSelected(true);
-            default             -> pagesGroup.selectToggle(null);
+            case "herbarium" -> btnHerbarium.setSelected(true);
+            case "calendar" -> btnCalendar.setSelected(true);
+            case "settings" -> btnSettings.setSelected(true);
+            default -> pagesGroup.selectToggle(null);
         }
         // dopo aver cambiato il selezionato, riallineo le icone
         updateIconsForThemeAndSelection();

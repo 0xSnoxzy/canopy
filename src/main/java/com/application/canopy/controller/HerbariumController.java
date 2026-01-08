@@ -15,7 +15,7 @@ import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
-import java.net.URL;
+import javafx.geometry.Pos;
 import java.util.EnumSet;
 import java.util.Locale;
 import java.util.Map;
@@ -23,10 +23,11 @@ import java.util.function.Predicate;
 
 public class HerbariumController {
 
-    // categorie solo per la UI
-    public enum Category { ALL, COMUNI, RARE, SPECIALE }
+    // categorie piante
+    public enum Category {
+        ALL, COMUNI, RARE, SPECIALE
+    }
 
-    /** ViewModel per la lista dell’erbario, wrappa Plant + UserPlantState. */
     public static class PlantItem {
         public final Plant plant;
         public final String name;
@@ -37,12 +38,12 @@ public class HerbariumController {
         public final boolean unlocked;
 
         public PlantItem(Plant plant,
-                         String name,
-                         String description,
-                         String curiosity,
-                         String care,
-                         Category category,
-                         boolean unlocked) {
+                String name,
+                String description,
+                String curiosity,
+                String care,
+                Category category,
+                boolean unlocked) {
             this.plant = plant;
             this.name = name;
             this.description = description;
@@ -54,57 +55,77 @@ public class HerbariumController {
     }
 
     // ---------- PATH IMMAGINI ----------
-
-    private static final String ROOT       = "/com/application/canopy/view/components/images/";
-    private static final String THUMBS_DIR = ROOT + "thumbs/";
+    // (Gestite da ResourceManager)
 
     /** id/nome -> base file immagini (lavanda -> lavanda.png, lavanda1.jpg, ...) */
     private static final Map<String, String> IMAGE_BASES = Map.of(
-            "lavanda",            "lavanda",
-            "menta",              "menta",
-            "orchidea",           "orchidea",
-            "peperoncino",        "peperoncino",
-            "quercia",            "quercia",
+            "lavanda", "lavanda",
+            "menta", "menta",
+            "orchidea", "orchidea",
+            "peperoncino", "peperoncino",
+            "quercia", "quercia",
             "radice_sussurrante", "radici_sussurranti",
-            "lifeblood",          "lifeblood",
-            "sakura",             "sakura"
-    );
+            "lifeblood", "lifeblood",
+            "sakura", "sakura");
 
     // ---------- FXML: BOARD CENTRALE ----------
 
-    @FXML private StackPane  herbRoot;
-    @FXML private MasonryPane masonryBoard;
+    @FXML
+    private StackPane herbRoot;
+    @FXML
+    private MasonryPane masonryBoard;
 
-    // card & clip per binding dinamico
-    @FXML private StackPane heroCard;
-    @FXML private StackPane variant1Card;
-    @FXML private StackPane variant2Card;
-    @FXML private StackPane variant3Card;
+    @FXML
+    private StackPane heroCard;
+    @FXML
+    private StackPane variant1Card;
+    @FXML
+    private StackPane variant2Card;
+    @FXML
+    private StackPane variant3Card;
 
-    @FXML private Rectangle heroClip;
-    @FXML private Rectangle variant1Clip;
-    @FXML private Rectangle variant2Clip;
-    @FXML private Rectangle variant3Clip;
+    @FXML
+    private Rectangle heroClip;
+    @FXML
+    private Rectangle variant1Clip;
+    @FXML
+    private Rectangle variant2Clip;
+    @FXML
+    private Rectangle variant3Clip;
 
-    @FXML private Label plantTitle;
-    @FXML private Label rarityBadge;
-    @FXML private Text  plantCuriosity;
-    @FXML private Text  plantDescription;
-    @FXML private Text  plantCare;
+    @FXML
+    private Label plantTitle;
+    @FXML
+    private Label rarityBadge;
+    @FXML
+    private Text plantCuriosity;
+    @FXML
+    private Text plantDescription;
+    @FXML
+    private Text plantCare;
 
-    @FXML private ImageView plantIcon;
-    @FXML private ImageView variant1Image;
-    @FXML private ImageView variant2Image;
-    @FXML private ImageView variant3Image;
+    @FXML
+    private ImageView plantIcon;
+    @FXML
+    private ImageView variant1Image;
+    @FXML
+    private ImageView variant2Image;
+    @FXML
+    private ImageView variant3Image;
 
-    @FXML private Label emptyHint;
+    @FXML
+    private Label emptyHint;
 
     // ---------- FXML: SIDEBAR DESTRA ----------
 
-    @FXML private TextField    searchField;
-    @FXML private Button       clearSearchBtn;
-    @FXML private ToggleButton allChip, commonChip, rareChip, specialChip;
-    @FXML private ListView<PlantItem> plantsList;
+    @FXML
+    private TextField searchField;
+    @FXML
+    private Button clearSearchBtn;
+    @FXML
+    private ToggleButton allChip, commonChip, rareChip, specialChip;
+    @FXML
+    private ListView<PlantItem> plantsList;
 
     // dati
     private final ObservableList<PlantItem> source = FXCollections.observableArrayList();
@@ -126,7 +147,7 @@ public class HerbariumController {
 
         // toggle categorie
         ToggleGroup categoryGroup = new ToggleGroup();
-        for (ToggleButton b : new ToggleButton[]{allChip, commonChip, rareChip, specialChip}) {
+        for (ToggleButton b : new ToggleButton[] { allChip, commonChip, rareChip, specialChip }) {
             b.setToggleGroup(categoryGroup);
         }
         allChip.setSelected(true);
@@ -146,13 +167,12 @@ public class HerbariumController {
                     .addListener((obs, old, sel) -> showPlant(sel));
         }
 
-        // BIND altezza per scroll completo
         if (herbRoot != null && masonryBoard != null) {
             herbRoot.minHeightProperty().bind(masonryBoard.heightProperty());
             herbRoot.prefHeightProperty().bind(masonryBoard.heightProperty());
         }
 
-        // BIND clip <-> card (così non si tagliano quando cambi dimensione)
+        // BIND clip <-> card
         bindClipToCard(heroClip, heroCard);
         bindClipToCard(variant1Clip, variant1Card);
         bindClipToCard(variant2Clip, variant2Card);
@@ -164,19 +184,42 @@ public class HerbariumController {
         bindImageToCard(variant2Image, variant2Card);
         bindImageToCard(variant3Image, variant3Card);
 
-        showEmptyState();
+        // Auto-select plant
+        String lastId = gameState.getCurrentPlantId();
+        PlantItem toSelect = null;
+
+        if (lastId != null) {
+            toSelect = source.stream()
+                    .filter(item -> item.plant.getId().equals(lastId))
+                    .findFirst().orElse(null);
+        }
+
+        // If not found (or no last selection), pick the first one
+        if (toSelect == null && !filtered.isEmpty()) {
+            toSelect = filtered.get(0);
+        }
+
+        if (toSelect != null && plantsList != null) {
+            plantsList.getSelectionModel().select(toSelect);
+            plantsList.scrollTo(toSelect);
+        } else {
+            showEmptyState();
+        }
     }
 
     private void bindClipToCard(Rectangle clip, Region card) {
-        if (clip == null || card == null) return;
+        if (clip == null || card == null)
+            return;
         clip.widthProperty().bind(card.widthProperty());
         clip.heightProperty().bind(card.heightProperty());
     }
 
     private void bindImageToCard(ImageView view, Region card) {
-        if (view == null || card == null) return;
+        if (view == null || card == null)
+            return;
         view.fitWidthProperty().bind(card.widthProperty());
-        view.fitHeightProperty().bind(card.heightProperty());
+        // Non bindare l'altezza: lascia che sia l'aspect ratio a deciderla
+        // view.fitHeightProperty().bind(card.heightProperty());
         view.setPreserveRatio(true);
         view.setSmooth(true);
     }
@@ -195,40 +238,45 @@ public class HerbariumController {
                     p.getCuriosity(),
                     p.getCareTips(),
                     cat,
-                    state.isUnlocked()
-            ));
+                    state.isUnlocked()));
         }
     }
 
     private Category classifyPlant(Plant p) {
         String id = p.getId().toLowerCase(Locale.ROOT);
-        if (id.contains("radice") || id.contains("lifeblood")) return Category.SPECIALE;
-        if (id.contains("menta") || id.contains("quercia") || id.contains("peperoncino")) return Category.COMUNI;
-        if (id.contains("orchidea") || id.contains("sakura") || id.contains("lavanda")) return Category.RARE;
+        if (id.contains("radice") || id.contains("lifeblood"))
+            return Category.SPECIALE;
+        if (id.contains("menta") || id.contains("quercia") || id.contains("peperoncino"))
+            return Category.COMUNI;
+        if (id.contains("orchidea") || id.contains("sakura") || id.contains("lavanda"))
+            return Category.RARE;
         return Category.COMUNI;
     }
 
     private String categoryText(Category c) {
         return switch (c) {
-            case COMUNI   -> "COMUNE";
-            case RARE     -> "RARE";
+            case COMUNI -> "COMUNE";
+            case RARE -> "RARE";
             case SPECIALE -> "SPECIALE";
-            case ALL      -> "";
+            case ALL -> "";
         };
     }
 
     // ---------- FILTRI ----------
 
     private void applyFilters() {
-        if (filtered == null) return;
+        if (filtered == null)
+            return;
 
         String q = searchField.getText() == null ? "" : searchField.getText().trim().toLowerCase(Locale.ROOT);
         EnumSet<Category> cats = selectedCategories();
 
         Predicate<PlantItem> pred = p -> {
             boolean categoryOk = cats.contains(Category.ALL) || cats.contains(p.category);
-            if (!categoryOk) return false;
-            if (q.isEmpty()) return true;
+            if (!categoryOk)
+                return false;
+            if (q.isEmpty())
+                return true;
             return (p.name + " " + p.description + " " + p.curiosity + " " + p.care)
                     .toLowerCase(Locale.ROOT)
                     .contains(q);
@@ -237,12 +285,17 @@ public class HerbariumController {
     }
 
     private EnumSet<Category> selectedCategories() {
-        if (allChip.isSelected()) return EnumSet.of(Category.ALL);
+        if (allChip.isSelected())
+            return EnumSet.of(Category.ALL);
         EnumSet<Category> set = EnumSet.noneOf(Category.class);
-        if (commonChip.isSelected())  set.add(Category.COMUNI);
-        if (rareChip.isSelected())    set.add(Category.RARE);
-        if (specialChip.isSelected()) set.add(Category.SPECIALE);
-        if (set.isEmpty()) set.add(Category.ALL);
+        if (commonChip.isSelected())
+            set.add(Category.COMUNI);
+        if (rareChip.isSelected())
+            set.add(Category.RARE);
+        if (specialChip.isSelected())
+            set.add(Category.SPECIALE);
+        if (set.isEmpty())
+            set.add(Category.ALL);
         return set;
     }
 
@@ -319,12 +372,14 @@ public class HerbariumController {
         String id = plant.getId().toLowerCase(Locale.ROOT);
 
         for (var e : IMAGE_BASES.entrySet()) {
-            if (id.contains(e.getKey())) return e.getValue();
+            if (id.contains(e.getKey()))
+                return e.getValue();
         }
 
         String name = plant.getName().toLowerCase(Locale.ROOT);
         for (var e : IMAGE_BASES.entrySet()) {
-            if (name.contains(e.getKey())) return e.getValue();
+            if (name.contains(e.getKey()))
+                return e.getValue();
         }
 
         return id.replace(" ", "").replace("-", "_");
@@ -333,20 +388,16 @@ public class HerbariumController {
     /** ex loadHeroImage, ora icona principale */
     private Image loadPlantIconImage(Plant plant) {
         String base = imageBaseFor(plant);
-        return loadFirstExisting(
-                THUMBS_DIR + capitalizeFirst(base) + ".png",
-                THUMBS_DIR + base + ".png",
-                THUMBS_DIR + base + ".jpg"
-        );
+        // Usa il ResourceManager che gestisce i fallback
+        return com.application.canopy.util.ResourceManager.loadFirstExisting(
+                "/com/application/canopy/view/components/images/thumbs/" + capitalizeFirst(base) + ".png",
+                "/com/application/canopy/view/components/images/thumbs/" + base + ".png",
+                "/com/application/canopy/view/components/images/thumbs/" + base + ".jpg");
     }
 
     private Image loadVariantImage(Plant plant, int idx) {
         String base = imageBaseFor(plant);
-        String suf = String.valueOf(idx);
-        return loadFirstExisting(
-                THUMBS_DIR + base + suf + ".png",
-                THUMBS_DIR + base + suf + ".jpg"
-        );
+        return com.application.canopy.util.ResourceManager.getPlantThumbVariant(base, String.valueOf(idx));
     }
 
     private Image loadThumbFor(Plant plant) {
@@ -357,43 +408,37 @@ public class HerbariumController {
         return img;
     }
 
-    private Image loadFirstExisting(String... paths) {
-        for (String path : paths) {
-            Image img = loadImageFromResource(path);
-            if (img != null) return img;
-        }
-        return null;
-    }
-
-    private Image loadImageFromResource(String path) {
-        if (path == null) return null;
-        URL url = getClass().getResource(path);
-        if (url == null) {
-            System.err.println("[Herbarium] Risorsa NON trovata: " + path);
-            return null;
-        }
-        return new Image(url.toExternalForm(), false);
-    }
+    // loadFirstExisting and loadImageFromResource removed - delegating to
+    // ResourceManager
 
     private static String capitalizeFirst(String s) {
-        if (s == null || s.isEmpty()) return s;
+        if (s == null || s.isEmpty())
+            return s;
         return Character.toUpperCase(s.charAt(0)) + s.substring(1);
     }
 
     // ---------- LISTVIEW CARD ----------
 
     private class PlantCardCell extends ListCell<PlantItem> {
-        private final HBox      root    = new HBox(10);
-        private final ImageView thumb   = new ImageView();
-        private final VBox      textBox = new VBox(2);
-        private final Label     title   = new Label();
-        private final Label     subtitle = new Label();
-        private final Pane      spacer  = new Pane();
-        private final Label     lock    = new Label();
+        private final HBox root = new HBox(10);
+        private final StackPane iconContainer = new StackPane(); // Contenitore 40x40
+        private final ImageView thumb = new ImageView();
+        private final VBox textBox = new VBox(2);
+        private final Label title = new Label();
+        private final Label subtitle = new Label();
+        private final Pane spacer = new Pane();
+        private final Label lock = new Label();
 
         PlantCardCell() {
             root.getStyleClass().add("card");
             root.getStyleClass().add("plant-card");
+            root.setAlignment(Pos.CENTER_LEFT); // Allinea tutto verticalmente al centro
+
+            // Container fisso 40x40 per l'icona, così è sempre centrata
+            iconContainer.setMinSize(40, 40);
+            iconContainer.setPrefSize(40, 40);
+            iconContainer.setMaxSize(40, 40);
+            iconContainer.getChildren().add(thumb);
 
             thumb.setFitWidth(40);
             thumb.setFitHeight(40);
@@ -404,7 +449,9 @@ public class HerbariumController {
 
             HBox.setHgrow(spacer, Priority.ALWAYS);
             textBox.getChildren().addAll(title, subtitle);
-            root.getChildren().addAll(thumb, textBox, spacer, lock);
+            // textBox.setAlignment(Pos.CENTER_LEFT); // opzionale
+
+            root.getChildren().addAll(iconContainer, textBox, spacer, lock);
 
             setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         }

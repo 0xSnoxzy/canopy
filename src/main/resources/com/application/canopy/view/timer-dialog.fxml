@@ -7,133 +7,72 @@
             fx:id="root"
             prefWidth="850" prefHeight="450">
 
-    <!-- Titolo in alto -->
-    <top>
-        <Label text="Per quanto tempo vuoi concentrarti?"
-               BorderPane.alignment="CENTER"
-               style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-padding: 12 16 12 16;"/>
-    </top>
-
-    <!-- Centro: sezione sinistra (preset + modifica + cicli) + sezione destra (ruota / editor / nuovo) -->
+    <!-- Centro: Layout semplificato 2 colonne -->
     <center>
-        <HBox spacing="16" style="-fx-padding: 12 16 12 16;">
-
-            <!-- SEZIONE SINISTRA: preset + modifica + aggiungi + cicli -->
-            <VBox fx:id="leftSection" spacing="10" HBox.hgrow="ALWAYS">
-
-                <ScrollPane fitToWidth="true"
-                            fitToHeight="true"
-                            prefWidth="320"
-                            VBox.vgrow="ALWAYS"
-                            styleClass="scrollpane-clean">
-
-                    <VBox fx:id="presetContainer" spacing="8">
-                        <!-- i preset vengono aggiunti via codice -->
+        <HBox spacing="0" styleClass="dialog-content">
+            <!-- COLONNA SINISTRA: Lista Preset -->
+            <VBox spacing="10" HBox.hgrow="NEVER" prefWidth="280" styleClass="dialog-sidebar">
+                <Label text="Routine" styleClass="section-title"/>
+                
+                <ScrollPane fitToWidth="true" fitToHeight="true" VBox.vgrow="ALWAYS" styleClass="scrollpane-clean">
+                    <VBox fx:id="presetContainer" spacing="8" style="-fx-padding: 0 10 0 0;">
+                        <!-- Presets loaded via code -->
                     </VBox>
                 </ScrollPane>
 
-                <HBox spacing="10" alignment="CENTER_LEFT">
-                    <Button fx:id="btnEditPreset" text="Modifica"/>
-                    <Button fx:id="btnAddPreset" text="Aggiungi"/>
-                    <Separator orientation="VERTICAL" prefHeight="20"/>
-                    <Label text="Cicli:"/>
-                    <Spinner fx:id="cycleSpinner" prefWidth="80"
-                             focusTraversable="false"
-                             style="
-                            -fx-background-color: transparent;
-                            -fx-border-color: transparent;
-                            -fx-background-radius: 0;
-                            -fx-border-radius: 0;
-                            -fx-focus-color: transparent;
-                            -fx-faint-focus-color: transparent;
-                        "/>
+                <Button fx:id="btnNewPreset" text="+ Nuova Routine" maxWidth="Infinity" styleClass="button-secondary"/>
+            </VBox>
+            
+            <Separator orientation="VERTICAL" />
+
+            <!-- COLONNA DESTRA: Form Configurazione -->
+            <VBox spacing="20" HBox.hgrow="ALWAYS" style="-fx-padding: 24 32;">
+                <Label fx:id="lblConfigTitle" text="Impostazioni Sessione" styleClass="section-title-large"/>
+
+                <GridPane vgap="16" hgap="16">
+                    <columnConstraints>
+                        <ColumnConstraints minWidth="100" />
+                        <ColumnConstraints hgrow="ALWAYS" />
+                    </columnConstraints>
+
+                    <!-- Name -->
+                    <Label text="Nome" GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="label-dim"/>
+                    <TextField fx:id="txtName" promptText="Es. Pomodoro Mattutino" GridPane.rowIndex="0" GridPane.columnIndex="1" styleClass="input-field"/>
+
+                    <!-- Focus -->
+                    <Label text="Focus (min)" GridPane.rowIndex="1" GridPane.columnIndex="0" styleClass="label-dim"/>
+                    <TextField fx:id="txtFocus" GridPane.rowIndex="1" GridPane.columnIndex="1" styleClass="input-field"/>
+
+                    <!-- Short Break -->
+                    <Label text="Pausa Breve (min)" GridPane.rowIndex="2" GridPane.columnIndex="0" styleClass="label-dim"/>
+                    <TextField fx:id="txtShort" GridPane.rowIndex="2" GridPane.columnIndex="1" styleClass="input-field"/>
+
+                    <!-- Long Break -->
+                    <Label text="Pausa Lunga (min)" GridPane.rowIndex="3" GridPane.columnIndex="0" styleClass="label-dim"/>
+                    <TextField fx:id="txtLong" GridPane.rowIndex="3" GridPane.columnIndex="1" styleClass="input-field"/>
+
+                    <!-- Cycles -->
+                    <Label text="Cicli" GridPane.rowIndex="4" GridPane.columnIndex="0" styleClass="label-dim"/>
+                    <Spinner fx:id="cycleSpinner" min="1" max="12" initialValue="4" GridPane.rowIndex="4" GridPane.columnIndex="1" styleClass="input-field"/>
+                </GridPane>
+
+                <Region VBox.vgrow="ALWAYS"/>
+
+                <!-- Azioni Form -->
+                <HBox spacing="10" alignment="CENTER_RIGHT" fx:id="presetActionsBox">
+                     <Button fx:id="btnDeletePreset" text="Elimina" styleClass="button-danger-ghost" visible="false" managed="false"/>
+                     <Button fx:id="btnSavePreset" text="Salva Preset" styleClass="button-secondary"/>
                 </HBox>
             </VBox>
-
-            <!-- Separatore verticale -->
-            <Separator orientation="VERTICAL"/>
-
-            <!-- SEZIONE DESTRA: ruota, oppure editor, oppure nuovo preset -->
-            <StackPane fx:id="rightSection"
-                       prefWidth="380" prefHeight="320">
-
-                <!-- Ruota timer (default) -->
-                <StackPane fx:id="wheelContainer"/>
-
-                <!-- Editor preset selezionato (Modifica timer) -->
-                <VBox fx:id="editorContainer"
-                      visible="false" managed="false"
-                      spacing="8">
-                    <Label text="Modifica routine selezionata"/>
-
-                    <TextField fx:id="txtName" promptText="Nome routine"/>
-
-                    <HBox spacing="6">
-                        <Label text="Focus:"/>
-                        <TextField fx:id="txtFocus" promptText="min"/>
-                    </HBox>
-
-                    <HBox spacing="6">
-                        <Label text="Ripeti per"/>
-                        <TextField fx:id="txtRepeat" promptText="3" prefWidth="50"/>
-                        <Label text="volte prima di una pausa lunga"/>
-                    </HBox>
-
-                    <HBox spacing="6">
-                        <Label text="Pausa breve:"/>
-                        <TextField fx:id="txtShort" promptText="min"/>
-                    </HBox>
-
-                    <HBox spacing="6">
-                        <Label text="Pausa lunga:"/>
-                        <TextField fx:id="txtLong" promptText="min"/>
-                    </HBox>
-
-                    <HBox spacing="8">
-                        <Button fx:id="btnSavePreset" text="Salva"/>
-                        <Button fx:id="btnDeletePreset" text="Elimina"/>
-                        <Button fx:id="btnCancelEdit" text="Annulla"/>
-                    </HBox>
-                </VBox>
-
-                <!-- Nuovo preset (Aggiungi timer) -->
-                <VBox fx:id="newPresetContainer"
-                      visible="false" managed="false"
-                      spacing="8">
-
-                    <Label text="Nuova routine"/>
-
-                    <TextField fx:id="txtNewName" promptText="Nome nuova routine"/>
-
-                    <HBox spacing="6">
-                        <Label text="Focus:"/>
-                        <TextField fx:id="txtNewFocus" promptText="min"/>
-                    </HBox>
-
-                    <HBox spacing="6">
-                        <Label text="Ripeti per"/>
-                        <TextField fx:id="txtNewRepeat" promptText="3" prefWidth="50"/>
-                        <Label text="volte prima di una pausa lunga"/>
-                    </HBox>
-
-                    <HBox spacing="6">
-                        <Label text="Pausa breve:"/>
-                        <TextField fx:id="txtNewShort" promptText="min"/>
-                    </HBox>
-
-                    <HBox spacing="6">
-                        <Label text="Pausa lunga:"/>
-                        <TextField fx:id="txtNewLong" promptText="min"/>
-                    </HBox>
-
-                    <HBox spacing="8">
-                        <Button fx:id="btnAddNewPreset" text="Aggiungi routine"/>
-                        <Button fx:id="btnCancelNew" text="Annulla"/>
-                    </HBox>
-                </VBox>
-
-            </StackPane>
         </HBox>
     </center>
+
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" spacing="12" style="-fx-padding: 16 24; -fx-background-color: -canopy-background-secondary;">
+            <Button fx:id="btnCancel" text="Annulla" styleClass="button-text"/>
+            <Button fx:id="btnApply" text="Applica e Inizia" defaultButton="true" styleClass="button-primary"/>
+        </HBox>
+    </bottom>
+
 
 </BorderPane>

@@ -4,8 +4,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
 /**
- * Stato di una pianta specifica dell'utente.
- * Retrocompatibile con la versione vecchia, ma esteso e persistibile.
+ * Stato corrente di una pianta specifica dell'utente.
  */
 public class UserPlantState {
 

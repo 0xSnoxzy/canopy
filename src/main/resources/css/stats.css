@@ -1,0 +1,94 @@
+/* ---------- STATISTICS VIEW ---------- */
+
+.stats-root {
+    -fx-background-color: -canopy-bg;
+    -fx-padding: 20;
+}
+
+.stats-header {
+    -fx-font-size: 24px;
+    -fx-font-weight: 900;
+    -fx-text-fill: -canopy-accent-2;
+    -fx-effect: dropshadow(gaussian, -canopy-focus-soft, 12, 0.3, 0, 2);
+    -fx-padding: 0 0 15 0;
+}
+
+/* CARDS CONTAINER */
+.stats-card {
+     -fx-background-color:
+        linear-gradient(to bottom, -canopy-surface-2, -canopy-surface);
+      -fx-background-radius: 20;
+      -fx-border-radius: 20;
+      -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.45), 18, 0.32, 0, 6);
+      -fx-border-color: -canopy-border-subtle;
+      -fx-padding: 15;
+}
+
+.card-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: 800;
+    -fx-text-fill: -canopy-text;
+    -fx-opacity: 0.9;
+    -fx-padding: 0 0 10 0;
+}
+
+/* CHARTS GENERAL */
+.chart {
+    -fx-padding: 10px;
+    -fx-background-color: transparent;
+}
+.chart-content {
+    -fx-padding: 10px;
+}
+
+/* PIE CHART (DONUT STYLE) */
+.chart-pie-label {
+    -fx-fill: -canopy-text;
+    -fx-font-size: 11px;
+}
+.chart-pie-label-line {
+    -fx-stroke: -canopy-muted;
+}
+
+/* LINE CHART */
+.axis-label {
+    -fx-text-fill: -canopy-muted;
+}
+.axis {
+    -fx-tick-label-fill: -canopy-muted;
+}
+.chart-vertical-grid-lines, .chart-horizontal-grid-lines {
+    -fx-stroke: -canopy-border-subtle;
+    -fx-stroke-dash-array: 0; /* solid refined lines */
+}
+.chart-alternative-column-fill {
+    -fx-fill: transparent;
+    -fx-stroke: transparent;
+}
+.chart-alternative-row-fill {
+    -fx-fill: transparent;
+    -fx-stroke: transparent;
+}
+/* Style the line */
+.default-color0.chart-series-line { -fx-stroke: -canopy-accent; -fx-stroke-width: 3px; }
+.default-color1.chart-series-line { -fx-stroke: -canopy-accent-2; -fx-stroke-width: 3px; }
+/* Style the symbol */
+.default-color0.chart-line-symbol { -fx-background-color: -canopy-accent, white; -fx-background-radius: 5px; -fx-padding: 5px; }
+.default-color1.chart-line-symbol { -fx-background-color: -canopy-accent-2, white; -fx-background-radius: 5px; -fx-padding: 5px; }
+
+/* SUMMARY LIST */
+.stat-item {
+    -fx-background-color: -canopy-card-soft;
+    -fx-background-radius: 12;
+    -fx-padding: 8 12;
+    -fx-border-color: -canopy-border-subtle;
+    -fx-border-radius: 12;
+}
+.stat-item-name {
+    -fx-font-weight: 700;
+    -fx-text-fill: -canopy-text;
+}
+.stat-item-value {
+    -fx-font-weight: 700;
+    -fx-text-fill: -canopy-accent-2;
+}

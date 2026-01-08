@@ -1,10 +1,9 @@
 package com.application.canopy.controller;
 
-import com.application.canopy.db.DatabaseManager;
 import com.application.canopy.db.PlantActivityRepository;
 import com.application.canopy.model.FontManager;
 import com.application.canopy.model.FontManager.AppFont;
-import com.application.canopy.model.GameState;        // 👈 IMPORT NUOVO
+import com.application.canopy.model.GameState;
 import com.application.canopy.model.ThemeManager;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -22,10 +21,10 @@ public class SettingsController {
     private ComboBox<String> fontCombo;
 
     @FXML
-    private ComboBox<String> modeCombo;   // modalità light/dark
+    private ComboBox<String> modeCombo; // modalità light/dark
 
     @FXML
-    private ComboBox<String> themeCombo;  // tema botanico
+    private ComboBox<String> themeCombo; // tema botanico
 
     @FXML
     private ComboBox<String> daltonismoCombo; // filtro daltonismo (CVD)
@@ -60,10 +59,14 @@ public class SettingsController {
         }
 
         try {
-            // 1) Svuota la tabella del calendario
-            PlantActivityRepository repo =
-                    new PlantActivityRepository(DatabaseManager.getConnection());
-            repo.deleteAll();
+            // 1) Svuota la tabella del calendario via Locator
+            PlantActivityRepository repo = com.application.canopy.service.ServiceLocator.getInstance()
+                    .getPlantActivityRepository();
+            if (repo != null) {
+                repo.deleteAll();
+            } else {
+                throw new SQLException("Repository non disponibile (null)");
+            }
 
             // 2) Resetta anche lo stato di gioco (pomodori, best-of-day, ecc.)
             GameState.getInstance().resetAllProgress();
@@ -89,14 +92,14 @@ public class SettingsController {
     // FONT
     // ============================
     private void setupFontCombo() {
-        if (fontCombo == null) return;
+        if (fontCombo == null)
+            return;
 
         fontCombo.getItems().setAll(
                 AppFont.ATKINSON.getDisplayName(),
                 AppFont.COMIC_NEUE.getDisplayName(),
                 AppFont.ROBOTO_MONO.getDisplayName(),
-                AppFont.NOTO_SERIF.getDisplayName()
-        );
+                AppFont.NOTO_SERIF.getDisplayName());
 
         AppFont current = FontManager.getCurrentFont();
         fontCombo.getSelectionModel().select(current.getDisplayName());
@@ -104,7 +107,8 @@ public class SettingsController {
         fontCombo.getSelectionModel()
                 .selectedItemProperty()
                 .addListener((obs, oldVal, newVal) -> {
-                    if (newVal == null) return;
+                    if (newVal == null)
+                        return;
                     AppFont selected = AppFont.fromDisplayName(newVal);
 
                     if (root != null && root.getScene() != null) {
@@ -117,23 +121,26 @@ public class SettingsController {
     // MODALITÀ (LIGHT / DARK)
     // ============================
     private void setupModeCombo() {
-        if (modeCombo == null) return;
+        if (modeCombo == null)
+            return;
 
         modeCombo.getItems().setAll("Chiara", "Scura");
 
         String currentMode = ThemeManager.getCurrentMode(); // "light" o "dark"
         modeCombo.getSelectionModel().select(
-                "dark".equals(currentMode) ? "Scura" : "Chiara"
-        );
+                "dark".equals(currentMode) ? "Scura" : "Chiara");
 
         modeCombo.getSelectionModel()
                 .selectedItemProperty()
                 .addListener((obs, oldVal, newVal) -> {
-                    if (newVal == null) return;
-                    if (root == null) return;
+                    if (newVal == null)
+                        return;
+                    if (root == null)
+                        return;
 
                     Scene scene = root.getScene();
-                    if (scene == null) return;
+                    if (scene == null)
+                        return;
 
                     String modeId = "Scura".equals(newVal) ? "dark" : "light";
                     ThemeManager.setMode(modeId, scene);
@@ -144,7 +151,8 @@ public class SettingsController {
     // TEMA BOTANICO
     // ============================
     private void setupThemeCombo() {
-        if (themeCombo == null) return;
+        if (themeCombo == null)
+            return;
 
         themeCombo.getItems().setAll(
                 "Evergreen",
@@ -153,38 +161,40 @@ public class SettingsController {
                 "Menta",
                 "Peperoncino",
                 "Lavanda",
-                "Orchidea"
-        );
+                "Orchidea");
 
         String currentPalette = ThemeManager.getCurrentPalette(); // evergreen / sakura / ...
         String label = switch (currentPalette) {
-            case "sakura"      -> "Sakura";
-            case "quercia"     -> "Quercia";
-            case "menta"       -> "Menta";
+            case "sakura" -> "Sakura";
+            case "quercia" -> "Quercia";
+            case "menta" -> "Menta";
             case "peperoncino" -> "Peperoncino";
-            case "lavanda"     -> "Lavanda";
-            case "orchidea"    -> "Orchidea";
-            default            -> "Evergreen";
+            case "lavanda" -> "Lavanda";
+            case "orchidea" -> "Orchidea";
+            default -> "Evergreen";
         };
         themeCombo.getSelectionModel().select(label);
 
         themeCombo.getSelectionModel()
                 .selectedItemProperty()
                 .addListener((obs, oldVal, newVal) -> {
-                    if (newVal == null) return;
-                    if (root == null) return;
+                    if (newVal == null)
+                        return;
+                    if (root == null)
+                        return;
 
                     Scene scene = root.getScene();
-                    if (scene == null) return;
+                    if (scene == null)
+                        return;
 
                     String paletteId = switch (newVal) {
-                        case "Sakura"      -> "sakura";
-                        case "Quercia"     -> "quercia";
-                        case "Menta"       -> "menta";
+                        case "Sakura" -> "sakura";
+                        case "Quercia" -> "quercia";
+                        case "Menta" -> "menta";
                         case "Peperoncino" -> "peperoncino";
-                        case "Lavanda"     -> "lavanda";
-                        case "Orchidea"    -> "orchidea";
-                        default            -> "evergreen";
+                        case "Lavanda" -> "lavanda";
+                        case "Orchidea" -> "orchidea";
+                        default -> "evergreen";
                     };
 
                     ThemeManager.setPalette(paletteId, scene);
@@ -195,39 +205,42 @@ public class SettingsController {
     // FILTRO DALTONISMO
     // ============================
     private void setupDaltonismoCombo() {
-        if (daltonismoCombo == null) return;
+        if (daltonismoCombo == null)
+            return;
 
         daltonismoCombo.getItems().setAll(
                 "Nessun filtro",
                 "Deuteranopia",
                 "Protanopia",
-                "Tritanopia"
-        );
+                "Tritanopia");
 
         // allinea alla preferenza salvata
         String current = ThemeManager.getCurrentColorVisionFilter(); // "none", "deuteranopia", ...
         String label = switch (current) {
             case "deuteranopia" -> "Deuteranopia";
-            case "protanopia"   -> "Protanopia";
-            case "tritanopia"   -> "Tritanopia";
-            default             -> "Nessun filtro";
+            case "protanopia" -> "Protanopia";
+            case "tritanopia" -> "Tritanopia";
+            default -> "Nessun filtro";
         };
         daltonismoCombo.getSelectionModel().select(label);
 
         daltonismoCombo.getSelectionModel()
                 .selectedItemProperty()
                 .addListener((obs, oldVal, newVal) -> {
-                    if (newVal == null) return;
-                    if (root == null) return;
+                    if (newVal == null)
+                        return;
+                    if (root == null)
+                        return;
 
                     Scene scene = root.getScene();
-                    if (scene == null) return;
+                    if (scene == null)
+                        return;
 
                     String filterId = switch (newVal) {
                         case "Deuteranopia" -> "deuteranopia";
-                        case "Protanopia"   -> "protanopia";
-                        case "Tritanopia"   -> "tritanopia";
-                        default             -> "none";
+                        case "Protanopia" -> "protanopia";
+                        case "Tritanopia" -> "tritanopia";
+                        default -> "none";
                     };
 
                     ThemeManager.setColorVisionFilter(filterId, scene);
