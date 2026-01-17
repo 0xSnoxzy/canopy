@@ -63,9 +63,7 @@ public final class FontManager {
 
     private static AppFont currentFont;
 
-    // ========================================================
     //  INIT: da chiamare UNA VOLTA nel Main
-    // ========================================================
     public static void initFonts() {
         // Carica i font e salva i loro nomi effettivi
         for (AppFont f : AppFont.values()) {

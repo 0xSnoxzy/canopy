@@ -6,7 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 
 /**
- * Layout "masonry" semplice:
+ * Layout "masonry":
  * - numero di colonne dipende dalla larghezza
  * - ogni child è una card che si adatta al proprio contenuto
  */
@@ -45,8 +45,10 @@ public class MasonryPane extends Pane {
 
     /** numero colonne "responsive" */
     private int computeColumns(double width) {
-        if (width >= 900) return 3;
-        if (width >= 600) return 2;
+        if (width >= 900)
+            return 3;
+        if (width >= 600)
+            return 2;
         return 1;
     }
 
@@ -67,7 +69,8 @@ public class MasonryPane extends Pane {
         double[] colHeights = new double[cols];
 
         for (Node child : getChildren()) {
-            if (!child.isManaged()) continue;
+            if (!child.isManaged())
+                continue;
 
             // colonna con altezza minore
             int colIndex = 0;
@@ -90,7 +93,8 @@ public class MasonryPane extends Pane {
 
         double maxHeight = 0;
         for (double h : colHeights) {
-            if (h > maxHeight) maxHeight = h;
+            if (h > maxHeight)
+                maxHeight = h;
         }
 
         setMinHeight(maxHeight);

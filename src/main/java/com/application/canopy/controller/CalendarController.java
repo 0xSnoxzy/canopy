@@ -315,7 +315,6 @@ public class CalendarController {
 
             // 1. CARICAMENTO STILI GLOBALI (NECESSARIO PER LE VARIABILI -canopy-*)
             scene.getStylesheets().add(getClass().getResource("/css/base.css").toExternalForm());
-            // stats.css è già incluso nell'FXML, ma assicuriamoci
 
             // Caricamento Font
             com.application.canopy.model.FontManager.applyCurrentFont(scene);
@@ -352,27 +351,6 @@ public class CalendarController {
      * DETTAGLIO GIORNO / MESE
      * ======================
      */
-
-    private void showDayDetails(LocalDate date) {
-
-        rightTitle.setText("Piante del " + date);
-
-        listMonth.setVisible(false);
-        listMonth.setManaged(false);
-
-        // Prende (o ricarica) le statistiche del giorno
-        List<PlantStat> statsForDay = getStatsForDate(date);
-
-        listDay.setItems(FXCollections.observableArrayList(statsForDay));
-        listDay.setVisible(true);
-        listDay.setManaged(true);
-
-        int totalDay = statsForDay.stream().mapToInt(p -> p.minutes).sum();
-        summaryLabel.setText("Tot: " + totalDay + " min");
-
-        backToMonthBtn.setVisible(true);
-        backToMonthBtn.setManaged(true);
-    }
 
     private void backToMonth() {
         backToMonthBtn.setVisible(false);

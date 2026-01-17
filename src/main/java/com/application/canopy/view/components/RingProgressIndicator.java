@@ -18,7 +18,7 @@ public class RingProgressIndicator extends StackPane {
     private final Label label;
 
     public RingProgressIndicator(int size, double thickness) {
-        // BLOCCA dimensioni del nodo (fondamentale)
+        // BLOCCA dimensioni del nodo
         setPrefSize(size, size);
         setMinSize(size, size);
         setMaxSize(size, size);
@@ -34,7 +34,7 @@ public class RingProgressIndicator extends StackPane {
         Circle track = new Circle(radius, radius, radius - thickness / 2);
         track.getStyleClass().add("ring-track");
 
-        // cerchio interno (opzionale, per style)
+        // cerchio interno
         Circle inner = new Circle(radius, radius, radius - thickness - 2);
         inner.getStyleClass().add("ring-inner");
 

@@ -42,7 +42,7 @@ public class Main extends Application {
                 getClass().getResource("/com/application/canopy/view/app.fxml"));
         Parent root = loader.load();
 
-        Scene scene = new Scene(root, 1080, 620);
+        Scene scene = new Scene(root, 1280, 720);
 
         // Caricamento CSS
         String[] styles = {

@@ -533,7 +533,15 @@ public class HomeController {
     }
 
     private void setupPlantList() {
-        list.getItems().setAll(Plant.samplePlants());
+        // Filtra solo le piante sbloccate
+        var unlockedPlants = Plant.samplePlants().stream()
+                .filter(p -> {
+                    var state = gameState.getStateFor(p);
+                    return state != null && state.isUnlocked();
+                })
+                .toList();
+
+        list.getItems().setAll(unlockedPlants);
         list.setCellFactory(v -> new ListCell<>() {
             private final ImageView icon = new ImageView();
             private final Label title = new Label();

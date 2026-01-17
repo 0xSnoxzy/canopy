@@ -145,7 +145,11 @@ public class UserPlantState {
     }
 
     public void resetAll() {
-        this.unlocked = true;
+        // Non forziamo unlocked = true, altrimenti sblocca anche le piante speciali non
+        // ottenute.
+        // Manteniamo lo stato attuale (o se si vuole reset totale, bisognerebbe sapere
+        // se è speciale).
+        // Per ora rimuoviamo la riga che forza l'unlock.
         this.totalPomodori = 0;
         this.todayPomodori = 0;
         this.dead = false;

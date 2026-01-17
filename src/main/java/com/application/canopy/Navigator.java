@@ -45,7 +45,7 @@ public final class Navigator {
                 return;
             }
             try {
-                System.out.println("[Navigator] Caricamento lazy di: " + route);
+                System.out.println("[Navigator] Caricamento di: " + route);
                 FXMLLoader loader = new FXMLLoader(Navigator.class.getResource(fxmlPath));
                 page = loader.load();
                 PAGES.put(route, page);

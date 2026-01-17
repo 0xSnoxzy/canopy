@@ -218,7 +218,7 @@ public class HerbariumController {
         if (view == null || card == null)
             return;
         view.fitWidthProperty().bind(card.widthProperty());
-        // Non bindare l'altezza: lascia che sia l'aspect ratio a deciderla
+        // è l'aspect ratio a decidere l'altezza
         // view.fitHeightProperty().bind(card.heightProperty());
         view.setPreserveRatio(true);
         view.setSmooth(true);
