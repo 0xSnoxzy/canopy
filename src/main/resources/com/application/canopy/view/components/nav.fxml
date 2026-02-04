@@ -145,16 +145,5 @@
 
     </VBox>
 
-    <!-- Fondo: solo logout -->
-    <VBox alignment="BOTTOM_CENTER" spacing="8" styleClass="logout-section" VBox.vgrow="ALWAYS">
-        <Separator prefWidth="150"/>
 
-        <Button fx:id="btnLogout"
-                text="Logout"
-                contentDisplay="LEFT"
-                graphicTextGap="10"
-                maxWidth="Infinity"
-                styleClass="logout-button"
-                accessibleText="Esegui il logout"/>
-    </VBox>
 </VBox>

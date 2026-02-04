@@ -23,7 +23,7 @@ import java.util.function.Predicate;
 
 public class HerbariumController {
 
-    // Nomi categorie piante
+    // categorie piante
     public enum Category {
         ALL, COMUNI, RARE, SPECIALE
     }
@@ -54,6 +54,9 @@ public class HerbariumController {
         }
     }
 
+    // ---------- PATH IMMAGINI ----------
+    // (Gestite da ResourceManager)
+
     /** id/nome -> base file immagini (lavanda -> lavanda.png, lavanda1.jpg, ...) */
     private static final Map<String, String> IMAGE_BASES = Map.of(
             "lavanda", "lavanda",
@@ -65,7 +68,8 @@ public class HerbariumController {
             "lifeblood", "lifeblood",
             "sakura", "sakura");
 
-    // Board centrale
+    // ---------- FXML: BOARD CENTRALE ----------
+
     @FXML
     private StackPane herbRoot;
     @FXML
@@ -112,7 +116,7 @@ public class HerbariumController {
     @FXML
     private Label emptyHint;
 
-    // Sidebar destra
+    // ---------- FXML: SIDEBAR DESTRA ----------
 
     @FXML
     private TextField searchField;
@@ -128,6 +132,8 @@ public class HerbariumController {
     private FilteredList<PlantItem> filtered;
 
     private final GameState gameState = GameState.getInstance();
+
+    // ---------- INITIALIZE ----------
 
     @FXML
     private void initialize() {
@@ -166,20 +172,19 @@ public class HerbariumController {
             herbRoot.prefHeightProperty().bind(masonryBoard.heightProperty());
         }
 
-        // Collegamento clip <-> card
+        // BIND clip <-> card
         bindClipToCard(heroClip, heroCard);
         bindClipToCard(variant1Clip, variant1Card);
         bindClipToCard(variant2Clip, variant2Card);
         bindClipToCard(variant3Clip, variant3Card);
 
-        // Collegamento immagine <-> card: riempie il rettangolo mantenendo il ratio
+        // BIND immagine <-> card: riempie il rettangolo mantenendo il ratio
         bindImageToCard(plantIcon, heroCard);
         bindImageToCard(variant1Image, variant1Card);
         bindImageToCard(variant2Image, variant2Card);
         bindImageToCard(variant3Image, variant3Card);
 
-        // Selezione automatica pianta al primo caricamento dell'erbario
-        // Tramite il getter di gameState che prende la pianta caricata sulla home
+        // Auto-select plant
         String lastId = gameState.getCurrentPlantId();
         PlantItem toSelect = null;
 
@@ -189,7 +194,7 @@ public class HerbariumController {
                     .findFirst().orElse(null);
         }
 
-        // Se non ne trova prende la prima
+        // If not found (or no last selection), pick the first one
         if (toSelect == null && !filtered.isEmpty()) {
             toSelect = filtered.get(0);
         }
@@ -219,7 +224,7 @@ public class HerbariumController {
         view.setSmooth(true);
     }
 
-    // Costruzione della lista delle piante
+    // ---------- COSTRUZIONE LISTA ----------
 
     private void loadFromGameState() {
         source.clear();
@@ -257,7 +262,7 @@ public class HerbariumController {
         };
     }
 
-    // Filtri
+    // ---------- FILTRI ----------
 
     private void applyFilters() {
         if (filtered == null)
@@ -294,7 +299,7 @@ public class HerbariumController {
         return set;
     }
 
-    // Dettagli della pianta selezionata
+    // ---------- DETTAGLIO / BOARD ----------
 
     private void showPlant(PlantItem p) {
         if (p == null) {
@@ -329,7 +334,7 @@ public class HerbariumController {
         // icona principale
         plantIcon.setImage(loadPlantIconImage(p.plant));
 
-        // Immagini varianti
+        // varianti
         variant1Image.setImage(loadVariantImage(p.plant, 1));
         variant2Image.setImage(loadVariantImage(p.plant, 2));
         variant3Image.setImage(loadVariantImage(p.plant, 3));
@@ -361,7 +366,7 @@ public class HerbariumController {
         }
     }
 
-    // Caricamento delle immagini
+    // ---------- CARICAMENTO IMMAGINI ----------
 
     private String imageBaseFor(Plant plant) {
         String id = plant.getId().toLowerCase(Locale.ROOT);
@@ -380,9 +385,10 @@ public class HerbariumController {
         return id.replace(" ", "").replace("-", "_");
     }
 
+    /** ex loadHeroImage, ora icona principale */
     private Image loadPlantIconImage(Plant plant) {
         String base = imageBaseFor(plant);
-
+        // Usa il ResourceManager che gestisce i fallback
         return com.application.canopy.util.ResourceManager.loadFirstExisting(
                 "/com/application/canopy/view/components/images/thumbs/" + capitalizeFirst(base) + ".png",
                 "/com/application/canopy/view/components/images/thumbs/" + base + ".png",
@@ -402,13 +408,16 @@ public class HerbariumController {
         return img;
     }
 
+    // loadFirstExisting and loadImageFromResource removed - delegating to
+    // ResourceManager
+
     private static String capitalizeFirst(String s) {
         if (s == null || s.isEmpty())
             return s;
         return Character.toUpperCase(s.charAt(0)) + s.substring(1);
     }
 
-    // Lista delle piante a destra (celle)
+    // ---------- LISTVIEW CARD ----------
 
     private class PlantCardCell extends ListCell<PlantItem> {
         private final HBox root = new HBox(10);
@@ -423,8 +432,9 @@ public class HerbariumController {
         PlantCardCell() {
             root.getStyleClass().add("card");
             root.getStyleClass().add("plant-card");
-            root.setAlignment(Pos.CENTER_LEFT);
+            root.setAlignment(Pos.CENTER_LEFT); // Allinea tutto verticalmente al centro
 
+            // Container fisso 40x40 per l'icona, così è sempre centrata
             iconContainer.setMinSize(40, 40);
             iconContainer.setPrefSize(40, 40);
             iconContainer.setMaxSize(40, 40);
@@ -439,7 +449,7 @@ public class HerbariumController {
 
             HBox.setHgrow(spacer, Priority.ALWAYS);
             textBox.getChildren().addAll(title, subtitle);
-            // textBox.setAlignment(Pos.CENTER_LEFT);
+            // textBox.setAlignment(Pos.CENTER_LEFT); // opzionale
 
             root.getChildren().addAll(iconContainer, textBox, spacer, lock);
 

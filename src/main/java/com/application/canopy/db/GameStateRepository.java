@@ -47,7 +47,7 @@ public class GameStateRepository {
         }
     }
 
-    // Caricamento dei dati nuovi dall DB
+    // ----------------- CARICAMENTO -----------------
 
     public Map<String, String> loadGlobalState() {
         Map<String, String> data = new HashMap<>();
@@ -124,7 +124,7 @@ public class GameStateRepository {
         }
     }
 
-    // Salvataggio dei dati nuovi sul DB
+    // ----------------- SALVATAGGIO -----------------
 
     public void saveGlobalKey(String key, String value) {
         if (connection == null)
@@ -164,7 +164,7 @@ public class GameStateRepository {
         }
     }
 
-    // Metodi utili
+    // ----------------- UTILITY -----------------
 
     private Plant findPlantById(String id) {
         if (id == null)

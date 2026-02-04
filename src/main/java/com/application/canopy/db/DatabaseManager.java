@@ -7,12 +7,10 @@ public final class DatabaseManager {
 
     private static Connection connection;
 
-    private DatabaseManager() {
-    }
+    private DatabaseManager() { }
 
     public static void init() throws SQLException {
-        if (connection != null)
-            return;
+        if (connection != null) return;
 
         try {
             Class.forName("org.sqlite.JDBC");
@@ -20,8 +18,8 @@ public final class DatabaseManager {
             throw new SQLException("SQLite JDBC driver non trovato", e);
         }
 
-        // Posizione file DB: sottocartella progetto /data/canopy.db
-        Path baseDir = Paths.get(System.getProperty("user.dir"), "data");
+        // Posizione file DB: nella cartella utente, sottocartella .canopy
+        Path baseDir = Paths.get(System.getProperty("user.home"), ".canopy");
         try {
             Files.createDirectories(baseDir);
         } catch (Exception e) {
@@ -39,13 +37,13 @@ public final class DatabaseManager {
     private static void createTablesIfNeeded() throws SQLException {
         // tabella attività piante
         String sql1 = """
-                CREATE TABLE IF NOT EXISTS plant_activity (
-                    id          INTEGER PRIMARY KEY AUTOINCREMENT,
-                    date        TEXT    NOT NULL,
-                    plant_name  TEXT    NOT NULL,
-                    minutes     INTEGER NOT NULL
-                );
-                """;
+        CREATE TABLE IF NOT EXISTS plant_activity (
+            id          INTEGER PRIMARY KEY AUTOINCREMENT,
+            date        TEXT    NOT NULL,
+            plant_name  TEXT    NOT NULL,
+            minutes     INTEGER NOT NULL
+        );
+        """;
 
         try (Statement st = connection.createStatement()) {
             st.execute(sql1);
@@ -65,10 +63,7 @@ public final class DatabaseManager {
 
     public static void close() {
         if (connection != null) {
-            try {
-                connection.close();
-            } catch (SQLException ignored) {
-            }
+            try { connection.close(); } catch (SQLException ignored) {}
             connection = null;
         }
     }

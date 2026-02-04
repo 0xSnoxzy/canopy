@@ -38,7 +38,7 @@ public class NavController {
         return navBar;
     }
 
-    // Icone
+    // ---- Icone FXML ----
     @FXML
     private ImageView homeIcon;
     @FXML
@@ -49,10 +49,13 @@ public class NavController {
     private ImageView calendarIcon;
     @FXML
     private ImageView settingsIcon;
-    // @FXML private ImageView streakIcon;
+    // @FXML private ImageView streakIcon; // REMOVED (using emoji in label)
 
+    // tema corrente (stringa che manda il ThemeManager: "dark", "light",
+    // "sakura-dark", ecc.)
     private String currentThemeId = "dark";
 
+    // CACHE IMMAGINI: nere (stroke scuro) / bianche (stroke chiaro)
     private Image homeBlack;
     private Image homeWhite;
     private Image achievementsBlack;
@@ -63,21 +66,22 @@ public class NavController {
     private Image calendarWhite;
     private Image settingsBlack;
     private Image settingsWhite;
+    // Streak images removed
 
     @FXML
     private void initialize() {
         cacheIcons();
 
-        // Listener che chiama onThemeChanged quando il tema cambia
+        // ascolta i cambi tema
         ThemeManager.addThemeListener(this::onThemeChanged);
 
-        // Aggiorna le icone quando viene triggerato il listener
+        // ascolta i cambi selezione (per aggiornare le icone della pagina attiva)
         installSelectionListeners();
 
-        // Aggiorna le icone al primo avvio
+        // primo refresh
         onThemeChanged(currentThemeId);
 
-        // Aggiorna la streak
+        // Listen to streak updates
         GameState.getInstance().addStatsListener(this::refreshStreak);
         refreshStreak();
     }

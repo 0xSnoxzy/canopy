@@ -1,377 +1,414 @@
-/* ------------------------------------------------------------
-   0. BASE ROOT (font + aggancio ai token di tema)
-   ------------------------------------------------------------ */
+/* impostazioni root */
 
 .root {
-  /* font di default, poi possono arrivare le classi .font-* */
+  /* font di default */
   -fx-font-family: "AtkinsonHyperlegible";
   -fx-font-size: 14px;
 
-  /* i colori reali vengono da .root.theme-* */
+  /* valori di default (fallback per elementi senza tema, come i popup).
+     corrisponde al tema "evergreen dark" per evitare che l'interfaccia si rompa se manca la classe del tema. */
+  -canopy-bg: linear-gradient(to bottom, #0D130C, #151F12);
+  -canopy-surface: #233021;
+  -canopy-surface-2: #161F15;
+  -canopy-card: #313F2E;
+  -canopy-card-soft: rgba(49, 63, 46, 0.96);
+  -canopy-text: #E3F1D8;
+  -canopy-muted: #AEBFA3;
+  -canopy-accent: #75B548;
+  -canopy-accent-2: #C7E39A;
+  -canopy-bark: #8B6E4E;
+  -canopy-soil: #10160F;
+  -canopy-focus: rgba(199, 227, 154, 0.65);
+  -canopy-focus-soft: rgba(199, 227, 154, 0.20);
+  -canopy-danger: #FF7D7D;
+  -canopy-border-subtle: rgba(227, 241, 216, 0.12);
+  -canopy-border-strong: rgba(227, 241, 216, 0.28);
+  -canopy-accent-soft: rgba(152, 206, 115, 0.26);
+
   -fx-text-fill: -canopy-text;
-  -fx-base:   -canopy-surface;
+  -canopy-list-text-selected: -canopy-text;
+  -fx-base: -canopy-surface;
   -fx-accent: -canopy-accent;
 }
 
 
-/* ============================================================
-   1. PALETTE TEMI (SOLO TOKEN, NESSUN LAYOUT)
-   ============================================================ */
+/* palette temi */
 
-/* ---------- 1.1 Evergreen Core (dark / light) ---------- */
 
-/* Tema DARK – Evergreen Deep Forest 2.0 */
+/* evergreen dark */
+/* variabili:
+   -canopy-bg: sfondo principale della finestra
+   -canopy-surface: sfondo pannelli e carte
+   -canopy-text: colore testo principale
+   -canopy-accent: colore principale (bottoni, elementi attivi)
+   -canopy-focus: colore del contorno quando selezioni qualcosa
+*/
 .root.theme-dark {
-  /* BACKGROUND */
-  -canopy-bg:       linear-gradient(to bottom, #0D130C, #151F12);
 
-  /* SUPERFICI */
-  -canopy-surface:    #233021;
-  -canopy-surface-2:  #161F15;
-  -canopy-card:       #313F2E;
-  -canopy-card-soft:  rgba(49, 63, 46, 0.96);
+  -canopy-bg: linear-gradient(to bottom, #0D130C, #151F12);
 
-  /* TESTO */
-  -canopy-text:   #E3F1D8;
-  -canopy-muted:  #AEBFA3;
+  -canopy-surface: #233021;
+  -canopy-surface-2: #161F15;
+  -canopy-card: #313F2E;
+  -canopy-card-soft: rgba(49, 63, 46, 0.96);
 
-  /* ACCENTI */
-  -canopy-accent:   #75B548;
+  -canopy-text: #E3F1D8;
+  -canopy-muted: #AEBFA3;
+
+  -canopy-accent: #75B548;
   -canopy-accent-2: #C7E39A;
-  -canopy-bark:     #8B6E4E;
-  -canopy-soil:     #10160F;
+  -canopy-bark: #8B6E4E;
+  -canopy-soil: #10160F;
 
-  /* FOCUS / DANGER / BORDI */
-  -canopy-focus:        rgba(199, 227, 154, 0.65);
-  -canopy-focus-soft:   rgba(199, 227, 154, 0.20);
-  -canopy-danger:       #FF7D7D;
+  -canopy-focus: rgba(199, 227, 154, 0.65);
+  -canopy-focus-soft: rgba(199, 227, 154, 0.20);
+  -canopy-danger: #FF7D7D;
   -canopy-border-subtle: rgba(227, 241, 216, 0.12);
   -canopy-border-strong: rgba(227, 241, 216, 0.28);
-  -canopy-accent-soft:   rgba(152, 206, 115, 0.26);
+  -canopy-accent-soft: rgba(152, 206, 115, 0.26);
+  -canopy-list-text-selected: -canopy-text;
 }
 
-/* Tema LIGHT – Evergreen Garden 2.0 */
+/* evergreen light */
 .root.theme-light {
-  /* BACKGROUND */
-  -canopy-bg:       linear-gradient(to bottom, #E6F2DC, #D3E4C6);
+  -canopy-bg: linear-gradient(to bottom, #E6F2DC, #D3E4C6);
 
-  /* SUPERFICI */
-  -canopy-surface:    #D3E4C6;
-  -canopy-surface-2:  #C3D5B5;
-  -canopy-card:       #E6F2DC;
-  -canopy-card-soft:  rgba(230, 242, 220, 0.96);
+  -canopy-surface: #D3E4C6;
+  -canopy-surface-2: #C3D5B5;
+  -canopy-card: #E6F2DC;
+  -canopy-card-soft: rgba(230, 242, 220, 0.96);
 
-  /* TESTO */
-  -canopy-text:   #1B2616;
-  -canopy-muted:  #4F6445;
+  -canopy-text: #1B2616;
+  -canopy-muted: #4F6445;
 
-  /* ACCENTI */
-  -canopy-accent:   #4D8F2F;
+  -canopy-accent: #4D8F2F;
   -canopy-accent-2: #31581D;
-  -canopy-bark:     #7B9C54;
-  -canopy-soil:     #8AA36C;
+  -canopy-bark: #7B9C54;
+  -canopy-soil: #8AA36C;
 
-  /* FOCUS / DANGER / BORDI */
-  -canopy-focus:        rgba(77, 143, 47, 0.32);
-  -canopy-focus-soft:   rgba(77, 143, 47, 0.16);
-  -canopy-danger:       #E04D4D;
+  -canopy-focus: rgba(77, 143, 47, 0.32);
+  -canopy-focus-soft: rgba(77, 143, 47, 0.16);
+  -canopy-danger: #E04D4D;
   -canopy-border-subtle: rgba(27, 38, 22, 0.09);
   -canopy-border-strong: rgba(27, 38, 22, 0.20);
-  -canopy-accent-soft:   rgba(77, 143, 47, 0.20);
+  -canopy-accent-soft: rgba(77, 143, 47, 0.20);
+  -canopy-list-text-selected: -canopy-text;
 }
 
 
-/* ---------- 1.2 Sakura ---------- */
+/* sakura light */
 
 .root.theme-sakura-light {
-  -canopy-bg:          linear-gradient(to bottom, #FFEAF3, #FFD6E8);
-  -canopy-surface:     #F9CADA;
-  -canopy-surface-2:   #F4B5CA;
-  -canopy-card:        #FFD6E8;
-  -canopy-card-soft:   rgba(255, 214, 232, 0.92);
+  -canopy-bg: linear-gradient(to bottom, #FFEAF3, #FFD6E8);
+  -canopy-surface: #F9CADA;
+  -canopy-surface-2: #F4B5CA;
+  -canopy-card: #FFD6E8;
+  -canopy-card-soft: rgba(255, 214, 232, 0.92);
 
-  -canopy-text:        #5A2D3E;
-  -canopy-muted:       #8A5065;
+  -canopy-text: #5A2D3E;
+  -canopy-muted: #8A5065;
 
-  -canopy-accent:      #E7639E;
-  -canopy-accent-2:    #C23F78;
-  -canopy-bark:        #A75C6F;
-  -canopy-soil:        #E1A2B8;
+  -canopy-accent: #E7639E;
+  -canopy-accent-2: #C23F78;
+  -canopy-bark: #A75C6F;
+  -canopy-soil: #E1A2B8;
 
-  -canopy-focus:        rgba(231, 99, 158, 0.45);
-  -canopy-focus-soft:   rgba(231, 99, 158, 0.18);
+  -canopy-focus: rgba(231, 99, 158, 0.45);
+  -canopy-focus-soft: rgba(231, 99, 158, 0.18);
   -canopy-border-subtle: rgba(90, 45, 62, 0.10);
   -canopy-border-strong: rgba(90, 45, 62, 0.20);
-  -canopy-accent-soft:   rgba(231, 99, 158, 0.22);
+  -canopy-accent-soft: rgba(231, 99, 158, 0.22);
+  -canopy-list-text-selected: black;
 }
+
+/* sakura dark*/
 
 .root.theme-sakura-dark {
-  -canopy-bg:          linear-gradient(to bottom, #1C0E14, #26101B);
-  -canopy-surface:     #3A1C2A;
-  -canopy-surface-2:   #2B1521;
-  -canopy-card:        #4A2334;
-  -canopy-card-soft:   rgba(74, 35, 52, 0.96);
+  -canopy-bg: linear-gradient(to bottom, #1C0E14, #26101B);
+  -canopy-surface: #3A1C2A;
+  -canopy-surface-2: #2B1521;
+  -canopy-card: #4A2334;
+  -canopy-card-soft: rgba(74, 35, 52, 0.96);
 
-  -canopy-text:        #FDE8F0;
-  -canopy-muted:       #E7B4CB;
+  -canopy-text: #FDE8F0;
+  -canopy-muted: #E7B4CB;
 
-  -canopy-accent:      #E7639E;
-  -canopy-accent-2:    #FF9BC5;
-  -canopy-bark:        #B96A8C;
-  -canopy-soil:        #42202F;
+  -canopy-accent: #E7639E;
+  -canopy-accent-2: #FF9BC5;
+  -canopy-bark: #B96A8C;
+  -canopy-soil: #42202F;
 
-  -canopy-focus:        rgba(231, 99, 158, 0.55);
-  -canopy-focus-soft:   rgba(231, 99, 158, 0.20);
+  -canopy-focus: rgba(231, 99, 158, 0.55);
+  -canopy-focus-soft: rgba(231, 99, 158, 0.20);
   -canopy-border-subtle: rgba(253, 232, 240, 0.12);
   -canopy-border-strong: rgba(253, 232, 240, 0.26);
-  -canopy-accent-soft:   rgba(231, 99, 158, 0.28);
+  -canopy-accent-soft: rgba(231, 99, 158, 0.28);
+  -canopy-list-text-selected: white;
 }
 
 
-/* ---------- 1.3 Quercia ---------- */
+/* quercia light */
 
 .root.theme-quercia-light {
-  -canopy-bg:          linear-gradient(to bottom, #E8EFE3, #D9E5D1);
-  -canopy-surface:     #C9D7BC;
-  -canopy-surface-2:   #B7C8A8;
-  -canopy-card:        #D9E5D1;
-  -canopy-card-soft:   rgba(217, 229, 209, 0.94);
+  -canopy-bg: linear-gradient(to bottom, #E8EFE3, #D9E5D1);
+  -canopy-surface: #C9D7BC;
+  -canopy-surface-2: #B7C8A8;
+  -canopy-card: #D9E5D1;
+  -canopy-card-soft: rgba(217, 229, 209, 0.94);
 
-  -canopy-text:        #2F3C25;
-  -canopy-muted:       #56694A;
+  -canopy-text: #2F3C25;
+  -canopy-muted: #56694A;
 
-  -canopy-accent:      #6F8E54;
-  -canopy-accent-2:    #4D623C;
-  -canopy-bark:        #7B5A40;
-  -canopy-soil:        #A87D55;
+  -canopy-accent: #6F8E54;
+  -canopy-accent-2: #4D623C;
+  -canopy-bark: #7B5A40;
+  -canopy-soil: #A87D55;
 
-  -canopy-focus:        rgba(111, 142, 84, 0.45);
-  -canopy-focus-soft:   rgba(111, 142, 84, 0.18);
+  -canopy-focus: rgba(111, 142, 84, 0.45);
+  -canopy-focus-soft: rgba(111, 142, 84, 0.18);
   -canopy-border-subtle: rgba(47, 60, 37, 0.10);
   -canopy-border-strong: rgba(47, 60, 37, 0.20);
-  -canopy-accent-soft:   rgba(111, 142, 84, 0.22);
+  -canopy-accent-soft: rgba(111, 142, 84, 0.22);
+  -canopy-list-text-selected: black;
 }
+
+/* quercia dark */
 
 .root.theme-quercia-dark {
-  -canopy-bg:          linear-gradient(to bottom, #11150E, #161C11);
-  -canopy-surface:     #222A1B;
-  -canopy-surface-2:   #171E13;
-  -canopy-card:        #2E3823;
-  -canopy-card-soft:   rgba(46, 56, 35, 0.96);
+  -canopy-bg: linear-gradient(to bottom, #11150E, #161C11);
+  -canopy-surface: #222A1B;
+  -canopy-surface-2: #171E13;
+  -canopy-card: #2E3823;
+  -canopy-card-soft: rgba(46, 56, 35, 0.96);
 
-  -canopy-text:        #E4F0D9;
-  -canopy-muted:       #B7C7A6;
+  -canopy-text: #E4F0D9;
+  -canopy-muted: #B7C7A6;
 
-  -canopy-accent:      #6F8E54;
-  -canopy-accent-2:    #94B06E;
-  -canopy-bark:        #8C6944;
-  -canopy-soil:        #3A2A1A;
+  -canopy-accent: #6F8E54;
+  -canopy-accent-2: #94B06E;
+  -canopy-bark: #8C6944;
+  -canopy-soil: #3A2A1A;
 
-  -canopy-focus:        rgba(148, 176, 110, 0.55);
-  -canopy-focus-soft:   rgba(148, 176, 110, 0.22);
+  -canopy-focus: rgba(148, 176, 110, 0.55);
+  -canopy-focus-soft: rgba(148, 176, 110, 0.22);
   -canopy-border-subtle: rgba(228, 240, 217, 0.10);
   -canopy-border-strong: rgba(228, 240, 217, 0.22);
-  -canopy-accent-soft:   rgba(148, 176, 110, 0.26);
+  -canopy-accent-soft: rgba(148, 176, 110, 0.26);
+  -canopy-list-text-selected: white;
 }
 
 
-/* ---------- 1.4 Menta ---------- */
+/* menta light */
 
 .root.theme-menta-light {
-  -canopy-bg:          linear-gradient(to bottom, #DAFFF1, #C4F7E4);
-  -canopy-surface:     #B3ECDC;
-  -canopy-surface-2:   #A0E3D0;
-  -canopy-card:        #D0F7EC;
-  -canopy-card-soft:   rgba(208, 247, 236, 0.92);
+  -canopy-bg: linear-gradient(to bottom, #DAFFF1, #C4F7E4);
+  -canopy-surface: #B3ECDC;
+  -canopy-surface-2: #A0E3D0;
+  -canopy-card: #D0F7EC;
+  -canopy-card-soft: rgba(208, 247, 236, 0.92);
 
-  -canopy-text:        #1E3F38;
-  -canopy-muted:       #41756B;
+  -canopy-text: #1E3F38;
+  -canopy-muted: #41756B;
 
-  -canopy-accent:      #4AC9A6;
-  -canopy-accent-2:    #2EA487;
-  -canopy-bark:        #63B29A;
-  -canopy-soil:        #4F8F7F;
+  -canopy-accent: #4AC9A6;
+  -canopy-accent-2: #2EA487;
+  -canopy-bark: #63B29A;
+  -canopy-soil: #4F8F7F;
 
-  -canopy-focus:        rgba(74, 201, 166, 0.45);
-  -canopy-focus-soft:   rgba(74, 201, 166, 0.18);
+  -canopy-focus: rgba(74, 201, 166, 0.45);
+  -canopy-focus-soft: rgba(74, 201, 166, 0.18);
   -canopy-border-subtle: rgba(30, 63, 56, 0.10);
   -canopy-border-strong: rgba(30, 63, 56, 0.20);
-  -canopy-accent-soft:   rgba(74, 201, 166, 0.22);
+  -canopy-accent-soft: rgba(74, 201, 166, 0.22);
+  -canopy-list-text-selected: black;
 }
+
+/* menta dark */
 
 .root.theme-menta-dark {
-  -canopy-bg:          linear-gradient(to bottom, #071814, #0C221D);
-  -canopy-surface:     #12332A;
-  -canopy-surface-2:   #0D2520;
-  -canopy-card:        #164036;
-  -canopy-card-soft:   rgba(22, 64, 54, 0.96);
+  -canopy-bg: linear-gradient(to bottom, #071814, #0C221D);
+  -canopy-surface: #12332A;
+  -canopy-surface-2: #0D2520;
+  -canopy-card: #164036;
+  -canopy-card-soft: rgba(22, 64, 54, 0.96);
 
-  -canopy-text:        #D5FFF3;
-  -canopy-muted:       #9DD7C6;
+  -canopy-text: #D5FFF3;
+  -canopy-muted: #9DD7C6;
 
-  -canopy-accent:      #4AC9A6;
-  -canopy-accent-2:    #7AE0BF;
-  -canopy-bark:        #4D9B84;
-  -canopy-soil:        #193730;
+  -canopy-accent: #4AC9A6;
+  -canopy-accent-2: #7AE0BF;
+  -canopy-bark: #4D9B84;
+  -canopy-soil: #193730;
 
-  -canopy-focus:        rgba(74, 201, 166, 0.55);
-  -canopy-focus-soft:   rgba(74, 201, 166, 0.22);
+  -canopy-focus: rgba(74, 201, 166, 0.55);
+  -canopy-focus-soft: rgba(74, 201, 166, 0.22);
   -canopy-border-subtle: rgba(213, 255, 243, 0.10);
   -canopy-border-strong: rgba(213, 255, 243, 0.22);
-  -canopy-accent-soft:   rgba(74, 201, 166, 0.26);
+  -canopy-accent-soft: rgba(74, 201, 166, 0.26);
+  -canopy-list-text-selected: white;
 }
 
 
-/* ---------- 1.5 Peperoncino ---------- */
+/* peperoncino light */
 
 .root.theme-peperoncino-light {
-  -canopy-bg:          linear-gradient(to bottom, #FFE1E1, #FFCBCB);
-  -canopy-surface:     #FFB4B4;
-  -canopy-surface-2:   #FF9B9B;
-  -canopy-card:        #FFC7C7;
-  -canopy-card-soft:   rgba(255, 199, 199, 0.92);
+  -canopy-bg: linear-gradient(to bottom, #FFE1E1, #FFCBCB);
+  -canopy-surface: #FFB4B4;
+  -canopy-surface-2: #FF9B9B;
+  -canopy-card: #FFC7C7;
+  -canopy-card-soft: rgba(255, 199, 199, 0.92);
 
-  -canopy-text:        #4A2020;
-  -canopy-muted:       #824646;
+  -canopy-text: #4A2020;
+  -canopy-muted: #824646;
 
-  -canopy-accent:      #E03E3E;
-  -canopy-accent-2:    #B52D2D;
-  -canopy-bark:        #A44747;
-  -canopy-soil:        #CE6464;
+  -canopy-accent: #E03E3E;
+  -canopy-accent-2: #B52D2D;
+  -canopy-bark: #A44747;
+  -canopy-soil: #CE6464;
 
-  -canopy-focus:        rgba(224, 62, 62, 0.50);
-  -canopy-focus-soft:   rgba(224, 62, 62, 0.20);
+  -canopy-focus: rgba(224, 62, 62, 0.50);
+  -canopy-focus-soft: rgba(224, 62, 62, 0.20);
   -canopy-border-subtle: rgba(74, 32, 32, 0.10);
   -canopy-border-strong: rgba(74, 32, 32, 0.20);
-  -canopy-accent-soft:   rgba(224, 62, 62, 0.22);
+  -canopy-accent-soft: rgba(224, 62, 62, 0.22);
+  -canopy-list-text-selected: black;
 }
+
+/* peperoncino dark */
 
 .root.theme-peperoncino-dark {
-  -canopy-bg:          linear-gradient(to bottom, #190707, #210909);
-  -canopy-surface:     #311012;
-  -canopy-surface-2:   #240A0C;
-  -canopy-card:        #3F1719;
-  -canopy-card-soft:   rgba(63, 23, 25, 0.96);
+  -canopy-bg: linear-gradient(to bottom, #190707, #210909);
+  -canopy-surface: #311012;
+  -canopy-surface-2: #240A0C;
+  -canopy-card: #3F1719;
+  -canopy-card-soft: rgba(63, 23, 25, 0.96);
 
-  -canopy-text:        #FFE5E5;
-  -canopy-muted:       #F0A3A3;
+  -canopy-text: #FFE5E5;
+  -canopy-muted: #F0A3A3;
 
-  -canopy-accent:      #E03E3E;
-  -canopy-accent-2:    #FF6B6B;
-  -canopy-bark:        #B35353;
-  -canopy-soil:        #361212;
+  -canopy-accent: #E03E3E;
+  -canopy-accent-2: #FF6B6B;
+  -canopy-bark: #B35353;
+  -canopy-soil: #361212;
 
-  -canopy-focus:        rgba(255, 107, 107, 0.54);
-  -canopy-focus-soft:   rgba(255, 107, 107, 0.22);
+  -canopy-focus: rgba(255, 107, 107, 0.54);
+  -canopy-focus-soft: rgba(255, 107, 107, 0.22);
   -canopy-border-subtle: rgba(255, 229, 229, 0.10);
   -canopy-border-strong: rgba(255, 229, 229, 0.22);
-  -canopy-accent-soft:   rgba(224, 62, 62, 0.28);
+  -canopy-accent-soft: rgba(224, 62, 62, 0.28);
+  -canopy-list-text-selected: white;
 }
 
 
-/* ---------- 1.6 Lavanda ---------- */
+/* lavanda light */
 
 .root.theme-lavanda-light {
-  -canopy-bg:          linear-gradient(to bottom, #F1E7FF, #E3D6FF);
-  -canopy-surface:     #D6C5FF;
-  -canopy-surface-2:   #C7B1FA;
-  -canopy-card:        #E4D8FF;
-  -canopy-card-soft:   rgba(228, 216, 255, 0.92);
+  -canopy-bg: linear-gradient(to bottom, #F1E7FF, #E3D6FF);
+  -canopy-surface: #D6C5FF;
+  -canopy-surface-2: #C7B1FA;
+  -canopy-card: #E4D8FF;
+  -canopy-card-soft: rgba(228, 216, 255, 0.92);
 
-  -canopy-text:        #3B2A5A;
-  -canopy-muted:       #675A89;
+  -canopy-text: #3B2A5A;
+  -canopy-muted: #675A89;
 
-  -canopy-accent:      #8C6FE8;
-  -canopy-accent-2:    #6B4EC6;
-  -canopy-bark:        #7C66B8;
-  -canopy-soil:        #A594D6;
+  -canopy-accent: #8C6FE8;
+  -canopy-accent-2: #6B4EC6;
+  -canopy-bark: #7C66B8;
+  -canopy-soil: #A594D6;
 
-  -canopy-focus:        rgba(140, 111, 232, 0.42);
-  -canopy-focus-soft:   rgba(140, 111, 232, 0.18);
+  -canopy-focus: rgba(140, 111, 232, 0.42);
+  -canopy-focus-soft: rgba(140, 111, 232, 0.18);
   -canopy-border-subtle: rgba(59, 42, 90, 0.10);
   -canopy-border-strong: rgba(59, 42, 90, 0.20);
-  -canopy-accent-soft:   rgba(140, 111, 232, 0.22);
+  -canopy-accent-soft: rgba(140, 111, 232, 0.22);
+  -canopy-list-text-selected: black;
 }
+
+/* lavanda dark */
 
 .root.theme-lavanda-dark {
-  -canopy-bg:          linear-gradient(to bottom, #150F22, #1C142E);
-  -canopy-surface:     #261A3C;
-  -canopy-surface-2:   #1D1430;
-  -canopy-card:        #302149;
-  -canopy-card-soft:   rgba(48, 33, 73, 0.96);
+  -canopy-bg: linear-gradient(to bottom, #150F22, #1C142E);
+  -canopy-surface: #261A3C;
+  -canopy-surface-2: #1D1430;
+  -canopy-card: #302149;
+  -canopy-card-soft: rgba(48, 33, 73, 0.96);
 
-  -canopy-text:        #F2E8FF;
-  -canopy-muted:       #C1ACF1;
+  -canopy-text: #F2E8FF;
+  -canopy-muted: #C1ACF1;
 
-  -canopy-accent:      #8C6FE8;
-  -canopy-accent-2:    #B396FF;
-  -canopy-bark:        #7359C5;
-  -canopy-soil:        #241736;
+  -canopy-accent: #8C6FE8;
+  -canopy-accent-2: #B396FF;
+  -canopy-bark: #7359C5;
+  -canopy-soil: #241736;
 
-  -canopy-focus:        rgba(179, 150, 255, 0.50);
-  -canopy-focus-soft:   rgba(179, 150, 255, 0.22);
+  -canopy-focus: rgba(179, 150, 255, 0.50);
+  -canopy-focus-soft: rgba(179, 150, 255, 0.22);
   -canopy-border-subtle: rgba(242, 232, 255, 0.10);
   -canopy-border-strong: rgba(242, 232, 255, 0.22);
-  -canopy-accent-soft:   rgba(140, 111, 232, 0.28);
+  -canopy-accent-soft: rgba(140, 111, 232, 0.28);
+  -canopy-list-text-selected: white;
 }
 
 
-/* ---------- 1.7 Orchidea ---------- */
+/* orchidea light */
 
 .root.theme-orchidea-light {
-  -canopy-bg:          linear-gradient(to bottom, #F3E6FF, #EDD7FF);
-  -canopy-surface:     #E0C7FF;
-  -canopy-surface-2:   #D1AFFF;
-  -canopy-card:        #E9D6FF;
-  -canopy-card-soft:   rgba(233, 214, 255, 0.92);
+  -canopy-bg: linear-gradient(to bottom, #F3E6FF, #EDD7FF);
+  -canopy-surface: #E0C7FF;
+  -canopy-surface-2: #D1AFFF;
+  -canopy-card: #E9D6FF;
+  -canopy-card-soft: rgba(233, 214, 255, 0.92);
 
-  -canopy-text:        #402856;
-  -canopy-muted:       #6C5687;
+  -canopy-text: #402856;
+  -canopy-muted: #6C5687;
 
-  -canopy-accent:      #B375FF;
-  -canopy-accent-2:    #8A52D4;
-  -canopy-bark:        #9864C6;
-  -canopy-soil:        #B58CE0;
+  -canopy-accent: #B375FF;
+  -canopy-accent-2: #8A52D4;
+  -canopy-bark: #9864C6;
+  -canopy-soil: #B58CE0;
 
-  -canopy-focus:        rgba(179, 117, 255, 0.45);
-  -canopy-focus-soft:   rgba(179, 117, 255, 0.18);
+  -canopy-focus: rgba(179, 117, 255, 0.45);
+  -canopy-focus-soft: rgba(179, 117, 255, 0.18);
   -canopy-border-subtle: rgba(64, 40, 86, 0.10);
   -canopy-border-strong: rgba(64, 40, 86, 0.20);
-  -canopy-accent-soft:   rgba(179, 117, 255, 0.23);
+  -canopy-accent-soft: rgba(179, 117, 255, 0.23);
+  -canopy-list-text-selected: black;
 }
+
+/* orchidea dark */
 
 .root.theme-orchidea-dark {
-  -canopy-bg:          linear-gradient(to bottom, #160D26, #1C1030);
-  -canopy-surface:     #28143E;
-  -canopy-surface-2:   #1F0F32;
-  -canopy-card:        #341A4E;
-  -canopy-card-soft:   rgba(52, 26, 78, 0.96);
+  -canopy-bg: linear-gradient(to bottom, #160D26, #1C1030);
+  -canopy-surface: #28143E;
+  -canopy-surface-2: #1F0F32;
+  -canopy-card: #341A4E;
+  -canopy-card-soft: rgba(52, 26, 78, 0.96);
 
-  -canopy-text:        #F7EBFF;
-  -canopy-muted:       #D0B2F5;
+  -canopy-text: #F7EBFF;
+  -canopy-muted: #D0B2F5;
 
-  -canopy-accent:      #B375FF;
-  -canopy-accent-2:    #D3A4FF;
-  -canopy-bark:        #8F5DD3;
-  -canopy-soil:        #261337;
+  -canopy-accent: #B375FF;
+  -canopy-accent-2: #D3A4FF;
+  -canopy-bark: #8F5DD3;
+  -canopy-soil: #261337;
 
-  -canopy-focus:        rgba(211, 164, 255, 0.50);
-  -canopy-focus-soft:   rgba(211, 164, 255, 0.22);
+  -canopy-focus: rgba(211, 164, 255, 0.50);
+  -canopy-focus-soft: rgba(211, 164, 255, 0.22);
   -canopy-border-subtle: rgba(247, 235, 255, 0.10);
   -canopy-border-strong: rgba(247, 235, 255, 0.22);
-  -canopy-accent-soft:   rgba(179, 117, 255, 0.28);
+  -canopy-accent-soft: rgba(179, 117, 255, 0.28);
+  -canopy-list-text-selected: white;
 }
 
-/* ============================================================
-   2. OVERRIDE SELEZIONI PER TEMA
-   ============================================================ */
+/* override selezioni per tema */
 
-/* LIGHT MODE – selezioni più soft, simili all'hover */
+/* light mode: selezioni soft */
 .root.theme-light .toggle-button:selected {
   -fx-background-color:
-      linear-gradient(to right,
-        -canopy-accent-soft,
-        derive(-canopy-accent-soft, 15%));
+    linear-gradient(to right,
+      -canopy-accent-soft,
+      derive(-canopy-accent-soft, 15%));
   -fx-text-fill: -canopy-text;
   -fx-font-weight: 900;
   -fx-border-color: -canopy-border-strong;
@@ -381,27 +418,27 @@
 .root.theme-light .list-cell:selected,
 .root.theme-light .list-cell:filled:selected:hover {
   -fx-background-color:
-      linear-gradient(to right,
-        -canopy-accent-soft,
-        derive(-canopy-accent-soft, 10%));
+    linear-gradient(to right,
+      -canopy-accent-soft,
+      derive(-canopy-accent-soft, 10%));
   -fx-text-fill: -canopy-text;
 }
 
 .root.theme-light .chip:selected {
   -fx-background-color:
-      linear-gradient(to right,
-        -canopy-accent-soft,
-        derive(-canopy-accent-soft, 12%));
+    linear-gradient(to right,
+      -canopy-accent-soft,
+      derive(-canopy-accent-soft, 12%));
   -fx-text-fill: -canopy-text;
   -fx-border-color: transparent;
 }
 
-/* DARK MODE – selezioni più leggere ma “deep forest” */
+/* dark mode: selezioni leggere */
 .root.theme-dark .toggle-button:selected {
   -fx-background-color:
-      linear-gradient(to right,
-        -canopy-accent-soft,
-        derive(-canopy-accent-soft, 8%));
+    linear-gradient(to right,
+      -canopy-accent-soft,
+      derive(-canopy-accent-soft, 8%));
   -fx-text-fill: -canopy-text;
   -fx-font-weight: 900;
   -fx-border-color: -canopy-border-strong;
@@ -411,29 +448,29 @@
 .root.theme-dark .list-cell:selected,
 .root.theme-dark .list-cell:filled:selected:hover {
   -fx-background-color:
-      linear-gradient(to right,
-        -canopy-accent-soft,
-        derive(-canopy-accent-soft, 5%));
+    linear-gradient(to right,
+      -canopy-accent-soft,
+      derive(-canopy-accent-soft, 5%));
   -fx-text-fill: -canopy-text;
 }
 
 .root.theme-dark .chip:selected {
   -fx-background-color:
-      linear-gradient(to right,
-        -canopy-accent-soft,
-        derive(-canopy-accent-soft, 10%));
+    linear-gradient(to right,
+      -canopy-accent-soft,
+      derive(-canopy-accent-soft, 10%));
   -fx-text-fill: -canopy-text;
   -fx-border-color: transparent;
 }
 
-/* Tema DALTONICI (light + dark) – selezioni ultra visibili */
+/* tema daltonici (light + dark) */
 
-/* LIGHT */
+/* light */
 .root.theme-daltonici-light .toggle-button:selected {
   -fx-background-color:
-      linear-gradient(to right,
-        -canopy-accent-soft,
-        derive(-canopy-accent-soft, 15%));
+    linear-gradient(to right,
+      -canopy-accent-soft,
+      derive(-canopy-accent-soft, 15%));
   -fx-text-fill: -canopy-text;
   -fx-font-weight: 900;
   -fx-border-color: -canopy-border-strong;
@@ -443,9 +480,9 @@
 .root.theme-daltonici-light .list-cell:selected,
 .root.theme-daltonici-light .list-cell:filled:selected:hover {
   -fx-background-color:
-      linear-gradient(to right,
-        -canopy-accent-soft,
-        derive(-canopy-accent-soft, 10%));
+    linear-gradient(to right,
+      -canopy-accent-soft,
+      derive(-canopy-accent-soft, 10%));
   -fx-text-fill: -canopy-text;
   -fx-border-color: -canopy-border-strong;
   -fx-border-width: 2;
@@ -453,20 +490,20 @@
 
 .root.theme-daltonici-light .chip:selected {
   -fx-background-color:
-      linear-gradient(to right,
-        -canopy-accent-soft,
-        derive(-canopy-accent-soft, 12%));
+    linear-gradient(to right,
+      -canopy-accent-soft,
+      derive(-canopy-accent-soft, 12%));
   -fx-text-fill: -canopy-text;
   -fx-border-color: -canopy-border-strong;
   -fx-border-width: 2;
 }
 
-/* DARK */
+/* dark */
 .root.theme-daltonici-dark .toggle-button:selected {
   -fx-background-color:
-      linear-gradient(to right,
-        -canopy-accent-soft,
-        derive(-canopy-accent-soft, 12%));
+    linear-gradient(to right,
+      -canopy-accent-soft,
+      derive(-canopy-accent-soft, 12%));
   -fx-text-fill: -canopy-text;
   -fx-font-weight: 900;
   -fx-border-color: -canopy-border-strong;
@@ -476,9 +513,9 @@
 .root.theme-daltonici-dark .list-cell:selected,
 .root.theme-daltonici-dark .list-cell:filled:selected:hover {
   -fx-background-color:
-      linear-gradient(to right,
-        -canopy-accent-soft,
-        derive(-canopy-accent-soft, 8%));
+    linear-gradient(to right,
+      -canopy-accent-soft,
+      derive(-canopy-accent-soft, 8%));
   -fx-text-fill: -canopy-text;
   -fx-border-color: -canopy-border-strong;
   -fx-border-width: 2;
@@ -486,27 +523,23 @@
 
 .root.theme-daltonici-dark .chip:selected {
   -fx-background-color:
-      linear-gradient(to right,
-        -canopy-accent-soft,
-        derive(-canopy-accent-soft, 10%));
+    linear-gradient(to right,
+      -canopy-accent-soft,
+      derive(-canopy-accent-soft, 10%));
   -fx-text-fill: -canopy-text;
   -fx-border-color: -canopy-border-strong;
   -fx-border-width: 2;
 }
 
-/* NB: gli altri temi usano ancora le regole di base (.toggle-button:selected, ecc.) */
+/* gli altri temi usano ancora le regole di base  */
 
 
-/* ============================================================
-   3. TIPOGRAFIA GENERALE
-   ============================================================ */
+/* testi */
 
 .label {
   -fx-text-fill: -canopy-text;
 }
 
-/* testo attenuato, riusato un po’ ovunque */
-.subtle,
 .muted {
   -fx-text-fill: -canopy-muted;
 }
@@ -519,17 +552,6 @@
   -fx-effect: dropshadow(gaussian, -canopy-focus-soft, 16, 0.3, 0, 3);
 }
 
-/* mini heading tipo “IMPOSTAZIONI” */
-.heading-chip {
-  -fx-font-size: 11px;
-  -fx-font-weight: 700;
-  -fx-text-fill: -canopy-muted;
-  -fx-background-color: -canopy-accent-soft;
-  -fx-background-radius: 999;
-  -fx-padding: 3 8;
-  -fx-border-color: -canopy-border-subtle;
-  -fx-border-radius: 999;
-}
 
 /* separatori orizzontali */
 .separator *.line {
@@ -538,9 +560,7 @@
 }
 
 
-/* ============================================================
-   4. NAVIGAZIONE LATERALE
-   ============================================================ */
+/* sidebar */
 
 .sidebar {
   -fx-background-color:
@@ -549,10 +569,10 @@
   -fx-spacing: 12;
   -fx-border-color: -canopy-border-strong;
   -fx-border-width: 0 1 0 0;
-  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.45), 18, 0.35, 0, 0);
+  -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.45), 18, 0.35, 0, 0);
 }
 
-/* etichetta punteggio monete */
+/* etichetta streak giornaliera */
 .points-label {
   -fx-background-color:
     linear-gradient(to bottom, -canopy-card, -canopy-surface-2);
@@ -565,8 +585,9 @@
   -fx-effect: dropshadow(gaussian, -canopy-focus-soft, 10, 0.35, 0, 2);
 }
 
-.menu-section  { -fx-spacing: 10; }
-.logout-section{ -fx-spacing: 10; }
+.menu-section {
+  -fx-spacing: 10;
+}
 
 /* bottoni nav generici + bottoni base */
 .nav-button,
@@ -590,18 +611,18 @@
   -fx-background-color: transparent;
 }
 
-/* hover nav: soft highlight */
+/* hover nav */
 .nav-button:hover,
 .toggle-button:hover {
   -fx-background-color: -canopy-accent-soft;
 }
 
-/* fallback per selected (poi i temi possono overridare) */
+/* fallback per selected */
 .toggle-button:selected {
   -fx-background-color:
-      linear-gradient(to right,
-        derive(-canopy-accent-2, 10%),
-        -canopy-accent-2);
+    linear-gradient(to right,
+      derive(-canopy-accent-2, 10%),
+      -canopy-accent-2);
   -fx-text-fill: -canopy-card;
   -fx-font-weight: 900;
   -fx-border-color: -canopy-border-strong;
@@ -621,36 +642,29 @@
   -fx-background-color: transparent;
   -fx-text-fill: -canopy-danger;
 }
+
 .logout-button:hover {
-  -fx-background-color: rgba(255,107,107,0.12);
+  -fx-background-color: rgba(255, 107, 107, 0.12);
 }
 
 /* icone nav */
 .nav-icon {
   -fx-opacity: 0.92;
 }
+
 .toggle-button:hover .nav-icon,
 .button:hover .nav-icon {
   -fx-opacity: 1.0;
 }
 
-/* icona moneta */
-.coin-icon {
-  -fx-opacity: 1.0;
-  -fx-effect: dropshadow(gaussian, -canopy-focus-soft, 8, 0.30, 0, 0);
-}
-
-
-/* ============================================================
-   5. LAYOUT CONTENUTO GENERALE
-   ============================================================ */
+/* layout contenuto generale */
 
 /* area centrale dietro ai pannelli */
 .center-area {
   -fx-background-color:
     radial-gradient(center 18% 0%, radius 110%,
-        -canopy-accent-soft,
-        transparent 55%),
+      -canopy-accent-soft,
+      transparent 55%),
     -canopy-bg;
   -fx-background-radius: 22;
   -fx-border-radius: 22;
@@ -659,27 +673,15 @@
 }
 
 
-/* pannello principale “card grande” */
-.main-panel {
-  -fx-background-color:
-    linear-gradient(to bottom, -canopy-surface-2, -canopy-surface);
-  -fx-background-radius: 20;
-  -fx-border-radius: 20;
-  -fx-background-insets: 0;
-  -fx-padding: 16;
-  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.45), 18, 0.32, 0, 6);
-  -fx-border-color: -canopy-border-subtle;
-}
 
-
-/* pannello laterale tipo colonna destra */
+/* pannello laterale */
 .side-panel {
   -fx-background-color:
     linear-gradient(to bottom, -canopy-surface-2, -canopy-surface);
   -fx-padding: 14;
   -fx-spacing: 10;
 
-  /* bordo più soft e arrotondato per togliere l’effetto “colonna squadrata” */
+  /* bordo arrotondato */
   -fx-border-color: -canopy-border-strong;
   -fx-border-width: 0 0 0 1;
   -fx-background-radius: 20;
@@ -696,18 +698,6 @@
   -fx-effect: dropshadow(gaussian, -canopy-focus-soft, 10, 0.4, 0, 2);
 }
 
-/* box crescita pianta in home */
-.plant-stage {
-  -fx-background-color:
-    linear-gradient(to bottom,
-        derive(-canopy-accent, 40%),
-        -canopy-surface);
-  -fx-border-color: -canopy-accent;
-  -fx-border-width: 1.5;
-  -fx-border-radius: 20;
-  -fx-background-radius: 20;
-}
-
 /* timer grande in home */
 .timer-large {
   -fx-font-size: 46px;
@@ -717,15 +707,13 @@
 }
 
 
-/* ============================================================
-   6. CONTROLLI GENERICI (BUTTON, TEXTFIELD, ecc.)
-   ============================================================ */
+/* controlli generici */
 
-/* Bottoni primari (START / default) */
+/* bottoni primari */
 .button.start,
 .button:default {
   -fx-background-color:
-      linear-gradient(to bottom, -canopy-bark, -canopy-accent);
+    linear-gradient(to bottom, -canopy-bark, -canopy-accent);
   -fx-text-fill: -canopy-bg;
   -fx-font-weight: 900;
   -fx-background-radius: 999;
@@ -734,23 +722,23 @@
 .button.start:hover,
 .button:default:hover {
   -fx-background-color:
-      linear-gradient(to bottom,
-        derive(-canopy-accent, 15%),
-        -canopy-accent);
+    linear-gradient(to bottom,
+      derive(-canopy-accent, 15%),
+      -canopy-accent);
 }
 
-/* Bottoni secondari (normali) */
+/* bottoni secondari */
 .button {
-  -fx-background-color: rgba(255,255,255,0.06);
+  -fx-background-color: rgba(255, 255, 255, 0.06);
   -fx-background-radius: 999;
   -fx-focus-color: transparent;
   -fx-faint-focus-color: transparent;
 }
+
 .button:hover {
-  -fx-background-color: rgba(255,255,255,0.10);
+  -fx-background-color: rgba(255, 255, 255, 0.10);
 }
 
-/* Ghost icon button (es. frecce calendario) */
 .ghost-icon-button {
   -fx-background-color: transparent;
   -fx-text-fill: -canopy-text;
@@ -758,11 +746,12 @@
   -fx-background-radius: 999;
   -fx-padding: 4 6;
 }
+
 .ghost-icon-button:hover {
   -fx-background-color: -canopy-accent-soft;
 }
 
-/* TextField / ChoiceBox / ComboBox base */
+/* campi di testo / choicebox / combobox base */
 .text-field,
 .choice-box,
 .combo-box-base {
@@ -781,12 +770,64 @@
   -fx-effect: dropshadow(gaussian, -canopy-focus-soft, 14, 0.5, 0, 0);
 }
 
+/* spinner: controllo numerico con frecce +/- per selezionare valori
+   qui definisco lo sfondo del contenitore, gli angoli arrotondati, l'effetto focus,
+   e lo stile dei bottoni freccia con hover colorato */
+.spinner {
+  -fx-background-color: -canopy-surface-2;
+  -fx-background-radius: 12;
+  -fx-border-radius: 12;
+  -fx-border-color: -canopy-border-subtle;
+  -fx-background-insets: 0;
+}
 
-/* ============================================================
-   7. LISTE, PROGRESS BAR, SCROLL
-   ============================================================ */
+.spinner:focused,
+.spinner:contains-focus {
+  -fx-border-color: -canopy-border-strong;
+  -fx-effect: dropshadow(gaussian, -canopy-focus-soft, 14, 0.5, 0, 0);
+}
 
-/* ListView base */
+.spinner .text-field {
+  -fx-background-radius: 12 0 0 12;
+  -fx-background-insets: 0;
+  -fx-background-color: transparent;
+  -fx-border-width: 0;
+  /* padding uguale agli altri input */
+  -fx-padding: 8 10;
+}
+
+.spinner .increment-arrow-button,
+.spinner .decrement-arrow-button {
+  -fx-background-color: transparent;
+  -fx-background-insets: 0;
+  -fx-padding: 6 8;
+  /* adattamento area cliccabile */
+  -fx-cursor: hand;
+  /* i bottoni devono stare sopra al text field per catturare i click */
+  -fx-view-order: -1;
+}
+
+.spinner .increment-arrow-button:hover,
+.spinner .decrement-arrow-button:hover {
+  -fx-background-color: -canopy-accent-soft;
+}
+
+.spinner .increment-arrow-button {
+  -fx-background-radius: 0 12 0 0;
+}
+
+.spinner .decrement-arrow-button {
+  -fx-background-radius: 0 0 12 0;
+}
+
+.spinner .increment-arrow,
+.spinner .decrement-arrow {
+  -fx-background-color: -canopy-text;
+  -fx-scale-x: 0.9;
+  -fx-scale-y: 0.9;
+}
+
+/* listview base */
 .list-view {
   -fx-background-color: transparent;
   -fx-control-inner-background: transparent;
@@ -806,6 +847,16 @@
   -fx-border-width: 0 0 1 0;
 }
 
+.list-cell:empty,
+.list-cell:empty:hover,
+.list-cell:empty:selected,
+.list-cell:empty:focused {
+  -fx-background-color: transparent;
+  -fx-border-color: transparent;
+  -fx-border-width: 0;
+  -fx-text-fill: transparent;
+}
+
 .list-cell:hover {
   -fx-background-color: -canopy-accent-soft;
 }
@@ -814,20 +865,21 @@
 .list-cell:selected,
 .list-cell:filled:selected:hover {
   -fx-background-color:
-      linear-gradient(to right,
-        derive(-canopy-accent-2, 5%),
-        -canopy-accent-2);
+    linear-gradient(to right,
+      derive(-canopy-accent-2, 5%),
+      -canopy-accent-2);
   -fx-text-fill: -canopy-card;
 }
 
-/* ProgressBar “linfa” */
-.progress-bar > .bar {
+/* ProgressBar */
+.progress-bar>.bar {
   -fx-background-color: linear-gradient(to right, -canopy-accent, -canopy-accent-2);
   -fx-background-insets: 0;
   -fx-background-radius: 999;
 }
-.progress-bar > .track {
-  -fx-background-color: rgba(255,255,255,0.10);
+
+.progress-bar>.track {
+  -fx-background-color: rgba(255, 255, 255, 0.10);
   -fx-background-radius: 999;
 }
 
@@ -836,15 +888,17 @@
 .scroll-bar:horizontal {
   -fx-background-color: transparent;
 }
+
 .scroll-bar .thumb {
   -fx-background-color: -canopy-accent;
 }
+
 .scroll-bar .thumb:hover {
   -fx-background-color: derive(-canopy-accent, 15%);
 }
 
-/* ScrollPane pulito */
-.scrollpane-clean > .viewport {
+/* ScrollPane */
+.scrollpane-clean>.viewport {
   -fx-background-color: transparent;
 }
 
@@ -857,9 +911,7 @@
 
 
 
-/* ============================================================
-   8. FONT SWITCHER (classi impostate dal FontManager)
-   ============================================================ */
+/* cambio font */
 
 .root.font-atkinson {
   -fx-font-family: "AtkinsonHyperlegible";
@@ -869,20 +921,18 @@
   -fx-font-family: "Comic Neue";
 }
 
-/* nuovo mono */
 .root.font-robotomono {
   -fx-font-family: "Roboto Mono";
 }
 
-/* nuovo serif */
 .root.font-notoserif {
   -fx-font-family: "Noto Serif";
 }
 
-
 /* bilanciamento size comic neue rispetto agli altri */
 .root.font-comicneue {
-    -fx-font-size: 16px; /* invece di 14 */
+  -fx-font-size: 16px;
+  /* invece di 14 come gli altri */
 }
 
 /* stile per il bottone di cambio tema nei settings */
@@ -892,44 +942,44 @@
 }
 
 
-/* ============================================================
-   9. COMBOBOX POPUP (menu a tendina)
-   ============================================================ */
+/* menu a tendina */
 
-/* Contenitore popup */
-.combo-box-popup > .list-view {
-    -fx-background-color: -canopy-surface-2;
-    -fx-control-inner-background: -canopy-surface-2;
-    -fx-background-insets: 0;
-    -fx-padding: 4;
-    -fx-effect: dropshadow(gaussian, -canopy-focus-soft, 16, 0.35, 0, 2);
-    -fx-background-radius: 8;
+/* contenitore popup */
+.combo-box-popup>.list-view {
+  -fx-background-color: -canopy-surface-2;
+  -fx-control-inner-background: -canopy-surface-2;
+  -fx-background-insets: 0;
+  -fx-padding: 4;
+  -fx-effect: dropshadow(gaussian, -canopy-focus-soft, 16, 0.35, 0, 2);
+  -fx-background-radius: 8;
 }
 
-/* Celle menu */
+/* celle menu */
 .combo-box-popup .list-cell {
-    -fx-background-color: transparent;
-    -fx-text-fill: -canopy-text;
-    -fx-padding: 8 10;
-    -fx-background-radius: 6;
+  -fx-background-color: transparent;
+  -fx-text-fill: -canopy-text;
+  -fx-padding: 8 10;
+  -fx-background-radius: 6;
 }
 
-/* Hover menu */
+/* hover menu */
 .combo-box-popup .list-cell:hover {
-    -fx-background-color: -canopy-accent-soft;
+  -fx-background-color: -canopy-accent-soft;
 }
 
-/* Selezione menu */
+/* selezione menu */
 .combo-box-popup .list-cell:selected,
 .combo-box-popup .list-cell:filled:selected:hover {
-    -fx-background-color:
-        linear-gradient(to right,
-            -canopy-accent-soft,
-            derive(-canopy-accent-soft, 10%));
-    -fx-text-fill: -canopy-text;
+  -fx-background-color:
+    linear-gradient(to right,
+      -canopy-accent-soft,
+      derive(-canopy-accent-soft, 10%));
+  -fx-text-fill: -canopy-list-text-selected;
 }
 
-/* ==== FIX GENERALE ANTI-ANGOLI QUADRATI ==== */
+/* fix angoli quadrati
+   javafx aggiunge di default un bordo interno che crea un effetto "cornice". azzerando questo valore lo sfondo
+   riempie tutto lo spazio disponibile senza margini interni */
 
 .button,
 .toggle-button,
@@ -939,11 +989,9 @@
   -fx-background-insets: 0;
 }
 
-/* ============================================================
-   FIX ANGOLO QUADRATO / CONTORNO DIETRO AGLI ANGOLI TONDI
-   ============================================================ */
-
-/* 1) Tutti i layout container NON devono ridisegnare uno sfondo quadrato */
+/* fix container trasparenti
+   i layout container non devono avere uno sfondo proprio, altrimenti
+   coprono il gradiente del tema. devono essere trasparenti */
 .border-pane,
 .stack-pane,
 .anchor-pane,
@@ -956,30 +1004,14 @@
   -fx-background-insets: 0;
 }
 
-/* 2) Il root usa solo il nostro background di tema */
+/* la root usa solo lo sfondo del tema */
 .root {
   -fx-background-color: -canopy-bg;
 }
 
-/* 3) Pannelli tondi: stesso radius per sfondo e bordo, niente insets strani */
-.center-area {
-  -fx-background-radius: 22;
-  -fx-border-radius: 22;
-  -fx-background-insets: 0;
-}
-
-.main-panel,
-.side-panel {
-  -fx-background-radius: 20;
-  -fx-border-radius: 20;
-  -fx-background-insets: 0;
-}
-
-/* ============================================================
-   FIX ANGOLI CONTROLLI INTERATTIVI (BUTTON / TOGGLE)
-   ============================================================ */
-
-/* Bottoni e toggle: devono restare tondi in qualsiasi stato */
+/* fix angoli controlli interattivi
+   alcuni stati (hover, pressed, selected) resettano il border-radius.
+   questo blocco forza gli angoli tondi su tutti gli stati dei bottoni */
 .button,
 .button:hover,
 .button:pressed,
@@ -997,7 +1029,8 @@
   -fx-background-insets: 0;
 }
 
-/* Forza gli angoli tondi anche sugli override di selezione per tema */
+/* fix angoli tondi per toggle selezionati nei vari temi
+   gli override per tema possono resettare gli angoli, quindi li forziamo di nuovo qui */
 .root.theme-light .toggle-button:selected,
 .root.theme-dark .toggle-button:selected,
 .root.theme-daltonici-light .toggle-button:selected,
@@ -1007,20 +1040,9 @@
   -fx-background-insets: 0;
 }
 
-/* ============================================================
-   LISTE & COMBOBOX – ANGOLI ARROTONDATI ANCHE IN SELEZIONE
-   ============================================================ */
-
-.list-cell,
-.list-cell:hover,
-.list-cell:selected,
-.list-cell:filled:selected:hover {
-  -fx-background-radius: 12;
-  -fx-border-radius: 12;
-  -fx-background-insets: 0;
-}
-
-/* Celle del popup della ComboBox */
+/* fix angoli celle popup combobox
+   le celle dentro i menu a tendina devono avere angoli leggermente arrotondati
+   per coerenza con il design generale */
 .combo-box-popup .list-cell,
 .combo-box-popup .list-cell:hover,
 .combo-box-popup .list-cell:selected,
@@ -1030,7 +1052,7 @@
   -fx-background-insets: 0;
 }
 
-/* Pill / chip sempre arrotondati */
+/* fix angoli chip: devono mantenere la forma a capsula in tutti gli stati */
 .chip,
 .chip:hover,
 .chip:selected {
@@ -1039,349 +1061,101 @@
   -fx-background-insets: 0;
 }
 
-/* ============================================================
-   LISTA PIANTE – TESTO NERO SU TEMA SCURO (no Evergreen, no Daltonici)
-   ============================================================ */
+/* filtri daltonismo applicati come strato sopra ai temi esistenti,
+   sovrascrivono principalmente accenti / focus / bordi, ma
+   non toccano lo sfondo delle palette botaniche */
 
-/* Sakura dark */
-.root.theme-sakura-dark .plant-list .list-cell:selected .label,
-.root.theme-sakura-dark .plant-list .list-cell:filled:selected:hover .label,
-.root.theme-sakura-dark .plant-list .list-cell:selected .subtle,
-.root.theme-sakura-dark .plant-list .list-cell:filled:selected:hover .subtle,
-
-/* Quercia dark */
-.root.theme-quercia-dark .plant-list .list-cell:selected .label,
-.root.theme-quercia-dark .plant-list .list-cell:filled:selected:hover .label,
-.root.theme-quercia-dark .plant-list .list-cell:selected .subtle,
-.root.theme-quercia-dark .plant-list .list-cell:filled:selected:hover .subtle,
-
-/* Menta dark */
-.root.theme-menta-dark .plant-list .list-cell:selected .label,
-.root.theme-menta-dark .plant-list .list-cell:filled:selected:hover .label,
-.root.theme-menta-dark .plant-list .list-cell:selected .subtle,
-.root.theme-menta-dark .plant-list .list-cell:filled:selected:hover .subtle,
-
-/* Peperoncino dark */
-.root.theme-peperoncino-dark .plant-list .list-cell:selected .label,
-.root.theme-peperoncino-dark .plant-list .list-cell:filled:selected:hover .label,
-.root.theme-peperoncino-dark .plant-list .list-cell:selected .subtle,
-.root.theme-peperoncino-dark .plant-list .list-cell:filled:selected:hover .subtle,
-
-/* Lavanda dark */
-.root.theme-lavanda-dark .plant-list .list-cell:selected .label,
-.root.theme-lavanda-dark .plant-list .list-cell:filled:selected:hover .label,
-.root.theme-lavanda-dark .plant-list .list-cell:selected .subtle,
-.root.theme-lavanda-dark .plant-list .list-cell:filled:selected:hover .subtle,
-
-/* Orchidea dark */
-.root.theme-orchidea-dark .plant-list .list-cell:selected .label,
-.root.theme-orchidea-dark .plant-list .list-cell:filled:selected:hover .label,
-.root.theme-orchidea-dark .plant-list .list-cell:selected .subtle,
-.root.theme-orchidea-dark .plant-list .list-cell:filled:selected:hover .subtle {
-
-    -fx-text-fill: black;
-}
-
-/* ============================================================
-   LISTA PIANTE – TESTO BIANCO SU TEMA CHIARO (no Evergreen)
-   ============================================================ */
-
-/* Sakura light */
-.root.theme-sakura-light .plant-list .list-cell:selected .label,
-.root.theme-sakura-light .plant-list .list-cell:filled:selected:hover .label,
-.root.theme-sakura-light .plant-list .list-cell:selected .subtle,
-.root.theme-sakura-light .plant-list .list-cell:filled:selected:hover .subtle,
-
-/* Quercia light */
-.root.theme-quercia-light .plant-list .list-cell:selected .label,
-.root.theme-quercia-light .plant-list .list-cell:filled:selected:hover .label,
-.root.theme-quercia-light .plant-list .list-cell:selected .subtle,
-.root.theme-quercia-light .plant-list .list-cell:filled:selected:hover .subtle,
-
-/* Menta light */
-.root.theme-menta-light .plant-list .list-cell:selected .label,
-.root.theme-menta-light .plant-list .list-cell:filled:selected:hover .label,
-.root.theme-menta-light .plant-list .list-cell:selected .subtle,
-.root.theme-menta-light .plant-list .list-cell:filled:selected:hover .subtle,
-
-/* Peperoncino light */
-.root.theme-peperoncino-light .plant-list .list-cell:selected .label,
-.root.theme-peperoncino-light .plant-list .list-cell:filled:selected:hover .label,
-.root.theme-peperoncino-light .plant-list .list-cell:selected .subtle,
-.root.theme-peperoncino-light .plant-list .list-cell:filled:selected:hover .subtle,
-
-/* Lavanda light */
-.root.theme-lavanda-light .plant-list .list-cell:selected .label,
-.root.theme-lavanda-light .plant-list .list-cell:filled:selected:hover .label,
-.root.theme-lavanda-light .plant-list .list-cell:selected .subtle,
-.root.theme-lavanda-light .plant-list .list-cell:filled:selected:hover .subtle,
-
-/* Orchidea light */
-.root.theme-orchidea-light .plant-list .list-cell:selected .label,
-.root.theme-orchidea-light .plant-list .list-cell:filled:selected:hover .label,
-.root.theme-orchidea-light .plant-list .list-cell:selected .subtle,
-.root.theme-orchidea-light .plant-list .list-cell:filled:selected:hover .subtle {
-
-  -fx-text-fill: white;
-}
-
-/* ============================================================
-   FILTRI DALTONISMO (CVD)
-   Applicati come "strato" sopra ai temi esistenti
-   ------------------------------------------------------------
-   Sovrascrivono principalmente accenti / focus / bordi, ma
-   NON toccano lo sfondo delle palette botaniche.
-   ============================================================ */
-
-/* Nessun filtro → nessuna classe, quindi niente CSS qui */
-
-/* Deuteranopia: accenti blu/giallo ad alto contrasto */
+/* deuteranopia: accenti blu/giallo ad alto contrasto */
 .root.cvd-deuteranopia {
-  -canopy-accent:        #2F7ED8;
-  -canopy-accent-2:      #FFC857;
-  -canopy-accent-soft:   rgba(47, 126, 216, 0.22);
-  -canopy-focus:         rgba(47, 126, 216, 0.55);
-  -canopy-focus-soft:    rgba(47, 126, 216, 0.20);
+  -canopy-accent: #2F7ED8;
+  -canopy-accent-2: #FFC857;
+  -canopy-accent-soft: rgba(47, 126, 216, 0.22);
+  -canopy-focus: rgba(47, 126, 216, 0.55);
+  -canopy-focus-soft: rgba(47, 126, 216, 0.20);
   -canopy-border-subtle: rgba(18, 22, 31, 0.12);
   -canopy-border-strong: rgba(18, 22, 31, 0.28);
 }
 
-/* Protanopia: accenti ciano/giallo, sempre molto visibili */
+/* protanopia: accenti ciano/giallo */
 .root.cvd-protanopia {
-  -canopy-accent:        #1FA8A8;
-  -canopy-accent-2:      #FFC857;
-  -canopy-accent-soft:   rgba(31, 168, 168, 0.24);
-  -canopy-focus:         rgba(31, 168, 168, 0.55);
-  -canopy-focus-soft:    rgba(31, 168, 168, 0.20);
+  -canopy-accent: #1FA8A8;
+  -canopy-accent-2: #FFC857;
+  -canopy-accent-soft: rgba(31, 168, 168, 0.24);
+  -canopy-focus: rgba(31, 168, 168, 0.55);
+  -canopy-focus-soft: rgba(31, 168, 168, 0.20);
   -canopy-border-subtle: rgba(18, 22, 31, 0.12);
   -canopy-border-strong: rgba(18, 22, 31, 0.28);
 }
 
-/* Tritanopia: accenti arancione/blu a contrasto forte */
+/* tritanopia: accenti arancione/blu */
 .root.cvd-tritanopia {
-  -canopy-accent:        #FF9800;
-  -canopy-accent-2:      #1565C0;
-  -canopy-accent-soft:   rgba(255, 152, 0, 0.24);
-  -canopy-focus:         rgba(255, 152, 0, 0.55);
-  -canopy-focus-soft:    rgba(255, 152, 0, 0.22);
+  -canopy-accent: #FF9800;
+  -canopy-accent-2: #1565C0;
+  -canopy-accent-soft: rgba(255, 152, 0, 0.24);
+  -canopy-focus: rgba(255, 152, 0, 0.55);
+  -canopy-focus-soft: rgba(255, 152, 0, 0.22);
   -canopy-border-subtle: rgba(18, 22, 31, 0.12);
   -canopy-border-strong: rgba(18, 22, 31, 0.28);
 }
 
-/* ============================================================
-   FIX LEGGIBILITÀ COMBOBOX (TESTO OPZIONI + VALORE SELEZIONATO)
-   ============================================================ */
 
-/* Testo dentro al "bottone" della ComboBox (valore selezionato) */
-.combo-box-base .text {
-  -fx-fill: -canopy-text;      /* per i nodi Text, se non overridati dai temi */
-}
-
-.combo-box-base .list-cell {
-  -fx-text-fill: -canopy-text; /* per i Label/ListCell usati come button cell */
-}
-
-/* Testo nel popup (lista delle opzioni):
-   → qui NON tocchiamo hover/selected, così restano coi colori originali */
-.combo-box-popup .list-cell {
-  -fx-text-fill: -canopy-text;
-}
-
-/* Leggera enfasi sul selected nei temi chiari (solo sfondo) */
-.root.theme-light .combo-box-popup .list-cell:selected,
-.root.theme-light .combo-box-popup .list-cell:filled:selected:hover {
-  -fx-background-color:
-      linear-gradient(to right,
-          -canopy-accent-soft,
-          derive(-canopy-accent-soft, 10%));
-}
-
-/* ============================================================
-   COMBOBOX – VALORE SELEZIONATO (INVERSIONE COLORI COME PLANT-LIST)
-   (tutti i temi tranne Evergreen)
-   ============================================================ */
-
-/* ----- MODALITÀ CHIARA: testo bianco ----- */
-
-/* Sakura light */
-.root.theme-sakura-light .combo-box-base .list-cell:selected,
-.root.theme-sakura-light .combo-box-base .list-cell:filled:selected:hover {
-  -fx-text-fill: white;
-}
-
-/* Quercia light */
-.root.theme-quercia-light .combo-box-base .list-cell:selected,
-.root.theme-quercia-light .combo-box-base .list-cell:filled:selected:hover {
-  -fx-text-fill: white;
-}
-
-/* Menta light */
-.root.theme-menta-light .combo-box-base .list-cell:selected,
-.root.theme-menta-light .combo-box-base .list-cell:filled:selected:hover {
-  -fx-text-fill: white;
-}
-
-/* Peperoncino light */
-.root.theme-peperoncino-light .combo-box-base .list-cell:selected,
-.root.theme-peperoncino-light .combo-box-base .list-cell:filled:selected:hover {
-  -fx-text-fill: white;
-}
-
-/* Lavanda light */
-.root.theme-lavanda-light .combo-box-base .list-cell:selected,
-.root.theme-lavanda-light .combo-box-base .list-cell:filled:selected:hover {
-  -fx-text-fill: white;
-}
-
-/* Orchidea light */
-.root.theme-orchidea-light .combo-box-base .list-cell:selected,
-.root.theme-orchidea-light .combo-box-base .list-cell:filled:selected:hover {
-  -fx-text-fill: white;
-}
-
-/* ----- MODALITÀ SCURA: testo nero ----- */
-
-/* Sakura dark */
-.root.theme-sakura-dark .combo-box-base .list-cell:selected,
-.root.theme-sakura-dark .combo-box-base .list-cell:filled:selected:hover {
-  -fx-text-fill: black;
-}
-
-/* Quercia dark */
-.root.theme-quercia-dark .combo-box-base .list-cell:selected,
-.root.theme-quercia-dark .combo-box-base .list-cell:filled:selected:hover {
-  -fx-text-fill: black;
-}
-
-/* Menta dark */
-.root.theme-menta-dark .combo-box-base .list-cell:selected,
-.root.theme-menta-dark .combo-box-base .list-cell:filled:selected:hover {
-  -fx-text-fill: black;
-}
-
-/* Peperoncino dark */
-.root.theme-peperoncino-dark .combo-box-base .list-cell:selected,
-.root.theme-peperoncino-dark .combo-box-base .list-cell:filled:selected:hover {
-  -fx-text-fill: black;
-}
-
-/* Lavanda dark */
-.root.theme-lavanda-dark .combo-box-base .list-cell:selected,
-.root.theme-lavanda-dark .combo-box-base .list-cell:filled:selected:hover {
-  -fx-text-fill: black;
-}
-
-/* Orchidea dark */
-.root.theme-orchidea-dark .combo-box-base .list-cell:selected,
-.root.theme-orchidea-dark .combo-box-base .list-cell:filled:selected:hover {
-  -fx-text-fill: black;
-}
-
-/* ============================================================
-   COMBOBOX — TESTO SELEZIONATO NEL BOTTONE (MODALITÀ SCURA)
-   ============================================================ */
-
-.root.theme-sakura-dark .combo-box-base .text,
-.root.theme-sakura-dark .combo-box-base > .list-cell {
-    -fx-fill: black;        /* per Text */
-    -fx-text-fill: black;   /* per ListCell */
-}
-
-.root.theme-quercia-dark .combo-box-base .text,
-.root.theme-quercia-dark .combo-box-base > .list-cell {
-    -fx-fill: black;
-    -fx-text-fill: black;
-}
-
-.root.theme-menta-dark .combo-box-base .text,
-.root.theme-menta-dark .combo-box-base > .list-cell {
-    -fx-fill: black;
-    -fx-text-fill: black;
-}
-
-.root.theme-peperoncino-dark .combo-box-base .text,
-.root.theme-peperoncino-dark .combo-box-base > .list-cell {
-    -fx-fill: black;
-    -fx-text-fill: black;
-}
-
-.root.theme-lavanda-dark .combo-box-base .text,
-.root.theme-lavanda-dark .combo-box-base > .list-cell {
-    -fx-fill: black;
-    -fx-text-fill: black;
-}
-
-.root.theme-orchidea-dark .combo-box-base .text,
-.root.theme-orchidea-dark .combo-box-base > .list-cell {
-    -fx-fill: black;
-    -fx-text-fill: black;
-}
-
-/* ============================================================
-   COMBOBOX — TESTO SELEZIONATO NEL BOTTONE (MODALITÀ CHIARA)
-   ============================================================ */
-
-.root.theme-sakura-light .combo-box-base .text,
-.root.theme-sakura-light .combo-box-base > .list-cell {
-    -fx-fill: white;
-    -fx-text-fill: white;
-}
-
-.root.theme-quercia-light .combo-box-base .text,
-.root.theme-quercia-light .combo-box-base > .list-cell {
-    -fx-fill: white;
-    -fx-text-fill: white;
-}
-
-.root.theme-menta-light .combo-box-base .text,
-.root.theme-menta-light .combo-box-base > .list-cell {
-    -fx-fill: white;
-    -fx-text-fill: white;
-}
-
-.root.theme-peperoncino-light .combo-box-base .text,
-.root.theme-peperoncino-light .combo-box-base > .list-cell {
-    -fx-fill: white;
-    -fx-text-fill: white;
-}
-
-.root.theme-lavanda-light .combo-box-base .text,
-.root.theme-lavanda-light .combo-box-base > .list-cell {
-    -fx-fill: white;
-    -fx-text-fill: white;
-}
-
-.root.theme-orchidea-light .combo-box-base .text,
-.root.theme-orchidea-light .combo-box-base > .list-cell {
-    -fx-fill: white;
-    -fx-text-fill: white;
-}
-
-/* ============================================================
-   10. TIMER HOME (RING)
-   ============================================================ */
+/* timer home (anello) */
 
 .timer-ring-track {
-    -fx-stroke: -canopy-border-strong;
-    -fx-stroke-width: 20;
-    -fx-fill: transparent;
+  -fx-stroke: -canopy-border-strong;
+  -fx-stroke-width: 20;
+  -fx-fill: transparent;
 }
 
 .timer-ring-progress {
-    -fx-stroke: -canopy-accent;
-    -fx-stroke-width: 20;
-    -fx-fill: transparent;
-    -fx-stroke-line-cap: round;
+  -fx-stroke: -canopy-accent;
+  -fx-stroke-width: 20;
+  -fx-fill: transparent;
+  -fx-stroke-line-cap: round;
 }
 
 .timer-knob {
-    -fx-fill: -canopy-accent;
-    -fx-stroke: -canopy-bg;
-    -fx-stroke-width: 3;
-    -fx-effect: dropshadow(gaussian, -canopy-focus-soft, 12, 0.4, 0, 3);
+  -fx-fill: -canopy-accent;
+  -fx-stroke: -canopy-bg;
+  -fx-stroke-width: 3;
+  -fx-effect: dropshadow(gaussian, -canopy-focus-soft, 12, 0.4, 0, 3);
 }
 
 .timer-knob:hover {
-    -fx-fill: derive(-canopy-accent, 15%);
-    -fx-cursor: hand;
+  -fx-fill: derive(-canopy-accent, 15%);
+  -fx-cursor: hand;
+}
+
+/* colori selezione lista piante specifici per tema */
+
+/* temi dark (non-evergreen): testo nero su selezione */
+.root.theme-sakura-dark .plant-list .list-cell:selected .label,
+.root.theme-quercia-dark .plant-list .list-cell:selected .label,
+.root.theme-menta-dark .plant-list .list-cell:selected .label,
+.root.theme-peperoncino-dark .plant-list .list-cell:selected .label,
+.root.theme-lavanda-dark .plant-list .list-cell:selected .label,
+.root.theme-orchidea-dark .plant-list .list-cell:selected .label,
+.root.theme-sakura-dark .plant-list .list-cell:filled:selected:hover .label,
+.root.theme-quercia-dark .plant-list .list-cell:filled:selected:hover .label,
+.root.theme-menta-dark .plant-list .list-cell:filled:selected:hover .label,
+.root.theme-peperoncino-dark .plant-list .list-cell:filled:selected:hover .label,
+.root.theme-lavanda-dark .plant-list .list-cell:filled:selected:hover .label,
+.root.theme-orchidea-dark .plant-list .list-cell:filled:selected:hover .label {
+  -fx-text-fill: black;
+}
+
+/* temi light (non-evergreen): testo bianco su selezione */
+.root.theme-sakura-light .plant-list .list-cell:selected .label,
+.root.theme-quercia-light .plant-list .list-cell:selected .label,
+.root.theme-menta-light .plant-list .list-cell:selected .label,
+.root.theme-peperoncino-light .plant-list .list-cell:selected .label,
+.root.theme-lavanda-light .plant-list .list-cell:selected .label,
+.root.theme-orchidea-light .plant-list .list-cell:selected .label,
+.root.theme-sakura-light .plant-list .list-cell:filled:selected:hover .label,
+.root.theme-quercia-light .plant-list .list-cell:filled:selected:hover .label,
+.root.theme-menta-light .plant-list .list-cell:filled:selected:hover .label,
+.root.theme-peperoncino-light .plant-list .list-cell:filled:selected:hover .label,
+.root.theme-lavanda-light .plant-list .list-cell:filled:selected:hover .label,
+.root.theme-orchidea-light .plant-list .list-cell:filled:selected:hover .label {
+  -fx-text-fill: white;
 }

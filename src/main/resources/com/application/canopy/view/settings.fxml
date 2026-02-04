@@ -9,8 +9,6 @@
             fx:id="root"
             prefWidth="1100" prefHeight="700">
 
-    <!-- ⚠️ NIENTE NAV QUI ⚠️ -->
-
     <center>
         <StackPane styleClass="center-area">
 
@@ -38,9 +36,8 @@
 
                         <Separator/>
 
-                        <!-- ========================= -->
-                        <!-- FONT INTERFACCIA         -->
-                        <!-- ========================= -->
+                        <!-- font interfaccia -->
+
                         <Label text="Aspetto" styleClass="h3"/>
 
                         <HBox spacing="10" alignment="CENTER_LEFT">
@@ -53,9 +50,9 @@
 
                         <Separator/>
 
-                        <!-- ========================= -->
-                        <!-- MODALITÀ (LIGHT / DARK)  -->
-                        <!-- ========================= -->
+
+                        <!-- modalità light/dark  -->
+
                         <Label text="Modalità" styleClass="h3"/>
 
                         <HBox spacing="10" alignment="CENTER_LEFT">
@@ -68,9 +65,9 @@
 
                         <Separator/>
 
-                        <!-- ========================= -->
-                        <!-- TEMA BOTANICO            -->
-                        <!-- ========================= -->
+
+                        <!-- opzioni palette temi -->
+
                         <Label text="Tema botanico" styleClass="h3"/>
 
                         <HBox spacing="10" alignment="CENTER_LEFT">
@@ -83,9 +80,9 @@
 
                         <Separator/>
 
-                        <!-- ========================= -->
-                        <!-- ACCESSIBILITÀ VISIVA     -->
-                        <!-- ========================= -->
+
+                        <!-- accessibilità visiva -->
+
                         <Label text="Accessibilità visiva" styleClass="h3"/>
 
                         <HBox spacing="10" alignment="CENTER_LEFT">
@@ -98,9 +95,8 @@
 
                         <Separator/>
 
-                        <!-- ========================= -->
-                        <!-- SEZIONE DATI / CALENDARIO-->
-                        <!-- ========================= -->
+                        <!-- sezione dati / calendario-->
+
                         <Label text="Dati" styleClass="h3"/>
 
                         <HBox spacing="10" alignment="CENTER_LEFT">

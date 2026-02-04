@@ -37,7 +37,8 @@ public class GameState {
     private boolean hasCrossedNoonPomodoro;
     private boolean hasRinascitaUnlocked;
 
-    // Metodi per il tracciamento e setting della pianta corrente nella home
+    // Metodi per il tracciamento e setting della pianta corrente nella home ->
+    // mostrata nell'erbario
     private String currentPlantId;
 
     public String getCurrentPlantId() {
@@ -112,7 +113,7 @@ public class GameState {
         }
     }
 
-    // ----------------- LOGICA -----------------
+    // ----------------- LOGICA DI GIOCO -----------------
 
     public Collection<UserPlantState> getAllPlantStates() {
         return plantStates.values();
@@ -120,20 +121,40 @@ public class GameState {
 
     private void checkSpecialUnlocks() {
         // Achievement MATTINIERO -> Lifeblood
-        if (plantStates.containsKey("lifeblood")) {
+        UserPlantState lifeblood = plantStates.get("lifeblood");
+        if (lifeblood != null) {
             if (hasMorningPomodoroBefore9) {
-                unlockPlantIfLocked("lifeblood");
+                if (!lifeblood.isUnlocked()) {
+                    lifeblood.unlock();
+                    if (repository != null)
+                        repository.saveUserPlantState(lifeblood);
+                }
             } else {
-                lockPlantIfUnlocked("lifeblood");
+                // Se non hai l'achievement, forza il lock (corregge stati precedenti)
+                if (lifeblood.isUnlocked()) {
+                    lifeblood.setUnlocked(false);
+                    if (repository != null)
+                        repository.saveUserPlantState(lifeblood);
+                }
             }
         }
 
         // Achievement FOGLIA NUOVA -> Radice Sussurrante
-        if (plantStates.containsKey("radice_sussurrante")) {
+        UserPlantState radice = plantStates.get("radice_sussurrante");
+        if (radice != null) {
             if (maxPomodoriInSingleDay >= 3) {
-                unlockPlantIfLocked("radice_sussurrante");
+                if (!radice.isUnlocked()) {
+                    radice.unlock();
+                    if (repository != null)
+                        repository.saveUserPlantState(radice);
+                }
             } else {
-                lockPlantIfUnlocked("radice_sussurrante");
+                // Se non hai l'achievement, forza il lock
+                if (radice.isUnlocked()) {
+                    radice.setUnlocked(false);
+                    if (repository != null)
+                        repository.saveUserPlantState(radice);
+                }
             }
         }
     }
@@ -142,16 +163,6 @@ public class GameState {
         UserPlantState s = plantStates.get(plantId);
         if (s != null && !s.isUnlocked()) {
             s.unlock();
-            if (repository != null) {
-                repository.saveUserPlantState(s);
-            }
-        }
-    }
-
-    private void lockPlantIfUnlocked(String plantId) {
-        UserPlantState s = plantStates.get(plantId);
-        if (s != null && s.isUnlocked()) {
-            s.setUnlocked(false);
             if (repository != null) {
                 repository.saveUserPlantState(s);
             }
