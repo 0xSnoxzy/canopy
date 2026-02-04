@@ -37,19 +37,16 @@ public class CalendarController {
     private LocalDate currentWeekStart = LocalDate.now().with(DayOfWeek.MONDAY);
     private final Locale locale = Locale.ITALY;
 
-    /** Repository che parla con SQLite. */
+    // Repository da cui prendo i dati delle piante
     private PlantActivityRepository repository;
 
-    /**
-     * Cache in memoria:
-     * per ogni giorno, la lista di piante (già aggregate per minuti) di quel
-     * giorno.
-     */
+    // Giorno -> Lista minuti per pianta del giorno
+
     private final Map<LocalDate, List<PlantStat>> dailyStats = new HashMap<>();
 
     @FXML
     private void initialize() {
-        // Inizializza repository DB via Locator
+        // Inizializzazione repository da PlantActivityRepository che prende dal DB
         repository = com.application.canopy.service.ServiceLocator.getInstance().getPlantActivityRepository();
 
         buildWeekdayHeader();
@@ -87,11 +84,12 @@ public class CalendarController {
 
         backToMonthBtn.setOnAction(e -> backToMonth());
 
-        // Primo caricamento
+        // Aggiornamento per caricare eventuali cambi nel DB al primo caricamento
         refresh();
 
-        // quando il calendario viene mostrato di nuovo (root agganciato a un parent),
-        // ricarichiamo i dati dal DB così i nuovi pomodori compaiono subito.
+        // Listener che aggiorna il calendario appena viene caricato, se il newParent è
+        // il calendar allora aggiorna dal DB per visualizzare
+        // Eventuali cambi in background mentre si era in altre pagine
         root.parentProperty().addListener((obs, oldParent, newParent) -> {
             if (newParent != null) {
                 refresh();
@@ -99,11 +97,7 @@ public class CalendarController {
         });
     }
 
-    /*
-     * ======================
-     * BUILD HEADER / PERIODI
-     * ======================
-     */
+    // Costruzione della griglia degli header (Lun, Mar, Mer...)
 
     private void buildWeekdayHeader() {
         weekdayHeader.getChildren().clear();
@@ -127,10 +121,7 @@ public class CalendarController {
         }
     }
 
-    /**
-     * Metodo centrale: ricarica i dati dal DB per il mese corrente,
-     * ricostruisce la griglia (mese o settimana) e aggiorna pannello destro.
-     */
+    // Ricarica i dati prendendoli dal DB
     private void refresh() {
         // 1) Ricarica le statistiche dalla tabella plant_activity per il mese corrente
         reloadStatsForCurrentMonth();

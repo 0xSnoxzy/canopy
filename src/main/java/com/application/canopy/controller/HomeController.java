@@ -38,7 +38,7 @@ public class HomeController {
     @FXML
     private Label lblTimer;
 
-    // ---- RING TIMER COMPONENTS ----
+    // Timer ad anello CENTRALE
     @FXML
     private Circle timerBackground;
     @FXML
@@ -48,10 +48,10 @@ public class HomeController {
     @FXML
     private StackPane timerContainer;
 
-    // ---- STATE FOR INTERACTION ----
+    // Variabili di stato del timer
     private boolean isDraggingInfo = false;
-    private static final int MAX_MINUTES = 120; // 2 ore max da ghiera
-    private static final double RADIUS = 250.0; // deve corrispondere all'FXML
+    private static final int MAX_MINUTES = 120; // 2 ore
+    private static final double RADIUS = 250.0; // se lo cambio deve essere cambiato anche in FXML
 
     @FXML
     private ProgressBar sessionProgress;
@@ -66,7 +66,7 @@ public class HomeController {
     @FXML
     private ListView<Plant> list;
 
-    // ----------------- SERVIZI / MODELLO -----------------
+    // Setup dei service e repository della pianta
 
     private final GameState gameState = GameState.getInstance();
     private final PomodoroTimerService timerService = new PomodoroTimerService();
@@ -74,8 +74,7 @@ public class HomeController {
 
     private Plant currentPlant;
 
-    // ----------------- IMMAGINI PIANTE (provvisorio) -----------------
-
+    // Immagini delle piante (TODO: AGGIUNGI CRESCITA PIANTE)
     private static final String[] STAGE_FILES = { "stage0.png", "stage1.png", "stage2.png", "stage3.png" };
 
     private final Image[] frames = new Image[4];
@@ -84,13 +83,12 @@ public class HomeController {
     @FXML
     private void initialize() {
 
-        // ✅ Inizializza repository via Locator
+        // Inizializza repository
         activityRepository = com.application.canopy.service.ServiceLocator.getInstance().getPlantActivityRepository();
 
-        // Configurazione iniziale di default (25 min single)
+        // Configurazione iniziale di default (25 min)
         timerService.configureSingleTimer(25);
 
-        // Listener eventi timer
         timerService.setOnPomodoroCompleted(this::onPomodoroCompleted);
 
         // Binding UI agli stati del Service

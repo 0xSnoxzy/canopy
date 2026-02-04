@@ -10,13 +10,13 @@ public class AppController {
     @FXML
     private BorderPane root;
     @FXML
-    private NavController navController; // dall'fx:include
+    private NavController navController;
     @FXML
-    private StackPane contentRoot; // dove mostriamo le pagine
+    private StackPane contentRoot; // Visualizzatore di tutte le pagine quando caricate
 
     @FXML
     private void initialize() {
-        // Inizializza il Navigator con il contenitore centrale
+        // Inizializza il Navigator -> nella parte sinistra
         Navigator.init(contentRoot);
 
         // Collega il nav al Navigator
@@ -25,11 +25,11 @@ public class AppController {
             navController.setActive(route);
         });
 
-        // Pagina iniziale
+        // Collega la pagina home
         Navigator.show("home");
         navController.setActive("home");
 
-        // Listener per Focus / Fullscreen Mode (nasconde la sidebar)
+        // Listener per Focus / Fullscreen Mode
         Navigator.setOnFullScreenToggle(active -> {
             if (navController != null && navController.getView() != null) {
                 navController.getView().setVisible(!active);

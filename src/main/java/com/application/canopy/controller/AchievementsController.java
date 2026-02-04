@@ -25,7 +25,7 @@ public class AchievementsController implements Initializable {
     @FXML
     private BorderPane root;
 
-    // ---- RIEPILOGO GENERALE ----
+    // Riepilogo generale
     @FXML
     private StackPane overallRingContainer;
     @FXML
@@ -33,11 +33,11 @@ public class AchievementsController implements Initializable {
     @FXML
     private Text overallHint;
 
-    // ---- LISTA OBIETTIVI ----
+    // Lista obiettivi
     @FXML
     private FlowPane goalsFlow;
 
-    // ---- DETTAGLI A DESTRA ----
+    // Dettagli obiettivo
     @FXML
     private Label detailName;
     @FXML
@@ -49,7 +49,7 @@ public class AchievementsController implements Initializable {
     @FXML
     private Label detailStatus;
 
-    // ---- MODELLO ----
+    // Modello Anello
     private final List<AchievementGoal> goals = new ArrayList<>();
     private final AchievementManager achievementManager = AchievementManager.getInstance();
     private final GameState gameState = GameState.getInstance();
@@ -93,8 +93,6 @@ public class AchievementsController implements Initializable {
         detailStatus.setText("Stato: -");
     }
 
-    /* ---------- RIEPILOGO GENERALE ---------- */
-
     private void updateOverall() {
         if (goals.isEmpty()) {
             overallRing.setProgress(0);
@@ -111,7 +109,7 @@ public class AchievementsController implements Initializable {
         overallHint.setText("Continua a completare obiettivi!");
     }
 
-    /* ---------- LISTA OBIETTIVI ---------- */
+    // Lista obiettivi
 
     private void buildGoalCards() {
         goalsFlow.getChildren().clear();
@@ -164,7 +162,7 @@ public class AchievementsController implements Initializable {
         selectedCard.getStyleClass().add("goal-card-selected");
     }
 
-    /* ---------- DETTAGLI ---------- */
+    // Mostra obiettivo
 
     private void showDetails(AchievementGoal goal) {
         detailName.setText(goal.getName());

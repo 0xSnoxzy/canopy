@@ -26,7 +26,6 @@ public class ThemeManager {
      *  - "lavanda-light", "lavanda-dark"
      *  - "orchidea-light", "orchidea-dark"
      *
-     * NB: il vecchio tema "daltonici-*" è stato rimosso: ora usiamo filtri CVD.
      */
     private static final Set<String> SUPPORTED_THEMES = Set.of(
             "dark",
