@@ -213,13 +213,12 @@ public class CalendarController {
 
         for (int r = 0; r < 6; r++) {
             for (int c = 0; c < 7; c++) {
-                LocalDate date = start.plusDays(r * 7L + c);
+                LocalDate date = start.plusDays(r * 7 + c);
                 calendarGrid.add(makeDayCell(date, today, date.getMonth().equals(currentMonth.getMonth())), c, r);
             }
         }
         periodLabel.setText(
-                cap(currentMonth.getMonth().getDisplayName(TextStyle.FULL, locale)) +
-                        " " + currentMonth.getYear());
+                cap(currentMonth.getMonth().getDisplayName(TextStyle.FULL, locale)) + " " + currentMonth.getYear());
     }
 
     private void buildWeek() {
