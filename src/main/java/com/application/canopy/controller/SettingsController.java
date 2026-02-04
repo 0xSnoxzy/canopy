@@ -20,14 +20,17 @@ public class SettingsController {
     @FXML
     private ComboBox<String> fontCombo;
 
+    // modalità light/dark
     @FXML
-    private ComboBox<String> modeCombo; // modalità light/dark
+    private ComboBox<String> modeCombo;
 
+    // tema
     @FXML
-    private ComboBox<String> themeCombo; // tema botanico
+    private ComboBox<String> themeCombo;
 
+    // filtro per daltonici
     @FXML
-    private ComboBox<String> daltonismoCombo; // filtro daltonismo (CVD)
+    private ComboBox<String> daltonismoCombo;
 
     @FXML
     private void initialize() {
@@ -37,9 +40,7 @@ public class SettingsController {
         setupDaltonismoCombo();
     }
 
-    // ============================
-    // RESET DATI: CALENDARIO + GAMESTATE (OBIETTIVI, PROGRESSI, ECC.)
-    // ============================
+    // reset calendario + gamestate
     @FXML
     private void onResetCalendarStats() {
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
@@ -59,7 +60,7 @@ public class SettingsController {
         }
 
         try {
-            // 1) Svuota la tabella del calendario via Locator
+            // svuota la tabella del calendario
             PlantActivityRepository repo = com.application.canopy.service.ServiceLocator.getInstance()
                     .getPlantActivityRepository();
             if (repo != null) {
@@ -68,7 +69,7 @@ public class SettingsController {
                 throw new SQLException("Repository non disponibile (null)");
             }
 
-            // 2) Resetta anche lo stato di gioco (pomodori, best-of-day, ecc.)
+            // resetta anche lo stato di gioco
             GameState.getInstance().resetAllProgress();
 
         } catch (SQLException e) {
@@ -88,9 +89,7 @@ public class SettingsController {
         ok.showAndWait();
     }
 
-    // ============================
-    // FONT
-    // ============================
+    // scelta font
     private void setupFontCombo() {
         if (fontCombo == null)
             return;
@@ -117,16 +116,14 @@ public class SettingsController {
                 });
     }
 
-    // ============================
-    // MODALITÀ (LIGHT / DARK)
-    // ============================
+    // scelta tema light/dark
     private void setupModeCombo() {
         if (modeCombo == null)
             return;
 
         modeCombo.getItems().setAll("Chiara", "Scura");
 
-        String currentMode = ThemeManager.getCurrentMode(); // "light" o "dark"
+        String currentMode = ThemeManager.getCurrentMode();
         modeCombo.getSelectionModel().select(
                 "dark".equals(currentMode) ? "Scura" : "Chiara");
 
@@ -147,9 +144,7 @@ public class SettingsController {
                 });
     }
 
-    // ============================
-    // TEMA BOTANICO
-    // ============================
+    // opzioni palette temi
     private void setupThemeCombo() {
         if (themeCombo == null)
             return;
@@ -163,7 +158,7 @@ public class SettingsController {
                 "Lavanda",
                 "Orchidea");
 
-        String currentPalette = ThemeManager.getCurrentPalette(); // evergreen / sakura / ...
+        String currentPalette = ThemeManager.getCurrentPalette();
         String label = switch (currentPalette) {
             case "sakura" -> "Sakura";
             case "quercia" -> "Quercia";
@@ -201,9 +196,7 @@ public class SettingsController {
                 });
     }
 
-    // ============================
-    // FILTRO DALTONISMO
-    // ============================
+    // filtro daltonismo
     private void setupDaltonismoCombo() {
         if (daltonismoCombo == null)
             return;
@@ -214,8 +207,7 @@ public class SettingsController {
                 "Protanopia",
                 "Tritanopia");
 
-        // allinea alla preferenza salvata
-        String current = ThemeManager.getCurrentColorVisionFilter(); // "none", "deuteranopia", ...
+        String current = ThemeManager.getCurrentColorVisionFilter();
         String label = switch (current) {
             case "deuteranopia" -> "Deuteranopia";
             case "protanopia" -> "Protanopia";

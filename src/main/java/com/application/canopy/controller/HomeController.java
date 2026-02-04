@@ -38,7 +38,7 @@ public class HomeController {
     @FXML
     private Label lblTimer;
 
-    // ---- RING TIMER COMPONENTS ----
+    // anello timer
     @FXML
     private Circle timerBackground;
     @FXML
@@ -48,7 +48,6 @@ public class HomeController {
     @FXML
     private StackPane timerContainer;
 
-    // ---- STATE FOR INTERACTION ----
     private boolean isDraggingInfo = false;
     private static final int MAX_MINUTES = 120; // 2 ore max da ghiera
     private static final double RADIUS = 250.0; // deve corrispondere all'FXML
@@ -66,8 +65,7 @@ public class HomeController {
     @FXML
     private ListView<Plant> list;
 
-    // ----------------- SERVIZI / MODELLO -----------------
-
+    // servizi/modello
     private final GameState gameState = GameState.getInstance();
     private final PomodoroTimerService timerService = new PomodoroTimerService();
     private PlantActivityRepository activityRepository;
@@ -157,16 +155,16 @@ public class HomeController {
         updateProgressBar();
     }
 
-    // ----------------- EVENTI SERVIZIO -----------------
+    //
 
     private void onPomodoroCompleted() {
         if (currentPlant != null) {
-            // 1) Logica Gamification
+            // logica gamification
             gameState.onPomodoroCompleted(currentPlant);
-            // 2) Log Activity
+            // log attività
             logPlantActivityForCurrentPomodoro();
         }
-        showStage(3); // Pianta completa
+        showStage(3); // pianta completa
     }
 
     private void updateTimerLabel(int remaining) {
@@ -180,14 +178,12 @@ public class HomeController {
         double total = timerService.getTotalSeconds();
         double remaining = timerService.getRemainingSeconds();
 
-        // Se non stiamo trascinando (o se è running) aggiorniamo la UI
+        // aggiornamento UI (se non in uso)
         if (!isDraggingInfo) {
             double ratio = (total <= 0) ? 0 : (remaining / total);
-            // Visualizzazione "a riempimento" (Richiesta utente: parte vuoto, completa
-            // l'anello):
+
             // ratio va da 1.0 (inizio) a 0.0 (fine).
-            // Vogliamo length da 0 (inizio) a -360 (fine).
-            // Quindi: (1.0 - ratio) va da 0.0 a 1.0.
+            // length da 0 (inizio) a -360 (fine).
             double progress = 1.0 - ratio;
             double angleLength = -360 * progress;
 
@@ -195,9 +191,7 @@ public class HomeController {
             updateKnobPosition(angleLength);
         }
 
-        // Barra sessione (rimane lineare se presente altrove, o possiamo toglierla se
-        // non serve)
-        // Per ora la lascio se è definita nell'FXML (sessionProgress)
+        // barra sessione
         double sTotal = timerService.sessionTotalSecondsProperty().get();
         double sElapsed = timerService.sessionElapsedSecondsProperty().get();
         if (sessionProgress != null) {
@@ -228,7 +222,6 @@ public class HomeController {
         list.setDisable(running);
         list.setOpacity(running ? 0.6 : 1.0);
 
-        // Disable ring interaction if running
         enableRingInteraction(!running);
 
         if (btnConfig != null) {
@@ -236,7 +229,7 @@ public class HomeController {
         }
     }
 
-    // ----------------- RING LOGIC -----------------
+    // logica anello
 
     private void setupRingInteraction() {
         // Gestione drag sul container o sul knob
@@ -449,6 +442,11 @@ public class HomeController {
             dialog.setTitle("Configura timer");
             DialogPane pane = dialog.getDialogPane();
             pane.setContent(content);
+
+            // Fix for macOS full screen: set owner to main window
+            if (root.getScene() != null && root.getScene().getWindow() != null) {
+                dialog.initOwner(root.getScene().getWindow());
+            }
 
             // Pass direct dialog reference to controller so it can close it
             controller.setDialog(dialog);

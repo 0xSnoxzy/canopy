@@ -68,7 +68,7 @@
     </center>
 
     <bottom>
-        <HBox alignment="CENTER_RIGHT" spacing="12" style="-fx-padding: 16 24; -fx-background-color: -canopy-background-secondary;">
+        <HBox alignment="CENTER_RIGHT" spacing="12" style="-fx-padding: 16 24; -fx-background-color: -canopy-surface-2;">
             <Button fx:id="btnCancel" text="Annulla" styleClass="button-text"/>
             <Button fx:id="btnApply" text="Applica e Inizia" defaultButton="true" styleClass="button-primary"/>
         </HBox>
