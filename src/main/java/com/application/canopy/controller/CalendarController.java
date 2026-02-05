@@ -25,43 +25,37 @@ public class CalendarController {
     @FXML
     private ToggleButton monthBtn, weekBtn;
     @FXML
-    private Button prevBtn, nextBtn, backToMonthBtn;
+    private Button prevBtn, nextBtn;
     @FXML
     private Label periodLabel, rightTitle, summaryLabel;
     @FXML
     private GridPane calendarGrid, weekdayHeader;
     @FXML
-    private ListView<PlantStat> listMonth, listDay;
+    private ListView<PlantStat> listMonth;
 
     private YearMonth currentMonth = YearMonth.now();
     private LocalDate currentWeekStart = LocalDate.now().with(DayOfWeek.MONDAY);
     private final Locale locale = Locale.ITALY;
 
-    /** Repository che parla con SQLite. */
+    // Repository da cui prendo i dati delle piante
     private PlantActivityRepository repository;
 
-    /**
-     * Cache in memoria:
-     * per ogni giorno, la lista di piante (già aggregate per minuti) di quel
-     * giorno.
-     */
+    // Giorno -> Lista minuti per pianta del giorno
     private final Map<LocalDate, List<PlantStat>> dailyStats = new HashMap<>();
 
     @FXML
     private void initialize() {
-        // Inizializza repository DB via Locator
+        // Inizializzazione repository da PlantActivityRepository che prende dal DB
         repository = com.application.canopy.service.ServiceLocator.getInstance().getPlantActivityRepository();
 
         buildWeekdayHeader();
 
         monthBtn.setOnAction(e -> {
             weekBtn.setSelected(false);
-            backToMonth();
             refresh();
         });
         weekBtn.setOnAction(e -> {
             monthBtn.setSelected(false);
-            backToMonth();
             refresh();
         });
 
@@ -70,7 +64,6 @@ public class CalendarController {
                 currentMonth = currentMonth.minusMonths(1);
             else
                 currentWeekStart = currentWeekStart.minusWeeks(1);
-            backToMonth();
             refresh();
         });
         nextBtn.setOnAction(e -> {
@@ -78,20 +71,17 @@ public class CalendarController {
                 currentMonth = currentMonth.plusMonths(1);
             else
                 currentWeekStart = currentWeekStart.plusWeeks(1);
-            backToMonth();
             refresh();
         });
 
         listMonth.setCellFactory(v -> new PlantCell());
-        listDay.setCellFactory(v -> new PlantCell());
 
-        backToMonthBtn.setOnAction(e -> backToMonth());
-
-        // Primo caricamento
+        // Aggiornamento per caricare eventuali cambi nel DB al primo caricamento
         refresh();
 
-        // quando il calendario viene mostrato di nuovo (root agganciato a un parent),
-        // ricarichiamo i dati dal DB così i nuovi pomodori compaiono subito.
+        // Listener che aggiorna il calendario appena viene caricato, se il newParent è
+        // il calendar allora aggiorna dal DB per visualizzare
+        // eventuali cambi in background mentre si era in altre pagine
         root.parentProperty().addListener((obs, oldParent, newParent) -> {
             if (newParent != null) {
                 refresh();
@@ -99,12 +89,7 @@ public class CalendarController {
         });
     }
 
-    /*
-     * ======================
-     * BUILD HEADER / PERIODI
-     * ======================
-     */
-
+    // Costruzione della griglia degli header (Lun, Mar, Mer...)
     private void buildWeekdayHeader() {
         weekdayHeader.getChildren().clear();
         weekdayHeader.getColumnConstraints().clear();
@@ -127,10 +112,7 @@ public class CalendarController {
         }
     }
 
-    /**
-     * Metodo centrale: ricarica i dati dal DB per il mese corrente,
-     * ricostruisce la griglia (mese o settimana) e aggiorna pannello destro.
-     */
+    // Ricarica i dati prendendoli dal DB
     private void refresh() {
         // 1) Ricarica le statistiche dalla tabella plant_activity per il mese corrente
         reloadStatsForCurrentMonth();
@@ -142,7 +124,7 @@ public class CalendarController {
             buildWeek();
         }
 
-        // 3) Aggiorna titolo pannello destro (mese / settimana)
+        // 3) Aggiorna titolo pannello destro (mese o settimana)
         if (monthBtn.isSelected()) {
             rightTitle.setText(
                     cap(currentMonth.getMonth().getDisplayName(TextStyle.FULL, locale)) +
@@ -151,15 +133,12 @@ public class CalendarController {
             rightTitle.setText("Settimana di " + currentWeekStart);
         }
 
-        // 4) Aggiorna lista piante del mese (aggregata) + totale
+        // 4) Aggiorna lista piante del mese
         listMonth.setItems(computeMonthStats());
         updateSummary();
     }
 
-    /**
-     * Legge dal DB tutte le PlantActivity in un range che copre il mese corrente
-     * (con qualche giorno extra ai bordi) e costruisce la mappa dailyStats.
-     */
+    // Legge dal DB tutte le PlantActivity in un range che copre il mese corrente
     private void reloadStatsForCurrentMonth() {
         dailyStats.clear();
         if (repository == null)
@@ -169,8 +148,7 @@ public class CalendarController {
         LocalDate first = month.atDay(1);
         LocalDate last = month.atEndOfMonth();
 
-        // Aggiungo qualche giorno di margine, così copriamo bene anche le celle
-        // "grigie" prima/dopo il mese
+        // Giorni margine extra, così copriamo anche le celle "grigie" prima/dopo il mese
         LocalDate from = first.minusDays(7);
         LocalDate to = last.plusDays(7);
 
@@ -204,12 +182,7 @@ public class CalendarController {
         }
     }
 
-    /*
-     * ======================
-     * COSTRUZIONE GRIGLIA
-     * ======================
-     */
-
+    // Costruzione griglia mese
     private void buildMonth() {
         calendarGrid.getChildren().clear();
         calendarGrid.getColumnConstraints().setAll(equalCols(7));
@@ -222,13 +195,12 @@ public class CalendarController {
 
         for (int r = 0; r < 6; r++) {
             for (int c = 0; c < 7; c++) {
-                LocalDate date = start.plusDays(r * 7L + c);
+                LocalDate date = start.plusDays(r * 7 + c);
                 calendarGrid.add(makeDayCell(date, today, date.getMonth().equals(currentMonth.getMonth())), c, r);
             }
         }
         periodLabel.setText(
-                cap(currentMonth.getMonth().getDisplayName(TextStyle.FULL, locale)) +
-                        " " + currentMonth.getYear());
+                cap(currentMonth.getMonth().getDisplayName(TextStyle.FULL, locale)) + " " + currentMonth.getYear());
     }
 
     private void buildWeek() {
@@ -248,7 +220,7 @@ public class CalendarController {
      * Crea la cella di un singolo giorno.
      * - Numero giorno
      * - Icona della pianta con più minuti (se esiste)
-     * - Tooltip con nome + minuti
+     * - Hover: nome + minuti
      * - Click: apre il dettaglio del giorno nel pannello destro
      */
     private Pane makeDayCell(LocalDate date, LocalDate today, boolean inMonth) {
@@ -306,17 +278,16 @@ public class CalendarController {
             javafx.scene.Parent view = loader.load();
 
             DailyStatsController controller = loader.getController();
-            // Passiamo sia la data che la lista di stats (se c'è, altrimenti lista vuota o
-            // fetch interno)
+            // data e lista di stats
             List<PlantStat> stats = getStatsForDate(date);
             controller.setData(date, stats);
 
             javafx.scene.Scene scene = new javafx.scene.Scene(view, 900, 600);
 
-            // 1. CARICAMENTO STILI GLOBALI (NECESSARIO PER LE VARIABILI -canopy-*)
+            // 1. CARICAMENTO STILI GLOBALI 
             scene.getStylesheets().add(getClass().getResource("/css/base.css").toExternalForm());
 
-            // Caricamento Font
+            // 2. Caricamento Font
             com.application.canopy.model.FontManager.applyCurrentFont(scene);
 
             javafx.stage.Stage stage = new javafx.stage.Stage();
@@ -324,15 +295,9 @@ public class CalendarController {
             stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
             stage.setScene(scene);
 
-            // 2. APPLICAZIONE CLASSE TEMA E SFONDO ROOT
-            // Clona le classi di stile del root principale (es. "root", "theme-dark")
-            // sulla nuova view root, così eredita i tokens.
+            // 3. APPLICAZIONE CLASSE TEMA E SFONDO ROOT
             if (root.getScene() != null && root.getScene().getRoot() != null) {
                 view.getStyleClass().setAll(root.getScene().getRoot().getStyleClass());
-                // Rimuoviamo classi che potrebbero dare fastidio se specifiche del layout
-                // padre,
-                // ma solitamente 'root' e 'theme-...' sono sicure.
-                // Assicuriamoci che ci sia 'stats-root' se l'abbiamo messa nel FXML
                 view.getStyleClass().add("stats-root");
             } else {
                 view.getStyleClass().add("theme-dark");
@@ -346,39 +311,10 @@ public class CalendarController {
         }
     }
 
-    /*
-     * ======================
-     * DETTAGLIO GIORNO / MESE
-     * ======================
-     */
+    // Dettaglio sommario del mese (DESTRA)
 
-    private void backToMonth() {
-        backToMonthBtn.setVisible(false);
-        backToMonthBtn.setManaged(false);
-
-        listDay.setVisible(false);
-        listDay.setManaged(false);
-
-        listMonth.setVisible(true);
-        listMonth.setManaged(true);
-
-        // Ripristina vista "mese" nel pannello destro
-        listMonth.setItems(computeMonthStats());
-        updateSummary();
-
-        if (monthBtn.isSelected()) {
-            rightTitle.setText(
-                    cap(currentMonth.getMonth().getDisplayName(TextStyle.FULL, locale)) +
-                            " " + currentMonth.getYear());
-        } else {
-            rightTitle.setText("Settimana di " + currentWeekStart);
-        }
-    }
-
-    /**
-     * Aggrega tutte le dailyStats del mese corrente in una lista di PlantStat:
-     * una riga per pianta, con minuti sommati sul mese.
-     */
+    // Aggrega tutte le dailyStats del mese corrente in una lista di PlantStat:
+    // una riga per pianta, con minuti sommati sul mese.
     private ObservableList<PlantStat> computeMonthStats() {
         Map<String, Integer> aggregated = new HashMap<>();
 
@@ -403,10 +339,7 @@ public class CalendarController {
         summaryLabel.setText("Tot: " + total + " min");
     }
 
-    /**
-     * Recupera le statistiche di un singolo giorno.
-     * Se non sono in cache, legge dal DB e popola dailyStats.
-     */
+    // Recupera le statistiche di un singolo giorno.
     private List<PlantStat> getStatsForDate(LocalDate date) {
         List<PlantStat> stats = dailyStats.get(date);
         if (stats != null)
@@ -440,12 +373,7 @@ public class CalendarController {
         }
     }
 
-    /*
-     * ======================
-     * API PER AGGIUNGERE MINUTI
-     * ======================
-     */
-
+    // Aggiunge minuti per una pianta su un giorno specifico
     public void addPlantMinutes(LocalDate date, String plantName, int minutes) {
         if (minutes <= 0 || repository == null)
             return;
@@ -457,26 +385,15 @@ public class CalendarController {
             return;
         }
 
-        // Dopo aver salvato sul DB, aggiorniamo la UI:
         refresh();
     }
 
-    /*
-     * ======================
-     * SUPPORTO ICONA PIANTA
-     * ======================
-     */
-
+    // Carica l'icona per una pianta specifica
     private Image loadIconForPlantName(String plantName) {
         return com.application.canopy.util.ResourceManager.getPlantThumbnailByName(plantName);
     }
 
-    /*
-     * ======================
-     * LAYOUT HELPERS
-     * ======================
-     */
-
+    // Helper per creare colonne con width uguale
     private ColumnConstraints[] equalCols(int n) {
         ColumnConstraints[] cols = new ColumnConstraints[n];
         for (int i = 0; i < n; i++) {
@@ -487,6 +404,7 @@ public class CalendarController {
         return cols;
     }
 
+    // Helper per creare righe con height uguale
     private RowConstraints[] equalRows(int n) {
         RowConstraints[] rows = new RowConstraints[n];
         for (int i = 0; i < n; i++) {
@@ -497,16 +415,13 @@ public class CalendarController {
         return rows;
     }
 
+    // Helper per creare stringhe con la prima lettera maiuscola
     private String cap(String s) {
         return s.substring(0, 1).toUpperCase(locale) + s.substring(1);
     }
 
-    /*
-     * ======================
-     * DTO / CELL FACTORY
-     * ======================
-     */
 
+    // Oggetto statistica pianta
     public static class PlantStat {
         public final String name;
         public final int minutes;
@@ -517,6 +432,7 @@ public class CalendarController {
         }
     }
 
+    // Oggetto cella da passare alla lista statistiche (ListView)
     private static class PlantCell extends ListCell<PlantStat> {
         private final HBox root = new HBox(8);
         private final ImageView icon = new ImageView();

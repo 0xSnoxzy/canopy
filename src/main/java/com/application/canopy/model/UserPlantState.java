@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
 /**
- * Stato corrente di una pianta specifica dell'utente.
+ * Stato corrente di una pianta specifica.
  */
 public class UserPlantState {
 
@@ -26,9 +26,7 @@ public class UserPlantState {
         this.unlocked = true; // come prima (o false se volete lock iniziale)
     }
 
-    /**
-     * Costruttore usato dal GameState per ricostruire dallo storage DB.
-     */
+    // Costruttore
     public UserPlantState(Plant plant,
             boolean unlocked,
             int totalPomodori,

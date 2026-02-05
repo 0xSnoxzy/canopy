@@ -2,11 +2,14 @@ package com.application.canopy.controller;
 
 import com.application.canopy.controller.CalendarController.PlantStat;
 import com.application.canopy.db.PlantActivityRepository;
+import com.application.canopy.model.GameState;
+import com.application.canopy.model.Plant;
 import com.application.canopy.model.PlantActivity;
 import com.application.canopy.model.ThemeManager;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
@@ -43,7 +46,7 @@ public class DailyStatsController {
     public void initialize() {
         repository = com.application.canopy.service.ServiceLocator.getInstance().getPlantActivityRepository();
 
-        // Custom cell factory for the list
+        // cella personalizzata per la lista
         detailsList.setCellFactory(lv -> new ListCell<>() {
             private final HBox root = new HBox(10);
             private final Label name = new Label();
@@ -67,12 +70,9 @@ public class DailyStatsController {
                     name.setText(item.name);
                     mins.setText(item.minutes + " min");
 
-                    // Lookup color
-                    Map<String, String> plantColors = com.application.canopy.model.GameState.getInstance()
-                            .getAllPlants().stream()
-                            .collect(Collectors.toMap(com.application.canopy.model.Plant::getName,
-                                    com.application.canopy.model.Plant::getColor));
-                    String color = plantColors.get(item.name);
+                    // lookup colore pianta
+                    String color = getPlantColors().get(item.name);
+
                     if (color != null) {
                         name.setStyle("-fx-text-fill: " + color + ";");
                     } else {
@@ -84,86 +84,80 @@ public class DailyStatsController {
             }
         });
 
-        // Apply theme if needed (though CSS should handle it)
         ThemeManager.applyTheme(root);
     }
 
     public void setData(LocalDate date, List<PlantStat> dayStats) {
-        // 1. Title
+        // 1. Titolo
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("EEEE dd MMMM yyyy", Locale.ITALY);
         String text = date.format(fmt);
-        // Capitalize first letter
+        // prima lettera maiuscola
         text = text.substring(0, 1).toUpperCase() + text.substring(1);
         dateTitle.setText(text);
 
-        // 2. Pie Chart (Distribution of plants for THAT day)
+        // 2. Pie Chart (Distrbuzione piante per quel giorno)
         populatePieChart(dayStats);
 
-        // 3. Line Chart (Weekly Trend ending on THAT day)
+        // 3. Line Chart (Distribuzione delle piante per la settimana)
         populateLineChart(date);
 
-        // 4. List View
+        // 4. Lista dettagliata
         detailsList.setItems(FXCollections.observableArrayList(dayStats));
     }
 
     private void populatePieChart(List<PlantStat> stats) {
-        ObservableList<PieChart.Data> pieData = FXCollections.observableArrayList();
-        for (PlantStat ps : stats) {
-            pieData.add(new PieChart.Data(ps.name, ps.minutes));
-        }
-        pieChart.setData(pieData);
+        pieChart.getData().clear();
+        stats.forEach(s -> pieChart.getData().add(new PieChart.Data(s.name, s.minutes)));
 
-        // Map plant names to their colors
-        Map<String, String> plantColors = com.application.canopy.model.GameState.getInstance().getAllPlants().stream()
-                .collect(Collectors.toMap(com.application.canopy.model.Plant::getName,
-                        com.application.canopy.model.Plant::getColor));
+        Map<String, String> colors = getPlantColors();
 
-        // Apply colors to chart slices
-        for (PieChart.Data data : pieChart.getData()) {
-            String color = plantColors.get(data.getName());
-            if (color != null) {
-                // Apply color to the slice node
-                javafx.scene.Node node = data.getNode();
-                if (node != null) {
-                    node.setStyle("-fx-pie-color: " + color + ";");
-                }
+        // Colora fette
+        pieChart.getData().forEach(d -> {
+            String c = colors.get(d.getName());
+            if (c != null)
+                d.getNode().setStyle("-fx-pie-color: " + c + ";");
+        });
+
+        // Colora legenda
+        // runLater usa il Thread di JavaFX per runnare il codice ad un momento inprecisato in futuro, dato che JavaFX ci impiega
+        // qualche secondo a riempire 
+        Platform.runLater(() -> pieChart.lookupAll(".chart-legend-item").forEach(node -> {
+            if (node instanceof Label label && colors.containsKey(label.getText())) {
+                label.getGraphic().setStyle("-fx-background-color: " + colors.get(label.getText()) + ";");
             }
-        }
+        }));
     }
 
     private void populateLineChart(LocalDate targetDate) {
-        // We want the last 7 days including targetDate
+        // PRendiamo i dati degli ultimi 7 giorni inclusa la data target
         LocalDate startDate = targetDate.minusDays(6);
 
-        // Clear previous data
+        // Cancelliamo i dati precedenti per sovrascriverli
         lineChart.getData().clear();
 
         try {
-            // Get all activities in range
+            // Otteniamo tutte le attività comprese tra la data di inizio e la data target
             List<PlantActivity> activities = repository.getActivitiesBetween(startDate, targetDate);
 
-            // Get colors
-            Map<String, String> plantColors = com.application.canopy.model.GameState.getInstance().getAllPlants()
-                    .stream()
-                    .collect(Collectors.toMap(com.application.canopy.model.Plant::getName,
-                            com.application.canopy.model.Plant::getColor));
+            // Mappa piante -> colore della pianta
+            Map<String, String> plantColors = getPlantColors();
 
-            // Identify active plants in this period
+            // Identifica le piante attive in questo periodo di 7 giorni
             Set<String> activePlants = activities.stream()
                     .map(PlantActivity::getPlantName)
                     .collect(Collectors.toSet());
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM");
 
-            // Create a series for each active plant
+            // Crea una linea sul grafico per le piante attive
             for (String plantName : activePlants) {
                 XYChart.Series<String, Number> series = new XYChart.Series<>();
                 series.setName(plantName);
 
-                // Populate data for 7 days (filling 0s if missing)
+                // Popola i dati per i 7 giorni
                 for (int i = 0; i < 7; i++) {
                     LocalDate d = startDate.plusDays(i);
-                    // Sum minutes for this plant on this day
+                    // Somma i minuti per questa pianta per ogni giorno
                     int min = activities.stream()
                             .filter(a -> a.getDate().equals(d) && a.getPlantName().equals(plantName))
                             .mapToInt(PlantActivity::getMinutes)
@@ -174,13 +168,12 @@ public class DailyStatsController {
                     series.getData().add(data);
                 }
 
-                // Add series to chart
+                // Aggiunge la linea al lineChart
                 lineChart.getData().add(series);
 
-                // Apply style (color)
+                // Applica lo stile
                 String color = plantColors.get(plantName);
                 if (color != null) {
-                    // We must wait for the node to be created
                     if (series.getNode() != null) {
                         series.getNode().setStyle("-fx-stroke: " + color + ";");
                     } else {
@@ -191,8 +184,7 @@ public class DailyStatsController {
                         });
                     }
 
-                    // Also style the legend symbol if possible (tricky without lookup)
-                    // And data points
+                    // Stile della legenda e dei punti
                     for (XYChart.Data<String, Number> data : series.getData()) {
                         if (data.getNode() != null) {
                             data.getNode().setStyle("-fx-background-color: " + color + ", white;");
@@ -210,5 +202,10 @@ public class DailyStatsController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private Map<String, String> getPlantColors() {
+        return GameState.getInstance().getAllPlants().stream()
+                .collect(Collectors.toMap(Plant::getName, Plant::getColor));
     }
 }

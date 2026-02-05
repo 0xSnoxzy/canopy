@@ -6,7 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 
 /**
- * Layout "masonry":
+ * Masonry -> stile Pinterest
  * - numero di colonne dipende dalla larghezza
  * - ogni child è una card che si adatta al proprio contenuto
  */

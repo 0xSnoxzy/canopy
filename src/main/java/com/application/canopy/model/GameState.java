@@ -16,13 +16,12 @@ public class GameState {
         return INSTANCE;
     }
 
-    // Data structures per memorizzazione dello stato corrente
+    // Strutture dati per memorizzazione dello stato corrente
 
     private final Map<String, UserPlantState> plantStates = new HashMap<>();
     private final Map<LocalDate, String> bestPlantOfDay = new HashMap<>();
 
-    // ----------------- STATISTICHE GLOBALI -----------------
-
+    // Variabili statistiche globali
     private int totalPomodoriGlobal;
     private int globalStreak;
     private int globalBestStreak;
@@ -37,8 +36,7 @@ public class GameState {
     private boolean hasCrossedNoonPomodoro;
     private boolean hasRinascitaUnlocked;
 
-    // Metodi per il tracciamento e setting della pianta corrente nella home ->
-    // mostrata nell'erbario
+    // Tiene conto dell'ultima pianta selezionata nella home per il primo avvio dell'erbario
     private String currentPlantId;
 
     public String getCurrentPlantId() {
@@ -49,15 +47,14 @@ public class GameState {
         this.currentPlantId = id;
     }
 
-    // ----------------- Collegamento al DB -----------------
-
+    // Collegamento al DB
     private GameStateRepository repository;
 
     private GameState() {
         // 1) Inizializza le plantStates dal catalogo
         for (Plant p : Plant.samplePlants()) {
             UserPlantState s = new UserPlantState(p);
-            // Lock speciale per default
+
             if (isSpecialPlant(p.getId())) {
                 s.setUnlocked(false);
             }
@@ -113,7 +110,7 @@ public class GameState {
         }
     }
 
-    // ----------------- LOGICA DI GIOCO -----------------
+    // ----------------- LOGICA -----------------
 
     public Collection<UserPlantState> getAllPlantStates() {
         return plantStates.values();
@@ -121,40 +118,20 @@ public class GameState {
 
     private void checkSpecialUnlocks() {
         // Achievement MATTINIERO -> Lifeblood
-        UserPlantState lifeblood = plantStates.get("lifeblood");
-        if (lifeblood != null) {
+        if (plantStates.containsKey("lifeblood")) {
             if (hasMorningPomodoroBefore9) {
-                if (!lifeblood.isUnlocked()) {
-                    lifeblood.unlock();
-                    if (repository != null)
-                        repository.saveUserPlantState(lifeblood);
-                }
+                unlockPlantIfLocked("lifeblood");
             } else {
-                // Se non hai l'achievement, forza il lock (corregge stati precedenti)
-                if (lifeblood.isUnlocked()) {
-                    lifeblood.setUnlocked(false);
-                    if (repository != null)
-                        repository.saveUserPlantState(lifeblood);
-                }
+                lockPlantIfUnlocked("lifeblood");
             }
         }
 
         // Achievement FOGLIA NUOVA -> Radice Sussurrante
-        UserPlantState radice = plantStates.get("radice_sussurrante");
-        if (radice != null) {
+        if (plantStates.containsKey("radice_sussurrante")) {
             if (maxPomodoriInSingleDay >= 3) {
-                if (!radice.isUnlocked()) {
-                    radice.unlock();
-                    if (repository != null)
-                        repository.saveUserPlantState(radice);
-                }
+                unlockPlantIfLocked("radice_sussurrante");
             } else {
-                // Se non hai l'achievement, forza il lock
-                if (radice.isUnlocked()) {
-                    radice.setUnlocked(false);
-                    if (repository != null)
-                        repository.saveUserPlantState(radice);
-                }
+                lockPlantIfUnlocked("radice_sussurrante");
             }
         }
     }
@@ -163,6 +140,16 @@ public class GameState {
         UserPlantState s = plantStates.get(plantId);
         if (s != null && !s.isUnlocked()) {
             s.unlock();
+            if (repository != null) {
+                repository.saveUserPlantState(s);
+            }
+        }
+    }
+
+    private void lockPlantIfUnlocked(String plantId) {
+        UserPlantState s = plantStates.get(plantId);
+        if (s != null && s.isUnlocked()) {
+            s.setUnlocked(false);
             if (repository != null) {
                 repository.saveUserPlantState(s);
             }

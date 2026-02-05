@@ -32,13 +32,13 @@ public class PlantActivityRepository {
         }
     }
 
-    /** Tutte le attività tra due date (estremi inclusi). */
+    // Getter di tutte le attività tra due date (estremi inclusi)
     public List<PlantActivity> getActivitiesBetween(LocalDate from, LocalDate to) throws SQLException {
         String sql = """
-            SELECT date, plant_name, minutes
-            FROM plant_activity
-            WHERE date BETWEEN ? AND ?
-            """;
+                SELECT date, plant_name, minutes
+                FROM plant_activity
+                WHERE date BETWEEN ? AND ?
+                """;
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, from.toString());
             ps.setString(2, to.toString());
@@ -55,7 +55,7 @@ public class PlantActivityRepository {
         }
     }
 
-    /** Tutte le attività di un singolo giorno. */
+    // Getter di tutte le attività di un singolo giorno
     public List<PlantActivity> getActivitiesForDate(LocalDate date) throws SQLException {
         String sql = "SELECT plant_name, minutes FROM plant_activity WHERE date = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
