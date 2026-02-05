@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
@@ -18,46 +17,39 @@
     <center>
         <VBox alignment="CENTER" spacing="12" styleClass="center-area">
 
-            <!-- Timer Ring & Plant Container (CENTRALE) -->
-            <!-- Fixed size to prevent jitter when label changes dimensions -->
-            <StackPane fx:id="timerContainer" alignment="CENTER" 
+            <!-- timer circolare e pianta-->
+            <StackPane fx:id="timerContainer" alignment="CENTER"
                        minWidth="600" minHeight="600"
                        prefWidth="600" prefHeight="600"
                        maxWidth="600" maxHeight="600"
                        styleClass="timer-container" VBox.vgrow="ALWAYS">
+
                  <padding>
                      <Insets bottom="12" left="12" right="12" top="12" />
                  </padding>
 
-                 <!-- Canvas nascosto -->
-                 <Canvas fx:id="canvas" height="720" managed="false" visible="false" width="720" />
-
-                 <!-- Pianta (dentro l'anello, sfondo) -->
+                 <!-- pianta nell'anello -->
                  <ImageView fx:id="img" fitHeight="280" preserveRatio="true" visible="true" StackPane.alignment="CENTER" />
 
-                 <!-- Pane per layout statico (600x600) -->
+                 <!-- pane per layout statico (600x600) -->
                  <javafx.scene.layout.Pane prefWidth="600" prefHeight="600" maxWidth="600" maxHeight="600" minWidth="600" minHeight="600">
-                     <!-- Sfondo Anello -->
+                     <!-- sfondo anello -->
                      <javafx.scene.shape.Circle fx:id="timerBackground" centerX="300" centerY="300" radius="250" styleClass="timer-ring-track"
                                                 strokeWidth="20" fill="#ffffff00" stroke="#e0e0e0" />
 
-                     <!-- Arco Progresso -->
+                     <!-- arco progresso -->
                      <javafx.scene.shape.Arc fx:id="timerArc" centerX="300" centerY="300" radiusX="250" radiusY="250" startAngle="90" length="0"
                                              type="OPEN" strokeWidth="20" fill="#ffffff00" stroke="#2ecc71" styleClass="timer-ring-progress" strokeLineCap="ROUND" />
 
-                     <!-- Pomello (Knob) -->
+                     <!-- maniglia (knob) -->
                      <javafx.scene.shape.Circle fx:id="timerKnob" centerX="300" centerY="300" radius="15" fill="#27ae60" styleClass="timer-knob" />
                  </javafx.scene.layout.Pane>
 
-                 <!-- Timer Label -->
-                 <!-- Utente vuole "al centro". Mettiamola leggermente sopra la pianta o sotto. -->
-                 <!-- StackPane centers all. Use TranslateY to move it up/down. -->
-                 <!-- Or let's put it at the TOP of the stack (rendered on top) but visually positioned. -->
-                 <!-- Positioning: margin top? -->
+                 <!-- timer label -->
                  <Label fx:id="lblTimer" styleClass="timer-large" text="0:00" translateY="-150" mouseTransparent="true"/>
             </StackPane>
 
-            <!-- Controlli inferiori -->
+            <!-- controlli inferiori -->
             <HBox alignment="CENTER" spacing="10">
                 <Button fx:id="btnConfig" text="⚙" styleClass="button-icon" />
                 <Button fx:id="btnStartReset" defaultButton="true" styleClass="start" text="Start" />
@@ -68,7 +60,7 @@
     </center>
 
     <right>
-        <VBox alignment="TOP_LEFT" prefWidth="420" spacing="8" styleClass="sidebar-right">
+        <VBox fx:id="rightPanel" alignment="TOP_LEFT" prefWidth="420" spacing="8" styleClass="sidebar-right">
             <Label styleClass="panel-title" text="Selezione piante" />
             <ListView fx:id="list" VBox.vgrow="ALWAYS" />
         </VBox>

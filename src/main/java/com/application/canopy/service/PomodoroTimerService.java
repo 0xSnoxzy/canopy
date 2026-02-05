@@ -5,10 +5,6 @@ import javafx.animation.Timeline;
 import javafx.beans.property.*;
 import javafx.util.Duration;
 
-/**
- * Gestisce la logica del timer Pomodoro: stati, fasi, conteggio del tempo.
- * Non dipende dalla UI.
- */
 public class PomodoroTimerService {
 
     public enum TimerState {
@@ -22,34 +18,32 @@ public class PomodoroTimerService {
     private final ObjectProperty<TimerState> timerState = new SimpleObjectProperty<>(TimerState.IDLE);
     private final ObjectProperty<Phase> phase = new SimpleObjectProperty<>(Phase.FOCUS);
 
-    // Tempo rimanente nel blocco corrente
+    // tempo rimanente nel blocco corrente
     private final IntegerProperty remainingSeconds = new SimpleIntegerProperty(0);
-    // Tempo totale del blocco corrente (per calcolare %)
+    // tempo totale del blocco corrente
     private final IntegerProperty totalSeconds = new SimpleIntegerProperty(0);
 
-    // Tempo totale della sessione (somma di tutti i blocchi pianificati)
+    // tempo totale della sessione (somma di tutti i blocchi)
     private final IntegerProperty sessionTotalSeconds = new SimpleIntegerProperty(0);
-    // Tempo trascorso in sessione
+    // tempo trascorso
     private final IntegerProperty sessionElapsedSeconds = new SimpleIntegerProperty(0);
 
-    // Parametri di configurazione corrente
+    // parametri di default
     private int focusMinutes = 25;
     private int shortBreakMinutes = 5;
     private int longBreakMinutes = 15;
     private int longBreakInterval = 4;
     private boolean breaksEnabled = true;
 
-    // Stato avanzamento cicli
+    // stato progresso cicli
     private int totalCycles = 1;
     private int completedCycles = 0;
 
     private Timeline timeline;
-    private Runnable onPomodoroCompleted; // Callback per quando finisce un pomodoro completato
+    private Runnable onPomodoroCompleted; //callback per quando finisce un pomodoro completato
 
-    public PomodoroTimerService() {
-    }
 
-    // ----------------- CONFIGURAZIONE -----------------
+    //configurazione
 
     public void configureSession(int focusMins, int shortBreakMins, int longBreakMins,
             int cycles, boolean enableBreaks, int longBreakInt) {
@@ -63,21 +57,14 @@ public class PomodoroTimerService {
         resetSessionStats();
     }
 
-    // Configurazione semplificata (timer singolo)
+    //timer singolo
     public void configureSingleTimer(int focusMins) {
         configureSession(focusMins, 0, 0, 1, false, 0);
     }
 
     private void resetSessionStats() {
-        // Calcola durata totale stimata sessione
+        // calcola la durata totale della sessione
         if (breaksEnabled) {
-            // Questo calcolo dipende da come "totalCycles" viene passato.
-            // Assumiamo che totalCycles sia il numero TOTALE di pomodori da fare.
-
-            // Logica semplificata per calcolo totale (ricopiata da HomeController)
-            // Se totalCycles = N, abbiamo N blocchi di focus.
-            // Le pause sono (N-1).
-            // Ogni 'longBreakInterval' pausa è lunga, le altre corte.
 
             int focusSec = focusMinutes * 60;
             int shortSec = shortBreakMinutes * 60;
@@ -85,7 +72,7 @@ public class PomodoroTimerService {
 
             long tot = (long) totalCycles * focusSec;
 
-            // Calcolo pause
+            // calcolo pause
             for (int i = 1; i < totalCycles; i++) {
                 if (i % longBreakInterval == 0)
                     tot += longSec;
@@ -101,11 +88,11 @@ public class PomodoroTimerService {
         this.sessionElapsedSeconds.set(0);
         this.completedCycles = 0;
 
-        // Imposta stato iniziale
+        // imposta stato iniziale
         setPhaseInternal(Phase.FOCUS, focusMinutes);
     }
 
-    // ----------------- CONTROLLO TIMER -----------------
+    //Timer
 
     public void start() {
         if (timeline != null)
@@ -116,7 +103,7 @@ public class PomodoroTimerService {
         timerState.set(TimerState.RUNNING);
     }
 
-    public void stop() {
+    private void stop() {
         if (timeline != null)
             timeline.stop();
         timerState.set(TimerState.IDLE);
@@ -124,13 +111,13 @@ public class PomodoroTimerService {
 
     public void reset() {
         stop();
-        resetSessionStats(); // Ripristina all'inizio
+        resetSessionStats();
     }
 
     private void tick() {
         remainingSeconds.set(Math.max(0, remainingSeconds.get() - 1));
 
-        // Avanzamento sessione (solo se ha senso)
+        // avanzamento sessione
         if (sessionTotalSeconds.get() > 0 && sessionElapsedSeconds.get() < sessionTotalSeconds.get()) {
             sessionElapsedSeconds.set(sessionElapsedSeconds.get() + 1);
         }
@@ -138,13 +125,11 @@ public class PomodoroTimerService {
         if (remainingSeconds.get() > 0)
             return;
 
-        // FASE COMPLETATA
         onPhaseFinished();
     }
 
     private void onPhaseFinished() {
         if (phase.get() == Phase.FOCUS) {
-            // Pomodoro completato!
             if (focusMinutes >= 25 && onPomodoroCompleted != null) {
                 onPomodoroCompleted.run();
             }
@@ -160,14 +145,14 @@ public class PomodoroTimerService {
             if (!hasMoreCycles) {
                 stopAndResetUI();
             } else {
-                // Passa a pausa
+                // pausa
                 boolean longBreak = (completedCycles % longBreakInterval == 0);
                 int bm = longBreak ? longBreakMinutes : shortBreakMinutes;
                 setPhaseInternal(Phase.BREAK, bm);
             }
 
-        } else { // ERA BREAK
-            // Pausa finita, torna a focus
+        } else {
+            //focus
             boolean hasMoreCycles = completedCycles < totalCycles;
             if (!hasMoreCycles) {
                 stopAndResetUI();
@@ -179,7 +164,7 @@ public class PomodoroTimerService {
 
     private void stopAndResetUI() {
         stop();
-        // Reimposta alla partenza per il prossimo giro
+        // resetta tutto
         completedCycles = 0;
         setPhaseInternal(Phase.FOCUS, focusMinutes);
     }
@@ -194,7 +179,6 @@ public class PomodoroTimerService {
         this.onPomodoroCompleted = callback;
     }
 
-    // ----------------- PROPERTIES EXPOSED -----------------
 
     public ReadOnlyObjectProperty<TimerState> timerStateProperty() {
         return timerState;
@@ -204,9 +188,7 @@ public class PomodoroTimerService {
         return timerState.get();
     }
 
-    public ReadOnlyObjectProperty<Phase> phaseProperty() {
-        return phase;
-    }
+
 
     public Phase getPhase() {
         return phase.get();

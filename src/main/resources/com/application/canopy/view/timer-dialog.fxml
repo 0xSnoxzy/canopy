@@ -7,16 +7,14 @@
             fx:id="root"
             prefWidth="850" prefHeight="450">
 
-    <!-- Centro: Layout semplificato 2 colonne -->
     <center>
         <HBox spacing="0" styleClass="dialog-content">
-            <!-- COLONNA SINISTRA: Lista Preset -->
+            <!-- lista preset -->
             <VBox spacing="10" HBox.hgrow="NEVER" prefWidth="280" styleClass="dialog-sidebar">
                 <Label text="Routine" styleClass="section-title"/>
                 
                 <ScrollPane fitToWidth="true" fitToHeight="true" VBox.vgrow="ALWAYS" styleClass="scrollpane-clean">
                     <VBox fx:id="presetContainer" spacing="8" style="-fx-padding: 0 10 0 0;">
-                        <!-- Presets loaded via code -->
                     </VBox>
                 </ScrollPane>
 
@@ -25,7 +23,7 @@
             
             <Separator orientation="VERTICAL" />
 
-            <!-- COLONNA DESTRA: Form Configurazione -->
+            <!-- colonna destra  -->
             <VBox spacing="20" HBox.hgrow="ALWAYS" style="-fx-padding: 24 32;">
                 <Label fx:id="lblConfigTitle" text="Impostazioni Sessione" styleClass="section-title-large"/>
 
@@ -35,30 +33,24 @@
                         <ColumnConstraints hgrow="ALWAYS" />
                     </columnConstraints>
 
-                    <!-- Name -->
                     <Label text="Nome" GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="label-dim"/>
                     <TextField fx:id="txtName" promptText="Es. Pomodoro Mattutino" GridPane.rowIndex="0" GridPane.columnIndex="1" styleClass="input-field"/>
 
-                    <!-- Focus -->
                     <Label text="Focus (min)" GridPane.rowIndex="1" GridPane.columnIndex="0" styleClass="label-dim"/>
                     <TextField fx:id="txtFocus" GridPane.rowIndex="1" GridPane.columnIndex="1" styleClass="input-field"/>
 
-                    <!-- Short Break -->
                     <Label text="Pausa Breve (min)" GridPane.rowIndex="2" GridPane.columnIndex="0" styleClass="label-dim"/>
                     <TextField fx:id="txtShort" GridPane.rowIndex="2" GridPane.columnIndex="1" styleClass="input-field"/>
 
-                    <!-- Long Break -->
                     <Label text="Pausa Lunga (min)" GridPane.rowIndex="3" GridPane.columnIndex="0" styleClass="label-dim"/>
                     <TextField fx:id="txtLong" GridPane.rowIndex="3" GridPane.columnIndex="1" styleClass="input-field"/>
 
-                    <!-- Cycles -->
                     <Label text="Cicli" GridPane.rowIndex="4" GridPane.columnIndex="0" styleClass="label-dim"/>
                     <Spinner fx:id="cycleSpinner" min="1" max="12" initialValue="4" GridPane.rowIndex="4" GridPane.columnIndex="1" styleClass="input-field"/>
                 </GridPane>
 
                 <Region VBox.vgrow="ALWAYS"/>
 
-                <!-- Azioni Form -->
                 <HBox spacing="10" alignment="CENTER_RIGHT" fx:id="presetActionsBox">
                      <Button fx:id="btnDeletePreset" text="Elimina" styleClass="button-danger-ghost" visible="false" managed="false"/>
                      <Button fx:id="btnSavePreset" text="Salva Preset" styleClass="button-secondary"/>

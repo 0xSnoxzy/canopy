@@ -30,11 +30,6 @@ public class TimerPreset {
         this(0, name, focusMinutes, shortBreakMinutes, longBreakMinutes, repeatBeforeLongBreak);
     }
 
-    // costruttore vecchio (fallback, se mai servisse ancora da codice legacy)
-    public TimerPreset(String name, int focusMinutes, int shortBreakMinutes, int longBreakMinutes) {
-        this(0, name, focusMinutes, shortBreakMinutes, longBreakMinutes, 3);
-    }
-
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
@@ -53,10 +48,5 @@ public class TimerPreset {
     public int getRepeatBeforeLongBreak() { return repeatBeforeLongBreak; }
     public void setRepeatBeforeLongBreak(int repeatBeforeLongBreak) {
         this.repeatBeforeLongBreak = repeatBeforeLongBreak;
-    }
-
-    public String getDisplayText() {
-        // manteniamo formato semplice
-        return name + " (" + focusMinutes + " | " + shortBreakMinutes + " | " + longBreakMinutes + ")";
     }
 }

@@ -1,7 +1,7 @@
 package com.application.canopy.controller;
 
 import com.application.canopy.db.DatabaseManager;
-import com.application.canopy.db.TimerPresetDao;
+import com.application.canopy.db.TimerDatabase;
 import com.application.canopy.model.FontManager;
 import com.application.canopy.model.ThemeManager;
 import com.application.canopy.model.TimerPreset;
@@ -24,7 +24,7 @@ public class TimerDialogController {
     private Button btnNewPreset;
 
     @FXML
-    private TextField txtName; // New Field
+    private TextField txtName;
     @FXML
     private TextField txtFocus;
     @FXML
@@ -39,7 +39,7 @@ public class TimerDialogController {
     @FXML
     private Button btnApply;
 
-    // Optional actions
+    // Azioni opzionali
     @FXML
     private Button btnSavePreset;
     @FXML
@@ -50,11 +50,10 @@ public class TimerDialogController {
     private Label lblConfigTitle;
 
     private List<TimerPreset> presets = new ArrayList<>();
-    private TimerPreset selectedPreset = null; // If null, we are in "Manual/New" mode
+    private TimerPreset selectedPreset = null;
 
-    private Dialog<ButtonType> dialog; // Reference to parent dialog
+    private Dialog<ButtonType> dialog;
 
-    // --- Choice Class (kept for compatibility) ---
     public static class Choice {
         public enum Type {
             PRESET, SINGLE
@@ -74,11 +73,6 @@ public class TimerDialogController {
 
         public static Choice preset(TimerPreset p, int cycles) {
             return new Choice(Type.PRESET, p, cycles, 0);
-        }
-
-        // Legacy support method, though we primarily use Preset logic now
-        public static Choice single(int minutes) {
-            return new Choice(Type.SINGLE, null, 0, minutes);
         }
 
         public Type getType() {
@@ -102,6 +96,8 @@ public class TimerDialogController {
         this.dialog = dialog;
     }
 
+
+
     @FXML
     private void initialize() {
         if (root != null) {
@@ -113,10 +109,10 @@ public class TimerDialogController {
             });
         }
 
-        setupFormatters();
+
         loadPresets();
 
-        // Default values if nothing selected
+        //valori di default se nulla è selezionato
         txtFocus.setText("25");
         txtShort.setText("5");
         txtLong.setText("15");
@@ -130,25 +126,21 @@ public class TimerDialogController {
         if (btnDeletePreset != null)
             btnDeletePreset.setOnAction(e -> onDeletePreset());
 
-        // Start in "New Preset" mode implicitly if none selected
         onNewPreset();
     }
 
-    private void setupFormatters() {
-        // Simple formatter to restrict to numbers?
-        // For brevity, relying on parsing logic handling errors.
-    }
+
 
     private void loadPresets() {
         presets.clear();
         try {
             Connection conn = DatabaseManager.getConnection();
-            TimerPresetDao.createTableIfNeeded(conn);
-            TimerPresetDao.ensureDefaults(conn);
-            presets.addAll(TimerPresetDao.findAll(conn));
+            TimerDatabase.createTableIfNeeded(conn);
+            TimerDatabase.ensureDefaults(conn);
+            presets.addAll(TimerDatabase.findAll(conn));
         } catch (Exception e) {
             e.printStackTrace();
-            // Fallback
+            // errore
             if (presets.isEmpty()) {
                 presets.add(new TimerPreset("Pomodoro", 25, 5, 15, 4));
             }
@@ -162,7 +154,7 @@ public class TimerDialogController {
             Button btn = new Button(p.getName());
             btn.setMaxWidth(Double.MAX_VALUE);
             btn.getStyleClass().add("button-list-item");
-            // If we don't have that class, use style
+            // se la classe non esiste usa lo stile inline
             btn.setStyle("-fx-alignment: CENTER-LEFT;");
 
             btn.setOnAction(e -> selectPreset(p));
@@ -186,7 +178,7 @@ public class TimerDialogController {
         }
 
         if (presetActionsBox != null) {
-            presetActionsBox.setVisible(true); // Always visible now
+            presetActionsBox.setVisible(true);
             btnSavePreset.setText("Salva Modifiche");
             if (btnDeletePreset != null) {
                 btnDeletePreset.setVisible(true);
@@ -203,7 +195,7 @@ public class TimerDialogController {
             txtName.setText("");
             txtName.setPromptText("Nome Nuova Routine");
         }
-        // Let's reset to classic Pomodoro defaults
+        // reimposta ai valori pomodoro di default
         txtFocus.setText("25");
         txtShort.setText("5");
         txtLong.setText("15");
@@ -213,7 +205,6 @@ public class TimerDialogController {
             cycleSpinner.getValueFactory().setValue(4);
         }
 
-        // Show Actions box for "Save as New"
         if (presetActionsBox != null) {
             presetActionsBox.setVisible(true);
             btnSavePreset.setText("Salva Nuova Routine");
@@ -227,7 +218,7 @@ public class TimerDialogController {
     }
 
     private void onSavePreset() {
-        // Parse values common to both cases
+        // parsing dei valori comuni ad entrambi i casi
         String name = (txtName != null && !txtName.getText().isBlank()) ? txtName.getText().trim()
                 : "Routine Personalizzata";
         int focus = parseIntSafe(txtFocus.getText(), 25);
@@ -239,29 +230,26 @@ public class TimerDialogController {
             Connection conn = DatabaseManager.getConnection();
 
             if (selectedPreset != null) {
-                // UPDATE
+                //aggiorna
                 selectedPreset.setName(name);
                 selectedPreset.setFocusMinutes(focus);
                 selectedPreset.setShortBreakMinutes(sBreak);
                 selectedPreset.setLongBreakMinutes(lBreak);
                 selectedPreset.setRepeatBeforeLongBreak(cycles);
 
-                TimerPresetDao.update(conn, selectedPreset);
+                TimerDatabase.update(conn, selectedPreset);
             } else {
-                // INSERT NEW
+                // inserisci nuovo preset
                 TimerPreset newPreset = new TimerPreset(name, focus, sBreak, lBreak, cycles);
-                TimerPresetDao.insert(conn, newPreset);
-                // Switch context to this new preset
+                TimerDatabase.insert(conn, newPreset);
+                // Cambia contesto al nuovo preset
                 this.selectedPreset = newPreset;
             }
 
-            // Reload list
+            // ricarica lista
             loadPresets();
-            // Re-select the current one to refresh UI state (buttons etc)
-            // Need to find the object in the new list that matches ID or Name
+            // riseleziona quello corrente per aggiornare lo stato della UI
             if (selectedPreset != null) {
-                // Try to match by ID if possible, or Name if ID not available?
-                // TimerPresetDao.insert should update ID if auto-generated.
                 for (TimerPreset p : presets) {
                     if (p.getName().equals(selectedPreset.getName())
                             && p.getFocusMinutes() == selectedPreset.getFocusMinutes()) {
@@ -280,7 +268,7 @@ public class TimerDialogController {
         if (selectedPreset != null) {
             try {
                 Connection conn = DatabaseManager.getConnection();
-                TimerPresetDao.delete(conn, selectedPreset);
+                TimerDatabase.delete(conn, selectedPreset);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -313,9 +301,7 @@ public class TimerDialogController {
     }
 
     public Choice getResult() {
-        // Build a temporary Preset based on current inputs
-        // (Use inputs directly, even if saved preset exists, to allow one-off overrides
-        // without saving)
+        // costruisci un Preset temporaneo basato sugli input correnti
         String name = (txtName != null && !txtName.getText().isBlank()) ? txtName.getText().trim() : "Sessione";
         int focus = parseIntSafe(txtFocus.getText(), 25);
         int sh = parseIntSafe(txtShort.getText(), 5);

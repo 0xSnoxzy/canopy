@@ -52,8 +52,9 @@ public final class DatabaseManager {
         }
 
         // tabella preset timer
-        com.application.canopy.db.TimerPresetDao.createTableIfNeeded(connection);
-        com.application.canopy.db.TimerPresetDao.ensureDefaults(connection);
+        // tabella preset timer
+        com.application.canopy.db.TimerDatabase.createTableIfNeeded(connection);
+        com.application.canopy.db.TimerDatabase.ensureDefaults(connection);
     }
 
     public static Connection getConnection() throws SQLException {
