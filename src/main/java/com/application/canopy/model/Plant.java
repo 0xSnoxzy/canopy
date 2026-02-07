@@ -31,7 +31,6 @@ public class Plant {
                 this.color = color;
         }
 
-
         public String getId() {
                 return id;
         }
@@ -137,7 +136,7 @@ public class Plant {
                                                 "Le Radici Sussurranti sono delle piante ripiene di Essenze che si trovano nel lungo e il largo di Nidosacro. Quando si colpisce una radice con l'Aculeo dei Sogni, questa farà comparire dei globi rossi che raccontano le storie di ha vissuto in quei luoghi.",
                                                 "Si nutre dei ricordi di chi ci vive vicino. Non piantarlo troppo vicino pensieri pesanti.",
                                                 "Radice_Sussurrante",
-                                                "Radici_Sussurranti.png",
+                                                "Radici_sussurranti.png",
                                                 "#C71585"));
         }
 }

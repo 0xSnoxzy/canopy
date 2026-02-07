@@ -148,7 +148,8 @@ public class CalendarController {
         LocalDate first = month.atDay(1);
         LocalDate last = month.atEndOfMonth();
 
-        // Giorni margine extra, così copriamo anche le celle "grigie" prima/dopo il mese
+        // Giorni margine extra, così copriamo anche le celle "grigie" prima/dopo il
+        // mese
         LocalDate from = first.minusDays(7);
         LocalDate to = last.plusDays(7);
 
@@ -284,7 +285,7 @@ public class CalendarController {
 
             javafx.scene.Scene scene = new javafx.scene.Scene(view, 900, 600);
 
-            // 1. CARICAMENTO STILI GLOBALI 
+            // 1. CARICAMENTO STILI GLOBALI
             scene.getStylesheets().add(getClass().getResource("/css/base.css").toExternalForm());
 
             // 2. Caricamento Font
@@ -420,7 +421,6 @@ public class CalendarController {
         return s.substring(0, 1).toUpperCase(locale) + s.substring(1);
     }
 
-
     // Oggetto statistica pianta
     public static class PlantStat {
         public final String name;
@@ -432,7 +432,7 @@ public class CalendarController {
         }
     }
 
-    // Oggetto cella da passare alla lista statistiche (ListView)
+    // Oggetto cella da passare alla lista statistiche
     private static class PlantCell extends ListCell<PlantStat> {
         private final HBox root = new HBox(8);
         private final ImageView icon = new ImageView();

@@ -71,10 +71,6 @@ public class HomeController {
 
     private Plant currentPlant;
 
-    // IMMAGINI PIANTE (provvisorio)
-
-    private static final String[] STAGE_FILES = { "stage0.png", "stage1.png", "stage2.png", "stage3.png" };
-
     private final Image[] frames = new Image[4];
     private Image wiltFrame = null;
 
@@ -84,10 +80,10 @@ public class HomeController {
         // inizializza repository via Locator
         activityRepository = com.application.canopy.service.ServiceLocator.getInstance().getPlantActivityRepository();
 
-        //configurazione iniziale di default (25 min)
+        // configurazione iniziale di default (25 min)
         timerService.configureSingleTimer(25);
 
-        //listener eventi timer
+        // listener eventi timer
         timerService.setOnPomodoroCompleted(this::onPomodoroCompleted);
 
         // binding UI agli stati del service
@@ -139,7 +135,8 @@ public class HomeController {
         updateTimerLabel(timerService.getTotalSeconds());
         updateButtonUI(PomodoroTimerService.TimerState.IDLE);
 
-        // check (ridondante) per assicurarsi che l'arco di completamento sia vuoto (trasparente)
+        // check (ridondante) per assicurarsi che l'arco di completamento sia vuoto
+        // (trasparente)
         if (timerArc != null)
             timerArc.setFill(Color.TRANSPARENT);
 
@@ -309,7 +306,7 @@ public class HomeController {
                 }
             }
         } else {
-            timerService.reset(); //ferma e resetta stats
+            timerService.reset(); // ferma e resetta stats
 
             if (timerService.getPhase() == PomodoroTimerService.Phase.FOCUS
                     && timerService.getRemainingSeconds() > 0
@@ -335,7 +332,7 @@ public class HomeController {
             URL fxml = getClass().getResource("/com/application/canopy/view/timer-dialog.fxml");
             if (fxml == null) {
                 System.err.println("timer-dialog.fxml non trovato");
-                //fallback: start diretto default se manca dialog
+                // fallback: start diretto default se manca dialog
                 return true;
             }
 
@@ -410,14 +407,14 @@ public class HomeController {
         }
     }
 
-    //Gestione piante
+    // Gestione piante
 
     private void setCurrentPlant(Plant p) {
         this.currentPlant = p;
         if (p != null)
             gameState.setCurrentPlantId(p.getId());
         if (timerService.getTimerState() == PomodoroTimerService.TimerState.IDLE) {
-            loadImages(); //precarica immagini stage
+            loadImages(); // precarica immagini stage
             showIdleImage();
         } else {
             loadImages();
@@ -458,7 +455,7 @@ public class HomeController {
                 } else {
                     title.setText(p.getName());
                     subtitle.setText(p.getDescription());
-                    //usa ResourceManager
+
                     icon.setImage(com.application.canopy.util.ResourceManager.getPlantThumbnail(p.getThumbFile()));
                     setGraphic(root);
                 }
@@ -473,13 +470,12 @@ public class HomeController {
     private void loadImages() {
         if (currentPlant == null)
             return;
-        String folder = currentPlant.getFolderName();
 
-        for (int i = 0; i < STAGE_FILES.length; i++) {
-            frames[i] = com.application.canopy.util.ResourceManager.getStageImage(folder, i);
+        for (int i = 0; i < frames.length; i++) {
+            frames[i] = com.application.canopy.util.ResourceManager.getGrowthImage(currentPlant, i);
         }
         // il wilt frame per ora è stage0
-        wiltFrame = com.application.canopy.util.ResourceManager.getStageImage(folder, 0);
+        wiltFrame = com.application.canopy.util.ResourceManager.getGrowthImage(currentPlant, 0);
 
         img.setVisible(true);
         img.setPreserveRatio(true);
@@ -488,8 +484,18 @@ public class HomeController {
     private void updateGrowthFrame() {
         double total = timerService.getTotalSeconds();
         double remaining = timerService.getRemainingSeconds();
+
+        // Se il timer è finito mostra stage finale
+        if (remaining <= 1) {
+            showStage(3);
+            return;
+        }
+
         double p = (total == 0) ? 0 : 1.0 - (remaining / total);
 
+        // Stage 0: 0% - 33%
+        // Stage 1: 33% - 66%
+        // Stage 2: 66% - <100%
         int stage = (p >= 2.0 / 3.0) ? 2 : (p >= 1.0 / 3.0 ? 1 : 0);
         showStage(stage);
     }
@@ -510,7 +516,7 @@ public class HomeController {
 
     private void showIdleImage() {
         if (currentPlant != null) {
-            //mostra icona/thumbnail
+            // mostra icona/thumbnail
             img.setImage(com.application.canopy.util.ResourceManager.getPlantThumbnail(currentPlant.getThumbFile()));
         }
     }

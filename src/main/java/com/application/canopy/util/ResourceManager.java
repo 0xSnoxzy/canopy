@@ -13,7 +13,7 @@ public class ResourceManager {
 
     private static final String IMAGES_ROOT = "/com/application/canopy/view/components/images/";
     private static final String THUMBS_DIR = IMAGES_ROOT + "thumbs/";
-    private static final String PLANTS_DIR = IMAGES_ROOT + "plants/";
+    // private static final String PLANTS_DIR = IMAGES_ROOT + "plants/";
 
     private static final Map<String, Image> imageCache = new HashMap<>();
 
@@ -85,11 +85,44 @@ public class ResourceManager {
         return getPlantThumbnail(fName);
     }
 
-    public static Image getStageImage(String folderName, int stageIndex) {
-        String filename = "stage" + stageIndex + ".png";
-        return loadImage(PLANTS_DIR + folderName + "/" + filename);
-    }
+    public static Image getGrowthImage(com.application.canopy.model.Plant plant, int stageIndex) {
+        if (plant == null)
+            return null;
 
+        // Stage 3 -> Pianta finale (usa la thumb normale)
+        if (stageIndex >= 3) {
+            return getPlantThumbnail(plant.getThumbFile());
+        }
+
+        java.util.Set<String> candidates = new java.util.LinkedHashSet<>();
+
+        if (plant.getFolderName() != null && !plant.getFolderName().isEmpty()) {
+            candidates.add(plant.getFolderName());
+        }
+        candidates.add(plant.getName());
+        candidates.add(plant.getName().replace(" ", "_"));
+
+        String thumb = plant.getThumbFile();
+        if (thumb != null && thumb.contains(".")) {
+            String fromThumb = thumb.substring(0, thumb.lastIndexOf('.'));
+            candidates.add(fromThumb);
+        }
+
+        String suffix = "-Stage" + stageIndex;
+
+        for (String base : candidates) {
+            Image img = loadFirstExisting(
+                    THUMBS_DIR + base + suffix + ".png",
+                    THUMBS_DIR + base + suffix + ".jpg");
+            if (img != null) {
+                return img;
+            }
+        }
+
+        System.err.println(
+                "[ResourceManager] Immagine stage non trovata: " + plant.getName() + " stage: " + stageIndex);
+        return null;
+    }
 
     public static Image getNavIcon(String name, boolean isWhite) {
         String path = IMAGES_ROOT + name + (isWhite ? "-dark" : "") + ".png";
