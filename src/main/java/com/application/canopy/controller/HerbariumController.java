@@ -28,6 +28,8 @@ public class HerbariumController {
         ALL, COMUNI, RARE, SPECIALE
     }
 
+
+    // Oggetto che associa a Plant nome, descrizione, curiosità ecc.. per informazioni da mostrare sull'erbario
     public static class PlantItem {
         public final Plant plant;
         public final String name;
@@ -113,7 +115,6 @@ public class HerbariumController {
     private Label emptyHint;
 
     // Sidebar destra
-
     @FXML
     private TextField searchField;
     @FXML
@@ -123,7 +124,7 @@ public class HerbariumController {
     @FXML
     private ListView<PlantItem> plantsList;
 
-    // dati
+    // Inizializzazione strutture dati
     private final ObservableList<PlantItem> source = FXCollections.observableArrayList();
     private FilteredList<PlantItem> filtered;
 
@@ -220,7 +221,6 @@ public class HerbariumController {
     }
 
     // Costruzione della lista delle piante
-
     private void loadFromGameState() {
         source.clear();
         for (UserPlantState state : gameState.getAllPlantStates()) {
@@ -258,7 +258,6 @@ public class HerbariumController {
     }
 
     // Filtri
-
     private void applyFilters() {
         if (filtered == null)
             return;
@@ -295,7 +294,6 @@ public class HerbariumController {
     }
 
     // Dettagli della pianta selezionata
-
     private void showPlant(PlantItem p) {
         if (p == null) {
             showEmptyState();
@@ -362,7 +360,6 @@ public class HerbariumController {
     }
 
     // Caricamento delle immagini
-
     private String imageBaseFor(Plant plant) {
         String id = plant.getId().toLowerCase(Locale.ROOT);
 
@@ -409,7 +406,6 @@ public class HerbariumController {
     }
 
     // Lista delle piante a destra (celle)
-
     private class PlantCardCell extends ListCell<PlantItem> {
         private final HBox root = new HBox(10);
         private final StackPane iconContainer = new StackPane(); // Contenitore 40x40

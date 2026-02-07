@@ -16,12 +16,13 @@ public class GameState {
         return INSTANCE;
     }
 
-    // Strutture dati per memorizzazione dello stato corrente
+    // Data structures per memorizzazione dello stato corrente
 
     private final Map<String, UserPlantState> plantStates = new HashMap<>();
     private final Map<LocalDate, String> bestPlantOfDay = new HashMap<>();
 
-    // Variabili statistiche globali
+    // Variabili globali statistiche
+
     private int totalPomodoriGlobal;
     private int globalStreak;
     private int globalBestStreak;
@@ -36,7 +37,7 @@ public class GameState {
     private boolean hasCrossedNoonPomodoro;
     private boolean hasRinascitaUnlocked;
 
-    // Tiene conto dell'ultima pianta selezionata nella home per il primo avvio dell'erbario
+    // Metodi per il tracciamento e setting della pianta corrente nella home
     private String currentPlantId;
 
     public String getCurrentPlantId() {
@@ -48,13 +49,14 @@ public class GameState {
     }
 
     // Collegamento al DB
+
     private GameStateRepository repository;
 
     private GameState() {
         // 1) Inizializza le plantStates dal catalogo
         for (Plant p : Plant.samplePlants()) {
             UserPlantState s = new UserPlantState(p);
-
+            // Lock speciale per default
             if (isSpecialPlant(p.getId())) {
                 s.setUnlocked(false);
             }
@@ -80,8 +82,7 @@ public class GameState {
         return "lifeblood".equals(id) || "radice_sussurrante".equals(id);
     }
 
-    // ----------------- Caricamento dal DB -----------------
-
+    // Caricamento dal DB
     private void loadFromRepository() {
         if (repository == null)
             return;
@@ -102,15 +103,13 @@ public class GameState {
         // Carica stato piante
         Map<String, UserPlantState> loadedPlants = repository.loadUserPlantStates();
 
-        // Merge: se nel DB c'è lo stato, usa quello (che avrà unlocked=true/false
-        // salvato),
-        // altrimenti mantieni il default (che per le speciali è false)
         for (Map.Entry<String, UserPlantState> entry : loadedPlants.entrySet()) {
             plantStates.put(entry.getKey(), entry.getValue());
         }
     }
 
-    // ----------------- LOGICA -----------------
+    // Metodi vari utili (check, unlock, lock, getter delle piante, migliore pianta,
+    // update)
 
     public Collection<UserPlantState> getAllPlantStates() {
         return plantStates.values();
@@ -175,10 +174,10 @@ public class GameState {
         LocalDate today = LocalDate.now();
         java.time.LocalTime nowTime = java.time.LocalTime.now();
 
-        // ---- MIGLIOR PIANTA DEL GIORNO ----
+        // Miglior pianta del giorno
         updateBestPlantOfDay(today, plant, state);
 
-        // ---- STATISTICHE GLOBALI PER ACHIEVEMENTS ----
+        // Aggiorna le variabili globali
         updateGlobalStats(today, nowTime);
 
         // Check unlock speciali
@@ -246,7 +245,7 @@ public class GameState {
             totalPomodoriAfter21++;
         }
 
-        java.time.LocalTime startApprox = nowTime.minusMinutes(25); // assume 25min per pomodoro
+        java.time.LocalTime startApprox = nowTime.minusMinutes(25); // MINUTI MINIMO PER ESSERE CONTEGGIATO
         java.time.LocalTime noon = java.time.LocalTime.NOON;
         if (!startApprox.isAfter(noon) && !nowTime.isBefore(noon)) {
             hasCrossedNoonPomodoro = true;
@@ -286,9 +285,6 @@ public class GameState {
         // 3) ricrea gli UserPlantState azzerando i progressi ma mantenendo l'unlock
         for (Map.Entry<String, UserPlantState> entry : plantStates.entrySet()) {
             entry.getValue().resetAll();
-            // N.B. resetAll() deve esistere in UserPlantState, l'abbiamo visto prima.
-            // Se non fa esattamente quello che vogliamo, potremmo doverlo aggiornare.
-            // Nel codice originale ricreava l'oggetto, qui resetto quello esistente.
         }
 
         // 4) sincronizza sul DB
@@ -303,7 +299,7 @@ public class GameState {
         }
     }
 
-    // ----------------- LISTENERS -----------------
+    // LISTENERS
     private final List<Runnable> statsListeners = new ArrayList<>();
 
     public void addStatsListener(Runnable r) {
@@ -337,7 +333,7 @@ public class GameState {
         fireStatsChanged();
     }
 
-    // ----------------- GETTER PER ACHIEVEMENTS -----------------
+    // Getters degli achievements
 
     public Plant getBestPlantOf(LocalDate date) {
         String id = bestPlantOfDay.get(date);
@@ -391,7 +387,7 @@ public class GameState {
         return hasRinascitaUnlocked;
     }
 
-    // ----------------- UTILITY PARSING -----------------
+    // Metodi per il parsing di tipi e date
 
     private int parseInt(String s) {
         if (s == null)

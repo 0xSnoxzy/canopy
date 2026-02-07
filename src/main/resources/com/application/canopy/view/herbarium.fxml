@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
@@ -24,12 +23,10 @@
                             hbarPolicy="NEVER"
                             vbarPolicy="AS_NEEDED"
                             styleClass="scrollpane-clean">
-                    <content>
-                        <!-- root interno, usato per il binding dell'altezza -->
                         <StackPane fx:id="herbRoot"
                                    styleClass="herb-scroll-root">
 
-                            <!-- BOARD MASONRY -->
+                            <!-- BOARD CENTRALE -->
                             <MasonryPane fx:id="masonryBoard"
                                          hgap="24"
                                          vgap="24"
@@ -42,7 +39,6 @@
                                            prefWidth="320" maxWidth="320"
                                            prefHeight="360" maxHeight="360">
 
-                                    <!-- clip legata nel controller -->
                                     <clip>
                                         <Rectangle fx:id="heroClip"
                                                    arcWidth="28"
@@ -93,7 +89,7 @@
                                           wrappingWidth="260"/>
                                 </VBox>
 
-                                <!-- CARD 5: VARIANTE 1 -->
+                                <!-- CARD 5: Immagine 1 -->
                                 <StackPane fx:id="variant1Card"
                                            styleClass="gallery-card">
                                     <clip>
@@ -108,7 +104,7 @@
                                                StackPane.alignment="CENTER"/>
                                 </StackPane>
 
-                                <!-- CARD 6: VARIANTE 2 -->
+                                <!-- CARD 6: Immagine 2 -->
                                 <StackPane fx:id="variant2Card"
                                            styleClass="gallery-card">
                                     <clip>
@@ -123,7 +119,7 @@
                                                StackPane.alignment="CENTER"/>
                                 </StackPane>
 
-                                <!-- CARD 7: VARIANTE 3 -->
+                                <!-- CARD 7: Immagine 3 -->
                                 <StackPane fx:id="variant3Card"
                                            styleClass="gallery-card">
                                     <clip>
@@ -146,7 +142,6 @@
                                    styleClass="hint"
                                    StackPane.alignment="CENTER"/>
                         </StackPane>
-                    </content>
                 </ScrollPane>
 
                 <!-- SIDEBAR DESTRA -->

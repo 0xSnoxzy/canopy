@@ -1,27 +1,11 @@
-/* ============================================================
-   HERBARIUM – layout moderno
-   ============================================================ */
 
-/* root interno alla ScrollPane dell’erbario */
+/* ERBARIO */
 .herb-scroll-root {
   -fx-background-color: transparent;
   -fx-padding: 24 32 40 32;
 }
 
-/* layout principale, centrato nella pagina */
-.herb-layout {
-  -fx-alignment: TOP_CENTER;
-  -fx-spacing: 24;
-}
-
-/* ------------------------------------------------------------
-   HERO SECTION
-   ------------------------------------------------------------ */
-
-.herb-hero {
-  -fx-alignment: CENTER_LEFT;
-}
-
+/* Stile card icona della pianta */
 .hero-image-card {
   -fx-background-color:
     linear-gradient(to bottom right,
@@ -31,7 +15,6 @@
   -fx-border-radius: 28;
   -fx-border-color: -canopy-border-subtle;
   -fx-border-width: 1;
-  /* niente padding: l'immagine tocca direttamente i bordi */
   -fx-padding: 0;
   -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.55), 32, 0.45, 0, 12);
 }
@@ -66,14 +49,7 @@
   -fx-line-spacing: 2px;
 }
 
-/* ------------------------------------------------------------
-   SEZIONE INFO (descrizione + cura)
-   ------------------------------------------------------------ */
-
-.info-row {
-  -fx-alignment: TOP_LEFT;
-}
-
+/* Stile descrizione + cura */
 .info-card {
   -fx-background-color: -canopy-card-soft;
   -fx-background-radius: 24;
@@ -84,7 +60,6 @@
   -fx-spacing: 8;
 }
 
-/* titoletti sezione */
 .section-title-herb {
   -fx-font-size: 11px;
   -fx-font-weight: 800;
@@ -92,32 +67,14 @@
   -fx-letter-spacing: 1.6px;
 }
 
-/* corpo testo */
+/* Stile testo */
 .section-body {
   -fx-fill: -canopy-text;
   -fx-font-size: 13px;
   -fx-line-spacing: 3px;
 }
 
-/* ------------------------------------------------------------
-   GALLERIA VARIANTI
-   ------------------------------------------------------------ */
-
-.gallery-section {
-  -fx-spacing: 10;
-}
-
-.gallery-title {
-  -fx-font-size: 13px;
-  -fx-font-weight: 800;
-  -fx-text-fill: -canopy-muted;
-}
-
-.gallery-flow {
-  -fx-padding: 4 0 0 0;
-}
-
-/* card singola della galleria */
+/* Stile immagini */
 .gallery-card {
   -fx-background-color:
     linear-gradient(to bottom, -canopy-surface-2, -canopy-surface);
@@ -125,16 +82,12 @@
   -fx-border-radius: 22;
   -fx-border-color: -canopy-border-subtle;
   -fx-border-width: 1;
-  /* niente padding: immagine edge-to-edge */
   -fx-padding: 0;
   -fx-alignment: CENTER;
   -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.45), 24, 0.35, 0, 8);
 }
 
-/* ------------------------------------------------------------
-   EMPTY STATE
-   ------------------------------------------------------------ */
-
+/* Stile pagina vuota */
 .hint {
   -fx-text-fill: -canopy-muted;
   -fx-font-size: 13px;
@@ -144,9 +97,7 @@
   -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 20, 0.45, 0, 4);
 }
 
-/* ============================================================
-   SIDEBAR DESTRA (come prima)
-   ============================================================ */
+/* Stile sidebar destra */
 
 .sidebar-right {
   -fx-padding: 16;
@@ -187,9 +138,7 @@
   -fx-background-color: derive(-canopy-accent-soft, 10%);
 }
 
-/* ============================================================
-   LISTVIEW CARDS Piante (destra)
-   ============================================================ */
+/* Stile ListView delle piante destra */
 
 .plant-card {
   -fx-background-color: -canopy-card;

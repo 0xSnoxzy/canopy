@@ -31,6 +31,7 @@ public class Plant {
                 this.color = color;
         }
 
+
         public String getId() {
                 return id;
         }
@@ -63,7 +64,7 @@ public class Plant {
                 return color;
         }
 
-        // Catalogo "statico" delle piante sbloccabili
+        // Lista delle piante
         public static List<Plant> samplePlants() {
                 return List.of(
                                 new Plant(

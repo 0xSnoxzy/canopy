@@ -15,7 +15,7 @@ public class UserPlantState {
     private int todayPomodori;
     private boolean dead;
 
-    // ---- Campi extra per statistiche/achievements ----
+    // Variabili helper
     private LocalDate firstUseDate; // primo pomodoro completato con questa pianta
     private LocalDate lastPomodoroDate; // ultimo giorno in cui è stato fatto un pomodoro con questa pianta
     private int streakDays; // streak corrente di giorni consecutivi per questa pianta
@@ -23,7 +23,7 @@ public class UserPlantState {
 
     public UserPlantState(Plant plant) {
         this.plant = plant;
-        this.unlocked = true; // come prima (o false se volete lock iniziale)
+        this.unlocked = true;
     }
 
     // Costruttore
@@ -47,7 +47,6 @@ public class UserPlantState {
         this.maxStreakDays = maxStreakDays;
     }
 
-    // ----------------- METODI ORIGINALI -----------------
 
     public Plant getPlant() {
         return plant;
@@ -73,9 +72,7 @@ public class UserPlantState {
         this.unlocked = true;
     }
 
-    /**
-     * Chiamato quando un pomodoro per questa pianta viene completato.
-     */
+
     public void onPomodoroCompleted() {
         if (dead)
             return;
@@ -98,7 +95,7 @@ public class UserPlantState {
             } else if (delta > 1) {
                 streakDays = 1;
             }
-            // se delta == 0 -> stesso giorno, non tocchiamo la streak di giorni
+            // se delta == 0 -> stesso giorno, streak di giorni invariata
         }
 
         lastPomodoroDate = today;
@@ -116,7 +113,7 @@ public class UserPlantState {
         todayPomodori = 0;
     }
 
-    // ----------------- GETTER -----------------
+    // Getters
 
     public LocalDate getFirstUseDate() {
         return firstUseDate;
@@ -134,8 +131,7 @@ public class UserPlantState {
         return maxStreakDays;
     }
 
-    // Età in giorni da quando è stato completato il primo pomodoro con questa
-    // pianta.
+    // Età in giorni da quando è stato completato il primo pomodoro con questa pianta.
     public int getAgeDays() {
         if (firstUseDate == null)
             return 0;
@@ -143,17 +139,12 @@ public class UserPlantState {
     }
 
     public void resetAll() {
-        // Non forziamo unlocked = true, altrimenti sblocca anche le piante speciali non
-        // ottenute.
-        // Manteniamo lo stato attuale (o se si vuole reset totale, bisognerebbe sapere
-        // se è speciale).
-        // Per ora rimuoviamo la riga che forza l'unlock.
         this.totalPomodori = 0;
         this.todayPomodori = 0;
         this.dead = false;
     }
 
-    // ----------------- SETTER -----------------
+    // Setters
 
     public void setTodayPomodori(int todayPomodori) {
         this.todayPomodori = todayPomodori;

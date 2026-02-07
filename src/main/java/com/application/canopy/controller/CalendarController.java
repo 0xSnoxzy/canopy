@@ -291,7 +291,7 @@ public class CalendarController {
             com.application.canopy.model.FontManager.applyCurrentFont(scene);
 
             javafx.stage.Stage stage = new javafx.stage.Stage();
-            stage.setTitle("Statistics - " + date);
+            stage.setTitle("Statistiche - " + date);
             stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
             stage.setScene(scene);
 

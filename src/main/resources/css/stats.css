@@ -1,5 +1,4 @@
-/* ---------- STATISTICS VIEW ---------- */
-
+/* STATISTICHE */
 .stats-root {
     -fx-background-color: -canopy-bg;
     -fx-padding: 20;
@@ -13,7 +12,7 @@
     -fx-padding: 0 0 15 0;
 }
 
-/* CARDS CONTAINER */
+/* Stile contenitore dei grafici e dei titoli dei grafici */
 .stats-card {
      -fx-background-color:
         linear-gradient(to bottom, -canopy-surface-2, -canopy-surface);
@@ -32,7 +31,6 @@
     -fx-padding: 0 0 10 0;
 }
 
-/* CHARTS GENERAL */
 .chart {
     -fx-padding: 10px;
     -fx-background-color: transparent;
@@ -41,16 +39,7 @@
     -fx-padding: 10px;
 }
 
-/* PIE CHART (DONUT STYLE) */
-.chart-pie-label {
-    -fx-fill: -canopy-text;
-    -fx-font-size: 11px;
-}
-.chart-pie-label-line {
-    -fx-stroke: -canopy-muted;
-}
-
-/* LINE CHART */
+/* Stile LineChart */
 .axis-label {
     -fx-text-fill: -canopy-muted;
 }
@@ -59,7 +48,7 @@
 }
 .chart-vertical-grid-lines, .chart-horizontal-grid-lines {
     -fx-stroke: -canopy-border-subtle;
-    -fx-stroke-dash-array: 0; /* solid refined lines */
+    -fx-stroke-dash-array: 0;
 }
 .chart-alternative-column-fill {
     -fx-fill: transparent;
@@ -69,14 +58,14 @@
     -fx-fill: transparent;
     -fx-stroke: transparent;
 }
-/* Style the line */
+/* Stile della linea del LineChart */
 .default-color0.chart-series-line { -fx-stroke: -canopy-accent; -fx-stroke-width: 3px; }
 .default-color1.chart-series-line { -fx-stroke: -canopy-accent-2; -fx-stroke-width: 3px; }
-/* Style the symbol */
+/* Stile del puntino del lineChart*/
 .default-color0.chart-line-symbol { -fx-background-color: -canopy-accent, white; -fx-background-radius: 5px; -fx-padding: 5px; }
 .default-color1.chart-line-symbol { -fx-background-color: -canopy-accent-2, white; -fx-background-radius: 5px; -fx-padding: 5px; }
 
-/* SUMMARY LIST */
+/* Stile dettagli */
 .stat-item {
     -fx-background-color: -canopy-card-soft;
     -fx-background-radius: 12;

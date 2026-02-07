@@ -47,8 +47,7 @@ public class GameStateRepository {
         }
     }
 
-    // Caricamento dei dati nuovi dall DB
-
+    // Caricamento dei dati nuovi dal DB
     public Map<String, String> loadGlobalState() {
         Map<String, String> data = new HashMap<>();
         if (connection == null)
@@ -165,7 +164,6 @@ public class GameStateRepository {
     }
 
     // Metodi utili
-
     private Plant findPlantById(String id) {
         if (id == null)
             return null;

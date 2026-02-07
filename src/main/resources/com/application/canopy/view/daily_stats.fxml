@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="root" prefHeight="600.0" prefWidth="900.0" styleClass="stats-root" stylesheets="@../../../css/stats.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.application.canopy.controller.DailyStatsController">
+<BorderPane fx:id="root" prefHeight="600.0" prefWidth="900.0" styleClass="stats-root" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.application.canopy.controller.DailyStatsController">
    <top>
       <HBox alignment="CENTER_LEFT" BorderPane.alignment="CENTER">
          <children>
@@ -36,7 +36,7 @@
           <RowConstraints percentHeight="45.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <!-- 1. PLANTS DISTRIBUTION (PIE CHART) -->
+            <!-- 1. PIE CHART PIANTE -->
             <VBox styleClass="stats-card" GridPane.columnIndex="0" GridPane.rowIndex="0">
                <children>
                   <Label styleClass="card-title" text="Piante di oggi" />
@@ -44,7 +44,7 @@
                </children>
             </VBox>
 
-            <!-- 2. WEEKLY ACTIVITY (LINE CHART) -->
+            <!-- 2. ATTIVITA' SETTIMANALE (LINE CHART) -->
             <VBox styleClass="stats-card" GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.rowSpan="2">
                <children>
                   <Label styleClass="card-title" text="Attività degli ultimi 7 giorni" />
@@ -53,13 +53,13 @@
                       <CategoryAxis side="BOTTOM" />
                     </xAxis>
                     <yAxis>
-                      <NumberAxis side="LEFT" label="Minutes"/>
+                      <NumberAxis side="LEFT" label="Minuti"/>
                     </yAxis>
                   </LineChart>
                </children>
             </VBox>
 
-            <!-- 3. DETAILS LIST -->
+            <!-- 3. LISTA DETTAGLI -->
             <VBox styleClass="stats-card" GridPane.columnIndex="0" GridPane.rowIndex="1">
                <children>
                   <Label styleClass="card-title" text="Dettagli" />

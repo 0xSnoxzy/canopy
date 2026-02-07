@@ -8,7 +8,7 @@ public class AchievementGoal {
     private final String description;
     private final int current;
     private final int total;
-    private final String iconPath; // opzionale
+    private final String iconPath;
 
     public AchievementGoal(
             AchievementId id,

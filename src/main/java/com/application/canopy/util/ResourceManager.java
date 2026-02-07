@@ -7,8 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Gestisce il caricamento delle risorse (immagini) in modo centralizzato.
- * Evita duplicazioni di percorso e try-catch ovunque.
+ * Gestisce il caricamento delle risorse.
  */
 public class ResourceManager {
 
@@ -16,7 +15,6 @@ public class ResourceManager {
     private static final String THUMBS_DIR = IMAGES_ROOT + "thumbs/";
     private static final String PLANTS_DIR = IMAGES_ROOT + "plants/";
 
-    // Cache semplice per evitare di ricaricare stesse immagini
     private static final Map<String, Image> imageCache = new HashMap<>();
 
     public static Image loadImage(String path) {
@@ -32,7 +30,7 @@ public class ResourceManager {
             return null;
         }
 
-        Image img = new Image(url.toExternalForm(), false); // background loading = false (evita glitch layout)
+        Image img = new Image(url.toExternalForm(), false);
         imageCache.put(path, img);
         return img;
     }
@@ -65,9 +63,8 @@ public class ResourceManager {
     public static Image getPlantThumbnailByName(String plantName) {
         if (plantName == null)
             return null;
-        // Mappatura semplice nome -> file (estendibile)
-        // In un mondo ideale questo sta nel DB o nel model Plant,
-        // ma per ora supportiamo la logica legacy dei controller.
+
+        // Mappatura nome -> file
         String key = plantName.toLowerCase().trim();
         String fName = switch (key) {
             case "lavanda" -> "Lavanda.png";
@@ -82,7 +79,6 @@ public class ResourceManager {
         };
 
         if (fName == null) {
-            // Tentativo generico
             fName = Character.toUpperCase(key.charAt(0)) + key.substring(1) + ".png";
         }
 
@@ -94,15 +90,7 @@ public class ResourceManager {
         return loadImage(PLANTS_DIR + folderName + "/" + filename);
     }
 
-    /**
-     * Carica l'icona della navigazione.
-     * 
-     * @param name    es. "home", "settings"
-     * @param isWhite se true carica la versione bianca (es. "home-dark.png"),
-     *                altrimenti nera ("home.png")
-     *                NB: La nomenclatura dei file è un po' controintuitiva:
-     *                "dark.png" è bianca (per sfondo scuro).
-     */
+
     public static Image getNavIcon(String name, boolean isWhite) {
         String path = IMAGES_ROOT + name + (isWhite ? "-dark" : "") + ".png";
         return loadImage(path);

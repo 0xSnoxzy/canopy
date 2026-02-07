@@ -127,15 +127,6 @@ public class NavController {
         button.selectedProperty().addListener((obs, oldVal, newVal) -> updateIconsForThemeAndSelection());
     }
 
-    /**
-     * Applica le regole:
-     * - tutti i temi SCURI tranne evergreen ("dark") e daltonici:
-     * SOLO la pagina selezionata -> icona NERA
-     * - tutti i temi CHIARI tranne evergreen ("light") e daltonici:
-     * SOLO la pagina selezionata -> icona BIANCA
-     * - evergreen + daltonici: comportamento classico (icone tutte chiare su dark,
-     * tutte scure su light)
-     */
     private void updateIconsForThemeAndSelection() {
         String id = currentThemeId;
 
@@ -145,7 +136,6 @@ public class NavController {
         boolean isLightTheme = "light".equals(id) || id.endsWith("-light");
 
         if (isEvergreen || isDaltonici) {
-            // comportamento "classico":
             if (isDarkTheme) {
                 // nav con testo chiaro -> icone chiare
                 setAllIconsWhite();
@@ -156,8 +146,7 @@ public class NavController {
             return;
         }
 
-        // Qui siamo nei temi "colorati" (sakura, quercia, menta, peperoncino, lavanda,
-        // orchidea, ecc.)
+        // temi "colorati" (sakura, quercia, menta, peperoncino, lavanda, orchidea, ecc.)
 
         if (isDarkTheme) {
             // Tema SCURO non evergreen/non daltonici:
@@ -178,7 +167,6 @@ public class NavController {
             calendarIcon.setImage(btnCalendar.isSelected() ? calendarWhite : calendarBlack);
             settingsIcon.setImage(btnSettings.isSelected() ? settingsWhite : settingsBlack);
         } else {
-            // fallback improbabile → icone bianche su sfondo presumibilmente scuro
             setAllIconsWhite();
         }
     }
@@ -199,8 +187,7 @@ public class NavController {
         settingsIcon.setImage(settingsWhite);
     }
 
-    // ===== Navigazione =====
-
+    // Logica navigazione
     public void setOnNavigate(Consumer<String> onNavigate) {
         this.onNavigate = onNavigate;
     }
@@ -244,7 +231,6 @@ public class NavController {
             case "settings" -> btnSettings.setSelected(true);
             default -> pagesGroup.selectToggle(null);
         }
-        // dopo aver cambiato il selezionato, riallineo le icone
         updateIconsForThemeAndSelection();
     }
 }
