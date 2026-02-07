@@ -1,67 +1,36 @@
-/* ============================================================
-   OBIETTIVI – stile locale (compatibile con base.css)
-   ============================================================ */
+
+/*OBIETTIVI*/
 
 /* Root della pagina */
 .objectives-root {
     -fx-background-color: transparent;
 }
 
-/* Layout centrale (contenitore principale) */
+/* contenitore principale */
 .objectives-center {
     -fx-padding: 16 16 4 16;  /* top right bottom left */
     -fx-spacing: 16;
     -fx-alignment: CENTER;
 }
 
-/* Titolo principale (ora non usato, ma lo lascio in caso serva altrove) */
-.objectives-title {
-    -fx-font-size: 20px;
-    -fx-font-weight: 800;
-    -fx-text-fill: -canopy-accent-2;
-}
 
-/* ------------------------------
-   RIEPILOGO GENERALE
-   ------------------------------ */
+/*RIEPILOGO GENERALE*/
 
 .summary-card {
     -fx-background-color:
         linear-gradient(to bottom, -canopy-surface-2, -canopy-surface);
     -fx-background-radius: 18;
     -fx-border-radius: 18;
-
     -fx-border-color: -canopy-border-subtle;
     -fx-border-width: 1;
-
-    /* più padding verticale: il riquadro cresce
-       e, dato che l'HBox è allineato CENTER_LEFT,
-       cerchio e testi si posizionano più verso il centro */
-    -fx-padding: 20 20 20 20;   /* top right bottom left */
-
-    /* un filo più di aria tra cerchio e testo */
+    -fx-padding: 20 20 20 20;   /* top, right, bottom, left */
     -fx-spacing: 20;
-
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 18, 0.25, 0, 4);
 }
 
 /* contenitore del cerchio grande */
 .overall-ring-container {
     -fx-alignment: CENTER;
-}
-
-/* cerchio grande del riepilogo (ProgressIndicator) */
-.overall-progress {
-    -fx-progress-color: -canopy-accent;
-    -fx-scale-x: 1.8;
-    -fx-scale-y: 1.8;
-}
-
-/* testo al centro del cerchio grande */
-.overall-percent-label {
-    -fx-font-size: 28px;
-    -fx-font-weight: 900;
-    -fx-text-fill: -canopy-accent-2;
 }
 
 /* titolo e testi del riepilogo */
@@ -80,24 +49,16 @@
     -fx-font-size: 15px;
 }
 
-/* VBox dei testi nel pannello del progresso generale */
-.summary-text-box {
-    /* sposta leggermente tutto il blocco testi verso il basso
-       rispetto al centro dell'HBox, così "cade" più sul centro del cerchio */
-    -fx-translate-y: -3;   /* prova 6; se lo vuoi ancora più giù, metti 8 o 10 */
-}
 
-/* ------------------------------
-   LISTA OBIETTIVI
-   ------------------------------ */
+/*LISTA OBIETTIVI */
 
 /* ScrollPane che contiene il pannello degli obiettivi */
 .goals-scroll {
     -fx-background-color: transparent;
-    -fx-padding: 0;          /* nessun bordo extra intorno allo scroll */
+    -fx-padding: 0;
 }
 
-/* viewport dello ScrollPane = pannello degli obiettivi */
+/* pannello degli obiettivi */
 .goals-scroll .viewport {
     -fx-background-color:
         linear-gradient(to bottom, -canopy-surface-2, -canopy-surface);
@@ -108,7 +69,7 @@
 }
 
 .goals-flow {
-    -fx-padding: 12 8 20 8;    /* top right bottom left */
+    -fx-padding: 12 8 20 8;    /* top, right, bottom, left */
     -fx-hgap: 16;
     -fx-vgap: 20;
     -fx-alignment: TOP_CENTER;
@@ -125,25 +86,17 @@
     -fx-padding: 16;
     -fx-spacing: 12;
     -fx-cursor: hand;
-
-    /* LASCIA solo questa, se vuoi una minima */
     -fx-min-width: 320;
-
-    /* ➜ ELIMINA queste tre righe dal file:
-    -fx-pref-width: 460;
-    -fx-max-width: 460;
-    */
-
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.28), 12, 0.20, 0, 3);
 }
 
-/* hover sulla card: leggero highlight */
+/* hover sulla card*/
 .goal-card:hover {
     -fx-background-color:
         linear-gradient(to bottom, derive(-canopy-card,10%), -canopy-card);
 }
 
-/* stato "selezionato" per la card */
+/* stato selezionato per la card */
 .goal-card-selected {
     -fx-border-color: -canopy-accent;
     -fx-border-width: 2;
@@ -160,15 +113,7 @@
     -fx-font-size: 11px;
 }
 
-/* etichetta della percentuale nei cerchi dei singoli obiettivi */
-.goal-circle-label {
-    -fx-font-size: 15px;
-    -fx-font-weight: bold;
-}
-
-/* ------------------------------
-   DETTAGLI A DESTRA
-   ------------------------------ */
+/* DETTAGLI A DESTRA */
 
 .details-pane {
     -fx-background-color:
@@ -207,16 +152,7 @@
     -fx-font-size: 12px;
 }
 
-/* placeholder per immagine / illustrazione */
-.details-image-placeholder {
-    -fx-background-color: -canopy-surface;
-    -fx-border-color: -canopy-border-strong;
-    -fx-border-width: 2;
-    -fx-background-radius: 16;
-    -fx-border-radius: 16;
-}
-
-/* ====== ANELLI DI PROGRESSO (DONUT) RIUTILIZZABILI ====== */
+/*ANELLI DI PROGRESSO */
 
 /* cerchio grigio di sfondo */
 .ring-track {
@@ -239,7 +175,7 @@
     -fx-fill: -canopy-card;
 }
 
-/* testo comune degli anelli */
+/* testo degli anelli */
 .ring-label {
     -fx-text-fill: -canopy-accent-2;
     -fx-font-weight: 800;

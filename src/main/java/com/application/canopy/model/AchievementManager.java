@@ -3,15 +3,14 @@ package com.application.canopy.model;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Calcola lo stato di tutti gli achievement a partire dal GameState.
- * Tutta la logica degli obiettivi sta qui.
- */
+
+ //Calcola lo stato di tutti gli achievement a partire dal GameState
+ //Tutta la logica degli obiettivi sta qui
 public class AchievementManager {
 
     private static final AchievementManager INSTANCE = new AchievementManager();
 
-    // Se cambi la durata del pomodoro basta aggiornare questo.
+
     private static final int MINUTI_PER_POMODORO = 25;
 
     private AchievementManager() {}
@@ -23,31 +22,31 @@ public class AchievementManager {
     public List<AchievementGoal> evaluateAll(GameState gameState) {
         List<AchievementGoal> goals = new ArrayList<>();
 
-        // progressione totale
+        //progressione totale
         goals.add(germoglioDiDisciplina(gameState));
         goals.add(radiciSalde(gameState));
         goals.add(alberoGiovane(gameState));
         goals.add(querciaDellaCostanza(gameState));
 
-        // orario del giorno
+        //orario del giorno
         goals.add(mattiniero(gameState));
         goals.add(notturnoSilenzioso(gameState));
         goals.add(forestaNotturna(gameState));
         goals.add(soleDiMezzogiorno(gameState));
 
-        // streak e giornate intense
+        //streak e giornate intense
         goals.add(settimanaVerde(gameState));
         goals.add(fogliaNuova(gameState));
         goals.add(maratonetaDelFocus(gameState));
 
-        // ritorno dopo pausa lunga + ore totali
+        //ritorno dopo pausa lunga + ore totali
         goals.add(rinascita(gameState));
         goals.add(alberoAntico(gameState));
 
         return goals;
     }
 
-    // ---------- PROGRESSIONE TOTALE POMODORI ----------
+    //PROGRESSIONE TOTALE POMODORI
 
     private AchievementGoal germoglioDiDisciplina(GameState gs) {
         int total = gs.getTotalPomodoriGlobal();
@@ -59,8 +58,7 @@ public class AchievementManager {
                 "Completa il tuo primo pomodoro.",
                 "Hai piantato il primo seme della tua foresta di focus completando un pomodoro. Ogni grande foresta inizia da qui.",
                 current,
-                1,
-                null
+                1
         );
     }
 
@@ -74,8 +72,8 @@ public class AchievementManager {
                 "Completa 10 pomodori totali.",
                 "Le tue abitudini stanno mettendo radici profonde. Hai completato 10 sessioni di focus: continua così!",
                 current,
-                10,
-                null
+                10
+
         );
     }
 
@@ -89,8 +87,7 @@ public class AchievementManager {
                 "Completa 50 pomodori totali.",
                 "La tua pianta sta crescendo rigogliosa grazie alla tua costanza. Raggiunti 50 pomodori!",
                 current,
-                50,
-                null
+                50
         );
     }
 
@@ -104,13 +101,11 @@ public class AchievementManager {
                 "Completa 200 pomodori totali.",
                 "La tua disciplina è diventata una quercia solida. Hai completato 200 sessioni: un impegno straordinario.",
                 current,
-                200,
-                null
+                200
         );
     }
 
-    // ---------- ORARIO DELLA GIORNATA ----------
-
+    //ORARIO DELLA GIORNATA
     private AchievementGoal mattiniero(GameState gs) {
         boolean unlocked = gs.hasMorningPomodoroBefore9();
         int current = unlocked ? 1 : 0;
@@ -121,8 +116,7 @@ public class AchievementManager {
                 "Completa un pomodoro prima delle 9:00.",
                 "Ti sei messo al lavoro mentre il mondo si svegliava: ottimo inizio!",
                 current,
-                1,
-                null
+                1
         );
     }
 
@@ -136,8 +130,7 @@ public class AchievementManager {
                 "Completa un pomodoro dopo le 22:00.",
                 "Anche di notte la tua concentrazione fiorisce. Non esagerare… ma ben fatto!",
                 current,
-                1,
-                null
+                1
         );
     }
 
@@ -151,8 +144,7 @@ public class AchievementManager {
                 "Completa 5 pomodori dopo le 21:00.",
                 "Anche nel silenzio della notte la tua foresta si espande.",
                 current,
-                5,
-                null
+                5
         );
     }
 
@@ -166,13 +158,11 @@ public class AchievementManager {
                 "Completa un pomodoro a cavallo delle 12.",
                 "Nel pieno della giornata hai trovato spazio per crescere ancora.",
                 current,
-                1,
-                null
+                1
         );
     }
 
-    // ---------- STREAK E GIORNI INTENSI ----------
-
+    //STREAK E GIORNI INTENSI
     private AchievementGoal settimanaVerde(GameState gs) {
         int bestStreak = gs.getGlobalBestStreak();
         int current = Math.min(bestStreak, 7);
@@ -183,8 +173,7 @@ public class AchievementManager {
                 "Completa almeno un pomodoro al giorno per 7 giorni consecutivi.",
                 "Una settimana intera di crescita costante: la tua foresta ti ringrazia.",
                 current,
-                7,
-                null
+                7
         );
     }
 
@@ -198,8 +187,7 @@ public class AchievementManager {
                 "Completa 3 pomodori in un giorno.",
                 "Una nuova foglia è spuntata: oggi hai nutrito bene la tua pianta.",
                 current,
-                3,
-                null
+                3
         );
     }
 
@@ -213,13 +201,11 @@ public class AchievementManager {
                 "Completa 8 pomodori in un singolo giorno.",
                 "Una giornata di produttività intensa: hai mantenuto la concentrazione più a lungo di quanto facciano molti!",
                 current,
-                8,
-                null
+                8
         );
     }
 
-    // ---------- RITORNO DOPO PAUSA + ORE TOTALI ----------
-
+    // RITORNO DOPO PAUSA + ORE TOTALI
     private AchievementGoal rinascita(GameState gs) {
         boolean unlocked = gs.hasRinascitaUnlocked();
         int current = unlocked ? 1 : 0;
@@ -230,8 +216,7 @@ public class AchievementManager {
                 "Completa un pomodoro dopo 7 giorni senza usar l’app.",
                 "Sei tornato! Anche le piante che sembrano dormire possono rinascere: riprendiamo a crescere insieme.",
                 current,
-                1,
-                null
+                1
         );
     }
 
@@ -247,8 +232,7 @@ public class AchievementManager {
                 "Raggiungi 50 ore totali di focus.",
                 "La tua esperienza si misura in anelli di crescita: sei diventato un albero imponente.",
                 current,
-                50,
-                null
+                50
         );
     }
 }

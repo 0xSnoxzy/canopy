@@ -67,8 +67,12 @@ public class AchievementsController implements Initializable {
         overallRing.getLabel().getStyleClass().addAll("ring-label", "ring-label-big");
         overallRingContainer.getChildren().setAll(overallRing);
 
+        //questo porta tutto in scena
         refreshAchievements();
 
+        // Listener che aggiorna il achivements appena viene caricato, se il newParent è
+        // il achivements allora aggiorna dal DB per visualizzare
+        // Eventuali cambi in background mentre si era in altre pagine
         root.parentProperty().addListener((obs, oldParent, newParent) -> {
             if (newParent != null) {
                 refreshAchievements();
@@ -76,15 +80,17 @@ public class AchievementsController implements Initializable {
         });
     }
 
+    //valuta tutti gli obiettivi sullo stato corrente del db
     private void refreshAchievements() {
         goals.clear();
         goals.addAll(achievementManager.evaluateAll(gameState));
 
-        buildGoalCards();
-        updateOverall();
-        resetDetailsPanel();
+        buildGoalCards(); //ricostruisce le card della lista
+        updateOverall(); //aggiorna il anello grande
+        resetDetailsPanel(); //azzera il pannello dettagli finché non clicchi una card
     }
 
+    //mette tutti i detagli per default, senza selezionare niente
     private void resetDetailsPanel() {
         detailName.setText("Seleziona un obiettivo");
         detailShortDescription.setText("");
@@ -93,16 +99,17 @@ public class AchievementsController implements Initializable {
         detailStatus.setText("Stato: -");
     }
 
+    //calcola le percentuali dei obbiettivi completati, e aggiorna il cerchio grande
     private void updateOverall() {
-        if (goals.isEmpty()) {
+        if (goals.isEmpty()) { //se non ce nessun obbiettivo completato al momento, mette tutto per default
             overallRing.setProgress(0);
             overallText.setText("Non hai ancora obiettivi.");
             overallHint.setText("");
             return;
         }
 
-        long completed = goals.stream().filter(AchievementGoal::isCompleted).count();
-        double ratio = (double) completed / goals.size();
+        long completed = goals.stream().filter(AchievementGoal::isCompleted).count();//quanti completati
+        double ratio = (double) completed / goals.size();//percentuale, n completati / totali
 
         overallRing.setProgress(ratio);
         overallText.setText("Hai completato " + completed + " obiettivi su " + goals.size() + ".");
@@ -111,7 +118,7 @@ public class AchievementsController implements Initializable {
 
     // Lista obiettivi
 
-    private void buildGoalCards() {
+    private void buildGoalCards() { //Svuota il FlowPane e aggiunge una card per ogni obiettivo
         goalsFlow.getChildren().clear();
         selectedCard = null;
 
@@ -120,27 +127,28 @@ public class AchievementsController implements Initializable {
         }
     }
 
-    private HBox createGoalCard(AchievementGoal goal) {
+    private HBox createGoalCard(AchievementGoal goal) {//crea una cart obbitivo in una hbox composta dal cerchio + vbox con le info
         HBox card = new HBox(12);
         card.setPadding(new Insets(10));
         card.setAlignment(Pos.CENTER_LEFT);
         card.getStyleClass().add("goal-card");
 
         card.prefWidthProperty().bind(
-                Bindings.when(goalsFlow.widthProperty().greaterThan(900))
-                        .then(goalsFlow.widthProperty().divide(2).subtract(24))
+                //resize responsivo con binding -> binding javafx, le dimesioni si aggiornano da sole quando si cambia la dimezione
+                Bindings.when(goalsFlow.widthProperty().greaterThan(900))//se la lista è larga > 900 →
+                        .then(goalsFlow.widthProperty().divide(2).subtract(24))// due colonne
                         .otherwise(goalsFlow.widthProperty().subtract(16)));
-
+        //crea il mini cerchio per ogni obbietivo
         RingProgressIndicator ring = new RingProgressIndicator(70, 8);
         ring.setProgress(goal.getCompletionRatio());
         ring.getLabel().getStyleClass().addAll("ring-label", "ring-label-small");
-
+        //crea la parte con i detagli del obbietivo
         VBox textBox = new VBox(4);
         Label title = new Label(goal.getName());
         title.getStyleClass().add("goal-title");
 
         Text desc = new Text(goal.getShortDescription());
-        desc.setWrappingWidth(220);
+        desc.setWrappingWidth(220); //limita la larghezza del testo della descrizione, se è lunga va a capo
         desc.getStyleClass().add("goal-description");
 
         textBox.getChildren().addAll(title, desc);

@@ -2,6 +2,7 @@
 
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.text.Text?>
 
 <BorderPane xmlns="http://javafx.com/javafx"
@@ -10,7 +11,7 @@
             styleClass="objectives-root"
             fx:controller="com.application.canopy.controller.AchievementsController">
 
-    <!-- CENTRALE -->
+    <!--Parte centrale -->
     <center>
         <VBox fx:id="centerBox"
               spacing="16"
@@ -18,7 +19,7 @@
               styleClass="objectives-center"
               BorderPane.alignment="CENTER">
 
-            <!-- RIEPILOGO -->
+            <!-- Card principale (vista generale) -->
             <HBox spacing="12"
                   alignment="CENTER_LEFT"
                   styleClass="summary-card">
@@ -43,7 +44,7 @@
                 </VBox>
             </HBox>
 
-            <!-- LISTA OBIETTIVI -->
+            <!-- Lista di tutti i obbiettivi -->
             <ScrollPane fx:id="goalsScroll"
                         fitToWidth="true"
                         hbarPolicy="NEVER"
@@ -51,15 +52,17 @@
                         styleClass="goals-scroll"
                         VBox.vgrow="ALWAYS">
 
+                <content>
                     <FlowPane fx:id="goalsFlow"
                               prefWrapLength="900"
                               styleClass="goals-flow"/>
+                </content>
             </ScrollPane>
 
         </VBox>
     </center>
 
-    <!-- DESTRA DETTAGLI (SENZA IMMAGINE) -->
+    <!-- Parte destra, dettagli singoli di ogni obbiettivo -->
     <right>
         <VBox prefWidth="320"
               spacing="8"
